@@ -31,6 +31,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDKs (Compatibili) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <style>
         html, body {
             font-family: 'Inter', sans-serif;
@@ -52,7 +57,6 @@
             backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
-        /* Custom scrollbars */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -158,7 +162,7 @@
             </button>
             <div>
                 <h1 class="text-xs sm:text-sm font-extrabold text-white tracking-tight flex items-center gap-1.5">
-                    LIFE DASHBOARD <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-semibold">ACCOUNT PRIVATO</span>
+                    LIFE DASHBOARD <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-semibold">CLOUD SYNC</span>
                 </h1>
                 <p id="today-date-text" class="text-[10px] text-slate-400 font-medium">Caricamento...</p>
             </div>
@@ -180,7 +184,7 @@
             <!-- Sync Badge -->
             <div id="storage-status-badge" class="px-2 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-lg text-[10px] font-bold flex items-center gap-1">
                 <i id="storage-status-icon" class="fa-solid fa-cloud-arrow-up text-xs"></i>
-                <span id="storage-status-text" class="hidden sm:inline">Sincronizzato</span>
+                <span id="storage-status-text" class="hidden sm:inline">Cloud Attivo</span>
             </div>
 
             <button onclick="toggleAllSections(true)" title="Espandi Tutto" class="px-2 py-1 bg-dark-900 text-slate-300 rounded-lg text-[11px] font-semibold border border-slate-800 transition">
@@ -263,10 +267,7 @@
             </button>
 
             <div id="sec-uni" class="p-4 space-y-3 border-t border-slate-800/80">
-                <!-- Days Tab Selector -->
                 <div class="flex space-x-1.5 overflow-x-auto pb-1" id="uni-days-tabs"></div>
-
-                <!-- Lessons Content Area -->
                 <div id="uni-lessons-container" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
             </div>
         </section>
@@ -291,8 +292,6 @@
 
             <div id="sec-fit" class="p-4 space-y-4 border-t border-slate-800/80">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    
-                    <!-- Left: Weight Tracker -->
                     <div class="bg-dark-900/80 p-3.5 rounded-xl border border-slate-800 space-y-3">
                         <div class="flex justify-between items-center">
                             <h3 class="font-bold text-xs uppercase text-slate-400 tracking-wider">Tracker Peso</h3>
@@ -307,8 +306,6 @@
                                 <i class="fa-solid fa-plus text-xs"></i> Aggiorna
                             </button>
                         </div>
-
-                        <!-- Reminder Pesata Venerdì -->
                         <div class="p-3 rounded-xl bg-gradient-to-r from-amber-500/10 to-purple-500/10 border border-amber-500/20 space-y-1">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-bold text-amber-300 flex items-center gap-1.5">
@@ -322,7 +319,6 @@
                         </div>
                     </div>
 
-                    <!-- Right: Workout Checklist -->
                     <div class="lg:col-span-2 bg-dark-900/80 p-3.5 rounded-xl border border-slate-800 space-y-3">
                         <div class="flex justify-between items-center">
                             <h3 class="font-bold text-xs uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
@@ -330,7 +326,6 @@
                             </h3>
                             <span id="workout-progress-badge" class="text-[10px] font-bold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full">0/5 Completati</span>
                         </div>
-
                         <div id="workout-checklist" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
                     </div>
                 </div>
@@ -362,9 +357,7 @@
                         <i class="fa-solid fa-plus text-xs"></i> Nuova Idea
                     </button>
                 </div>
-
                 <p class="text-[10px] text-slate-400 italic">👈 Swipa a sinistra sulla scheda per scoprire Modifica/Elimina. Swipa a destra 👉 per richiudere.</p>
-
                 <div id="tiktok-ideas-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
             </div>
         </section>
@@ -389,8 +382,6 @@
 
             <div id="sec-water" class="p-4 space-y-4 border-t border-slate-800/80">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
-                    
-                    <!-- Water Level Visual -->
                     <div class="bg-dark-950 p-4 rounded-xl border border-slate-800 flex flex-col items-center justify-center space-y-2 relative overflow-hidden">
                         <div class="w-20 h-36 bg-dark-900 border-2 border-cyan-500/40 rounded-3xl relative overflow-hidden flex flex-col justify-end">
                             <div id="water-fill-level" class="water-wave bg-gradient-to-t from-cyan-600 to-cyan-400 w-full rounded-b-2xl" style="height: 0%;"></div>
@@ -398,7 +389,6 @@
                         <p id="water-percentage" class="text-xs sm:text-sm font-extrabold text-cyan-400">0% Raggiunto</p>
                     </div>
 
-                    <!-- Water Buttons -->
                     <div class="sm:col-span-2 space-y-3">
                         <div class="flex flex-wrap items-center justify-between gap-2 bg-dark-900 p-3 rounded-xl border border-slate-800">
                             <div>
@@ -427,10 +417,9 @@
                 </div>
             </div>
         </section>
-
     </main>
 
-    <!-- MODAL 1: MULTI-ACCOUNT PROFILE & CREDENTIALS MANAGER -->
+    <!-- MODALI -->
     <div id="modal-account" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-4 sm:p-5 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -462,7 +451,6 @@
         </div>
     </div>
 
-    <!-- MODAL 2: WEIGHT UPDATE -->
     <div id="modal-weight" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="glass-card max-w-xs w-full rounded-2xl border border-slate-800 p-4 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-2">
@@ -478,7 +466,6 @@
         </div>
     </div>
 
-    <!-- MODAL 3: TIKTOK MODAL -->
     <div id="modal-tiktok" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="glass-card max-w-md w-full rounded-2xl border border-slate-800 p-4 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -510,7 +497,6 @@
         </div>
     </div>
 
-    <!-- MODAL 4: HISTORY MODAL -->
     <div id="modal-history" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="glass-card max-w-md w-full rounded-2xl border border-slate-800 p-4 space-y-4 max-h-[85vh] flex flex-col">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -523,20 +509,29 @@
         </div>
     </div>
 
-    <!-- APP SCRIPT & AUTH LOGIC UPDATE -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <script>
+        // CONFIGURAZIONE FIREBASE UFFICIALE
+        const firebaseConfig = {
+            apiKey: "AIzaSyDGfbnREBIfV2lr30knqUVhKLAEbjwcCm4",
+            authDomain: "life-dashboard-97f17.firebaseapp.com",
+            projectId: "life-dashboard-97f17",
+            storageBucket: "life-dashboard-97f17.firebasestorage.app",
+            messagingSenderId: "1087165004796",
+            appId: "1:1087165004796:web:5e94d052c8dbc1e958d079",
+            measurementId: "G-X3X8DCTRCW"
+        };
 
-        // Global Firebase Configuration & App ID
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'life-dashboard-app';
-        let db = null;
-        let auth = null;
-        let currentUser = null;
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const PROFILES_STORAGE_KEY = 'life_app_multi_profiles_v5';
+        const LOGGED_USER_KEY = 'life_app_logged_user_v5';
+        let activeProfileName = 'lord arts';
+        let allProfiles = {};
+        let appData = null;
         let unsubscribeCloudListener = null;
 
-        // INDEXED DB PERSISTENT DATABASE FALLBACK SYSTEM
+        // INDEXEDDB FALLBACK
         const IDB_NAME = 'LifeDashboardDB_v5';
         const IDB_STORE = 'user_profiles_store';
 
@@ -559,9 +554,7 @@
                 const idb = await openIndexedDB();
                 const tx = idb.transaction(IDB_STORE, 'readwrite');
                 tx.objectStore(IDB_STORE).put(val, key);
-            } catch (e) {
-                console.warn("IndexedDB save note:", e);
-            }
+            } catch (e) {}
         }
 
         async function getFromIndexedDB(key) {
@@ -573,35 +566,9 @@
                     request.onsuccess = () => resolve(request.result);
                     request.onerror = () => resolve(null);
                 });
-            } catch (e) {
-                return null;
-            }
+            } catch (e) { return null; }
         }
 
-        // Firebase Initialization
-        try {
-            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-                apiKey: "demo-key",
-                authDomain: "demo.firebaseapp.com",
-                projectId: "demo-project",
-                storageBucket: "demo.appspot.com",
-                messagingSenderId: "123456",
-                appId: "1:123456:web:123456"
-            };
-            const app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-        } catch(e) {
-            console.warn("Firestore fallback mode active", e);
-        }
-
-        const PROFILES_STORAGE_KEY = 'life_app_multi_profiles_v5';
-        const LOGGED_USER_KEY = 'life_app_logged_user_v5';
-        let activeProfileName = 'lord arts';
-        let allProfiles = {};
-        let appData = null;
-
-        // Default Template Data for New Accounts
         function createDefaultProfileData(name, pass = '1234') {
             const isLord = name.toLowerCase() === 'lord arts' || name.toLowerCase() === 'lorenzo';
             return {
@@ -614,10 +581,7 @@
                 weight: isLord ? 118.0 : 60.0,
                 selectedUniDay: 'Lunedì',
                 sectionsState: {
-                    'sec-uni': true,
-                    'sec-fit': true,
-                    'sec-tiktok': true,
-                    'sec-water': true
+                    'sec-uni': true, 'sec-fit': true, 'sec-tiktok': true, 'sec-water': true
                 },
                 workouts: [
                     { id: 1, name: 'Camminata Veloce (25-30 min)', desc: 'Passo sostenuto quotidiano', completed: false },
@@ -662,27 +626,10 @@
             };
         }
 
-        async function initAuthAndCloud() {
-            if (auth) {
-                try {
-                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                        await signInWithCustomToken(auth, __initial_auth_token);
-                    } else {
-                        await signInAnonymously(auth);
-                    }
-                    currentUser = auth.currentUser;
-                } catch(e) {
-                    console.warn("Auth note", e);
-                }
-            }
-        }
-
         async function saveData() {
             if (!activeProfileName || !appData) return;
             allProfiles[activeProfileName] = appData;
-            try {
-                localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
-            } catch (e) {}
+            try { localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles)); } catch (e) {}
             await saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
 
             const statusIcon = document.getElementById('storage-status-icon');
@@ -692,13 +639,14 @@
                 statusText.innerText = 'Sincronizzato';
             }
 
-            if (db && currentUser && activeProfileName) {
+            if (db && activeProfileName) {
                 try {
-                    const userDocRef = doc(db, 'apps', appId, 'users', activeProfileName);
-                    await setDoc(userDocRef, { appData, updatedAt: new Date().toISOString() }, { merge: true });
-                } catch(e) {
-                    console.warn("Cloud sync note:", e);
-                }
+                    await db.collection('users').doc(activeProfileName.toLowerCase()).set({
+                        password: appData.password || '1234',
+                        data: appData,
+                        updatedAt: new Date().toISOString()
+                    }, { merge: true });
+                } catch(e) { console.warn("Cloud save note:", e); }
             }
         }
 
@@ -708,11 +656,193 @@
             if (appData.lastDate !== today) {
                 appData.lastDate = today;
                 appData.water = 0;
-                if (appData.workouts) {
-                    appData.workouts.forEach(w => w.completed = false);
-                }
+                if (appData.workouts) appData.workouts.forEach(w => w.completed = false);
                 saveData();
             }
+        }
+
+        function setupCloudListener(profileName) {
+            if (unsubscribeCloudListener) { unsubscribeCloudListener(); unsubscribeCloudListener = null; }
+            if (db && profileName) {
+                try {
+                    unsubscribeCloudListener = db.collection('users').doc(profileName.toLowerCase()).onSnapshot(doc => {
+                        if (doc.exists && doc.data().data) {
+                            appData = doc.data().data;
+                            allProfiles[profileName] = appData;
+                            renderAll();
+                        }
+                    });
+                } catch(e) { console.warn("Cloud listener note:", e); }
+            }
+        }
+
+        async function initApp() {
+            try {
+                const savedJson = localStorage.getItem(PROFILES_STORAGE_KEY);
+                if (savedJson) allProfiles = JSON.parse(savedJson);
+            } catch (e) {}
+
+            if (!allProfiles || Object.keys(allProfiles).length === 0) {
+                const idbProfiles = await getFromIndexedDB(PROFILES_STORAGE_KEY);
+                if (idbProfiles) allProfiles = idbProfiles;
+            }
+
+            if (!allProfiles['lord arts']) {
+                allProfiles['lord arts'] = createDefaultProfileData('lord arts', '1234');
+            }
+
+            let loggedUser = localStorage.getItem(LOGGED_USER_KEY);
+            if (!loggedUser) loggedUser = await getFromIndexedDB(LOGGED_USER_KEY);
+
+            const authScreen = document.getElementById('auth-screen');
+
+            if (loggedUser && allProfiles[loggedUser]) {
+                activeProfileName = loggedUser;
+                appData = allProfiles[activeProfileName];
+                if (authScreen) authScreen.classList.add('hidden');
+                checkDailyReset();
+                updateProfileDropdownOptions();
+                setupCloudListener(activeProfileName);
+                renderAll();
+            } else {
+                if (authScreen) authScreen.classList.remove('hidden');
+            }
+        }
+
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('form-login');
+            const regForm = document.getElementById('form-register');
+            const loginBtn = document.getElementById('tab-btn-login');
+            const regBtn = document.getElementById('tab-btn-register');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                loginBtn.className = 'py-2 rounded-lg bg-cyan-600 text-white transition';
+                regBtn.className = 'py-2 rounded-lg text-slate-400 hover:text-white transition';
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                regBtn.className = 'py-2 rounded-lg bg-emerald-600 text-white transition';
+                loginBtn.className = 'py-2 rounded-lg text-slate-400 hover:text-white transition';
+            }
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('login-username').value.trim();
+            const passInput = document.getElementById('login-password').value.trim();
+            if (!userInput || !passInput) return;
+
+            try {
+                const userDoc = await db.collection('users').doc(userInput.toLowerCase()).get();
+                if (userDoc.exists) {
+                    const cloudPass = userDoc.data().password;
+                    if (cloudPass !== passInput) {
+                        showToast('Password errata!'); return;
+                    }
+                    activeProfileName = userInput;
+                    appData = userDoc.data().data || createDefaultProfileData(userInput, passInput);
+                } else if (allProfiles[userInput]) {
+                    if (allProfiles[userInput].password && allProfiles[userInput].password !== passInput) {
+                        showToast('Password errata!'); return;
+                    }
+                    activeProfileName = userInput;
+                    appData = allProfiles[activeProfileName];
+                } else {
+                    showToast('Account non trovato! Registrati prima di accedere.'); return;
+                }
+
+                localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
+                saveData();
+                setupCloudListener(activeProfileName);
+
+                const authScreen = document.getElementById('auth-screen');
+                if (authScreen) authScreen.classList.add('hidden');
+
+                checkDailyReset();
+                updateProfileDropdownOptions();
+                renderAll();
+                showToast(`Bentornato, ${activeProfileName}!`);
+            } catch(err) {
+                console.error(err);
+                showToast('Errore di accesso Cloud');
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('reg-username').value.trim();
+            const passInput = document.getElementById('reg-password').value.trim();
+            const passConfirm = document.getElementById('reg-password-confirm').value.trim();
+
+            if (!userInput || !passInput) return;
+
+            if (passInput !== passConfirm) {
+                showToast('Le password non coincidono!'); return;
+            }
+
+            try {
+                const userDoc = await db.collection('users').doc(userInput.toLowerCase()).get();
+                if (userDoc.exists || allProfiles[userInput]) {
+                    showToast('Errore: Nickname già esistente!'); return;
+                }
+
+                allProfiles[userInput] = createDefaultProfileData(userInput, passInput);
+                activeProfileName = userInput;
+                appData = allProfiles[activeProfileName];
+
+                localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
+                saveData();
+                setupCloudListener(activeProfileName);
+
+                const authScreen = document.getElementById('auth-screen');
+                if (authScreen) authScreen.classList.add('hidden');
+
+                checkDailyReset();
+                updateProfileDropdownOptions();
+                renderAll();
+                showToast(`Account "${activeProfileName}" registrato! 🎉`);
+            } catch(err) {
+                showToast('Errore durante la registrazione');
+            }
+        }
+
+        function updateAccountSettings(e) {
+            e.preventDefault();
+            const newNick = document.getElementById('setting-new-nick').value.trim();
+            const newPass = document.getElementById('setting-new-pass').value.trim();
+
+            if (!newNick || !newPass) return;
+
+            if (newNick !== activeProfileName && allProfiles[newNick]) {
+                showToast('Questo nickname è già occupato!'); return;
+            }
+
+            const oldName = activeProfileName;
+            if (newNick !== oldName) {
+                allProfiles[newNick] = appData;
+                allProfiles[newNick].accountName = newNick;
+                delete allProfiles[oldName];
+                activeProfileName = newNick;
+            }
+
+            appData.password = newPass;
+            localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
+            saveData();
+            renderAccountHeader();
+            closeModal('modal-account');
+            showToast('Credenziali aggiornate!');
+        }
+
+        function openAccountModal() {
+            const modal = document.getElementById('modal-account');
+            const nickInput = document.getElementById('setting-new-nick');
+            const passInput = document.getElementById('setting-new-pass');
+            if (nickInput) nickInput.value = activeProfileName;
+            if (passInput) passInput.value = appData.password || '';
+            updateProfileDropdownOptions();
+            modal.classList.remove('hidden'); modal.classList.add('flex');
         }
 
         function updateProfileDropdownOptions() {
@@ -740,223 +870,12 @@
             localStorage.removeItem(LOGGED_USER_KEY);
             activeProfileName = '';
             appData = null;
+            if (unsubscribeCloudListener) unsubscribeCloudListener();
             const authScreen = document.getElementById('auth-screen');
             if (authScreen) authScreen.classList.remove('hidden');
             showToast('Disconnesso con successo');
         }
 
-        function setupCloudListener(profileName) {
-            if (unsubscribeCloudListener) {
-                unsubscribeCloudListener();
-                unsubscribeCloudListener = null;
-            }
-            if (db && currentUser && profileName) {
-                try {
-                    const userDocRef = doc(db, 'apps', appId, 'users', profileName);
-                    unsubscribeCloudListener = onSnapshot(userDocRef, (snapshot) => {
-                        if (snapshot.exists()) {
-                            const data = snapshot.data();
-                            if (data && data.appData) {
-                                appData = data.appData;
-                                allProfiles[profileName] = appData;
-                                try {
-                                    localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
-                                } catch(e) {}
-                                saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
-                                renderAll();
-                            }
-                        }
-                    });
-                } catch(e) {
-                    console.warn("Cloud listener error:", e);
-                }
-            }
-        }
-
-        async function initApp() {
-            await initAuthAndCloud();
-
-            try {
-                const savedProfilesJson = localStorage.getItem(PROFILES_STORAGE_KEY);
-                if (savedProfilesJson) {
-                    allProfiles = JSON.parse(savedProfilesJson);
-                }
-            } catch (e) {
-                console.warn('LocalStorage read note, checking IndexedDB', e);
-            }
-
-            if (!allProfiles || Object.keys(allProfiles).length === 0) {
-                const idbProfiles = await getFromIndexedDB(PROFILES_STORAGE_KEY);
-                if (idbProfiles) allProfiles = idbProfiles;
-            }
-
-            // Default initial account: ONLY lord arts (no demo accounts)
-            if (!allProfiles['lord arts']) {
-                allProfiles['lord arts'] = createDefaultProfileData('lord arts', '1234');
-            }
-
-            let loggedUser = localStorage.getItem(LOGGED_USER_KEY);
-            if (!loggedUser) loggedUser = await getFromIndexedDB(LOGGED_USER_KEY);
-
-            const authScreen = document.getElementById('auth-screen');
-
-            if (loggedUser && allProfiles[loggedUser]) {
-                activeProfileName = loggedUser;
-                appData = allProfiles[activeProfileName];
-                if (authScreen) authScreen.classList.add('hidden');
-                checkDailyReset();
-                updateProfileDropdownOptions();
-                setupCloudListener(activeProfileName);
-                renderAll();
-            } else {
-                if (authScreen) authScreen.classList.remove('hidden');
-            }
-        }
-
-        // AUTH TAB SWITCHER & LOGIN / REGISTRATION HANDLERS
-        function switchAuthTab(tab) {
-            const loginForm = document.getElementById('form-login');
-            const regForm = document.getElementById('form-register');
-            const loginBtn = document.getElementById('tab-btn-login');
-            const regBtn = document.getElementById('tab-btn-register');
-
-            if (tab === 'login') {
-                loginForm.classList.remove('hidden');
-                regForm.classList.add('hidden');
-                loginBtn.className = 'py-2 rounded-lg bg-cyan-600 text-white transition';
-                regBtn.className = 'py-2 rounded-lg text-slate-400 hover:text-white transition';
-            } else {
-                loginForm.classList.add('hidden');
-                regForm.classList.remove('hidden');
-                regBtn.className = 'py-2 rounded-lg bg-emerald-600 text-white transition';
-                loginBtn.className = 'py-2 rounded-lg text-slate-400 hover:text-white transition';
-            }
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const userInput = document.getElementById('login-username').value.trim();
-            const passInput = document.getElementById('login-password').value.trim();
-
-            if (!userInput || !passInput) return;
-
-            if (!allProfiles[userInput]) {
-                showToast('Account non trovato! Registrati prima di accedere.');
-                return;
-            }
-
-            if (allProfiles[userInput].password && allProfiles[userInput].password !== passInput) {
-                showToast('Password errata!');
-                return;
-            }
-
-            activeProfileName = userInput;
-            appData = allProfiles[activeProfileName];
-            localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
-            saveData();
-            setupCloudListener(activeProfileName);
-
-            const authScreen = document.getElementById('auth-screen');
-            if (authScreen) authScreen.classList.add('hidden');
-
-            checkDailyReset();
-            updateProfileDropdownOptions();
-            renderAll();
-            showToast(`Bentornato, ${activeProfileName}!`);
-        }
-
-        function handleRegister(e) {
-            e.preventDefault();
-            const userInput = document.getElementById('reg-username').value.trim();
-            const passInput = document.getElementById('reg-password').value.trim();
-            const passConfirm = document.getElementById('reg-password-confirm').value.trim();
-
-            if (!userInput || !passInput) return;
-
-            if (allProfiles[userInput]) {
-                showToast('Errore: Nickname già esistente!');
-                return;
-            }
-
-            if (passInput !== passConfirm) {
-                showToast('Le password non coincidono!');
-                return;
-            }
-
-            allProfiles[userInput] = createDefaultProfileData(userInput, passInput);
-            activeProfileName = userInput;
-            appData = allProfiles[activeProfileName];
-            localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
-            saveData();
-            setupCloudListener(activeProfileName);
-
-            const authScreen = document.getElementById('auth-screen');
-            if (authScreen) authScreen.classList.add('hidden');
-
-            checkDailyReset();
-            updateProfileDropdownOptions();
-            renderAll();
-            showToast(`Account "${activeProfileName}" registrato! 🎉`);
-        }
-
-        function updateAccountSettings(e) {
-            e.preventDefault();
-            const newNick = document.getElementById('setting-new-nick').value.trim();
-            const newPass = document.getElementById('setting-new-pass').value.trim();
-
-            if (!newNick || !newPass) return;
-
-            if (newNick !== activeProfileName && allProfiles[newNick]) {
-                showToast('Questo nickname è già occupato!');
-                return;
-            }
-
-            const oldName = activeProfileName;
-            if (newNick !== oldName) {
-                allProfiles[newNick] = appData;
-                allProfiles[newNick].accountName = newNick;
-                delete allProfiles[oldName];
-                activeProfileName = newNick;
-            }
-
-            appData.password = newPass;
-            localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
-            saveData();
-            renderAccountHeader();
-            closeModal('modal-account');
-            showToast('Credenziali aggiornate!');
-        }
-
-        function openAccountModal() {
-            const modal = document.getElementById('modal-account');
-            const nickInput = document.getElementById('setting-new-nick');
-            const passInput = document.getElementById('setting-new-pass');
-
-            if (nickInput) nickInput.value = activeProfileName;
-            if (passInput) passInput.value = appData.password || '';
-
-            updateProfileDropdownOptions();
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function createNewProfile() {
-            const input = document.getElementById('new-profile-input');
-            if (!input) return;
-            const name = input.value.trim();
-            if (!name) return;
-
-            if (!allProfiles[name]) {
-                allProfiles[name] = createDefaultProfileData(name, '1234');
-                input.value = '';
-                updateProfileDropdownOptions();
-                switchAccountProfile(name);
-            } else {
-                showToast('Profilo già esistente!');
-            }
-        }
-
-        // UI RENDERERS
         function renderAll() {
             if (!appData) return;
             renderHeaderDate();
@@ -997,15 +916,13 @@
             const lessonsEl = document.getElementById('top-lessons-display');
             const todayDay = new Date().toLocaleDateString('it-IT', { weekday: 'long' });
             const capitalizedDay = todayDay.charAt(0).toUpperCase() + todayDay.slice(1);
-            const todayLessons = appData.schedule[capitalizedDay] ? appData.schedule[capitalizedDay].length : 0;
+            const todayLessons = appData.schedule && appData.schedule[capitalizedDay] ? appData.schedule[capitalizedDay].length : 0;
             if (lessonsEl) lessonsEl.innerText = `${todayLessons} Lezioni`;
         }
 
-        // UNIVERSITY SECTION
         function renderUniSection() {
             const days = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
             const tabsContainer = document.getElementById('uni-days-tabs');
-            
             if (tabsContainer) {
                 tabsContainer.innerHTML = days.map(day => `
                     <button onclick="selectUniDay('${day}')" class="px-3 py-1.5 rounded-xl font-bold text-xs shrink-0 transition ${appData.selectedUniDay === day ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' : 'bg-dark-950 text-slate-400 hover:text-white border border-slate-800'}">
@@ -1015,7 +932,7 @@
             }
 
             const lessonsContainer = document.getElementById('uni-lessons-container');
-            const list = appData.schedule[appData.selectedUniDay] || [];
+            const list = appData.schedule ? (appData.schedule[appData.selectedUniDay] || []) : [];
 
             if (lessonsContainer) {
                 if (list.length === 0) {
@@ -1041,7 +958,6 @@
             renderUniSection();
         }
 
-        // FITNESS SECTION
         function renderFitnessSection() {
             const weightValEl = document.getElementById('current-weight-val');
             if (weightValEl) weightValEl.innerHTML = `${appData.weight.toFixed(1)} <span class="text-xs text-slate-400">kg</span>`;
@@ -1050,10 +966,10 @@
             if (badgeEl) badgeEl.innerText = `Peso: ${appData.weight.toFixed(1)} kg`;
 
             const checklistContainer = document.getElementById('workout-checklist');
-            const doneCount = appData.workouts.filter(w => w.completed).length;
+            const doneCount = appData.workouts ? appData.workouts.filter(w => w.completed).length : 0;
 
             const progressBadge = document.getElementById('workout-progress-badge');
-            if (progressBadge) progressBadge.innerText = `${doneCount}/${appData.workouts.length} Completati`;
+            if (progressBadge) progressBadge.innerText = `${doneCount}/${appData.workouts ? appData.workouts.length : 0} Completati`;
 
             if (checklistContainer) {
                 checklistContainer.innerHTML = appData.workouts.map(item => `
@@ -1086,6 +1002,7 @@
                 const val = parseFloat(input.value);
                 if (!isNaN(val) && val > 0) {
                     appData.weight = val;
+                    if (!appData.weightHistory) appData.weightHistory = [];
                     appData.weightHistory.push({
                         date: new Date().toISOString().split('T')[0],
                         weight: val
@@ -1099,16 +1016,13 @@
             }
         }
 
-        // TIKTOK SECTION WITH SWIPE GESTURE & COMPACT ICONS
         function renderTikTokSection() {
             const listContainer = document.getElementById('tiktok-ideas-list');
-            
             if (!appData.tiktokIdeas || appData.tiktokIdeas.length === 0) {
                 listContainer.innerHTML = `<div class="col-span-3 text-center py-6 text-slate-500 text-xs font-semibold">Nessun video in scaletta. Clicca "+ Nuova Idea" per iniziare! 🎥</div>`;
             } else {
                 listContainer.innerHTML = appData.tiktokIdeas.map(item => `
                     <div class="swipe-container group">
-                        <!-- Action compact icon buttons revealed on left-swipe -->
                         <div class="swipe-actions">
                             <button onclick="openTikTokModal(${item.id})" title="Modifica" class="w-9 h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
                                 <i class="fa-solid fa-pen"></i>
@@ -1117,8 +1031,6 @@
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
-
-                        <!-- Swipeable Top Card -->
                         <div id="tt-card-${item.id}" 
                              class="swipe-card p-3.5 rounded-xl border border-slate-800 space-y-2 cursor-grab active:cursor-grabbing"
                              ontouchstart="handleSwipeStart(event, ${item.id})"
@@ -1138,7 +1050,6 @@
                     </div>
                 `).join('');
             }
-
             const summaryEl = document.getElementById('tiktok-summary-badge');
             if (summaryEl) summaryEl.innerText = `${appData.tiktokIdeas ? appData.tiktokIdeas.length : 0} Video in Scaletta`;
         }
@@ -1149,22 +1060,16 @@
             return 'bg-pink-500/10 text-pink-400 border border-pink-500/20';
         }
 
-        // Robust Bidirectional Swipe logic
         let swipeState = { activeId: null, startX: 0, currentTranslate: 0, isDragging: false };
 
         function handleSwipeStart(e, id) {
             swipeState.activeId = id;
             swipeState.startX = e.touches ? e.touches[0].clientX : e.clientX;
             swipeState.isDragging = true;
-            
             const card = document.getElementById(`tt-card-${id}`);
             if (card) {
                 const transform = card.style.transform;
-                if (transform && transform.includes('translateX')) {
-                    swipeState.currentTranslate = parseInt(transform.replace(/[^\d.-]/g, '')) || 0;
-                } else {
-                    swipeState.currentTranslate = 0;
-                }
+                swipeState.currentTranslate = (transform && transform.includes('translateX')) ? (parseInt(transform.replace(/[^\d.-]/g, '')) || 0) : 0;
             }
         }
 
@@ -1174,11 +1079,9 @@
             const deltaX = currentX - swipeState.startX;
             const card = document.getElementById(`tt-card-${id}`);
             if (!card) return;
-
             let newTranslate = swipeState.currentTranslate + deltaX;
             if (newTranslate < -110) newTranslate = -110;
             if (newTranslate > 0) newTranslate = 0;
-
             card.style.transform = `translateX(${newTranslate}px)`;
         }
 
@@ -1187,18 +1090,9 @@
             swipeState.isDragging = false;
             const card = document.getElementById(`tt-card-${id}`);
             if (!card) return;
-
             const transform = card.style.transform;
-            let currentX = 0;
-            if (transform && transform.includes('translateX')) {
-                currentX = parseInt(transform.replace(/[^\d.-]/g, '')) || 0;
-            }
-
-            if (currentX < -40) {
-                card.style.transform = 'translateX(-95px)';
-            } else {
-                card.style.transform = 'translateX(0px)';
-            }
+            let currentX = (transform && transform.includes('translateX')) ? (parseInt(transform.replace(/[^\d.-]/g, '')) || 0) : 0;
+            card.style.transform = (currentX < -40) ? 'translateX(-95px)' : 'translateX(0px)';
         }
 
         function openTikTokModal(id = null) {
@@ -1218,15 +1112,10 @@
                     document.getElementById('tt-modal-title').innerText = 'Modifica Video TikTok';
                 }
             } else {
-                editingIdInput.value = '';
-                titleInput.value = '';
-                hookInput.value = '';
-                statusSelect.value = 'Da Registrare';
+                editingIdInput.value = ''; titleInput.value = ''; hookInput.value = ''; statusSelect.value = 'Da Registrare';
                 document.getElementById('tt-modal-title').innerText = 'Nuova Idea Video TikTok';
             }
-
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
         }
 
         function saveTikTokIdea() {
@@ -1235,10 +1124,9 @@
             const statusSelect = document.getElementById('tt-status');
             const editingId = document.getElementById('tt-editing-id').value;
 
-            if (!titleInput.value.trim()) {
-                showToast('Inserisci un titolo per il video!');
-                return;
-            }
+            if (!titleInput.value.trim()) { showToast('Inserisci un titolo per il video!'); return; }
+
+            if (!appData.tiktokIdeas) appData.tiktokIdeas = [];
 
             if (editingId) {
                 const item = appData.tiktokIdeas.find(t => t.id === parseInt(editingId));
@@ -1255,33 +1143,22 @@
                     status: statusSelect.value
                 });
             }
-
-            saveData();
-            renderTikTokSection();
-            closeModal('modal-tiktok');
-            showToast('Idea TikTok salvata!');
+            saveData(); renderTikTokSection(); closeModal('modal-tiktok'); showToast('Idea TikTok salvata!');
         }
 
         function deleteTikTokIdea(id) {
             appData.tiktokIdeas = appData.tiktokIdeas.filter(t => t.id !== id);
-            saveData();
-            renderTikTokSection();
-            showToast('Video rimosso');
+            saveData(); renderTikTokSection(); showToast('Video rimosso');
         }
 
-        // WATER SECTION
         function renderWaterSection() {
             const pct = Math.min(100, Math.round((appData.water / appData.waterGoal) * 100));
-            
             const fillEl = document.getElementById('water-fill-level');
             if (fillEl) fillEl.style.height = `${pct}%`;
-
             const pctText = document.getElementById('water-percentage');
             if (pctText) pctText.innerText = `${pct}% Raggiunto`;
-
             const textAmount = document.getElementById('water-text-amount');
             if (textAmount) textAmount.innerHTML = `${appData.water} <span class="text-xs text-slate-400">/ 3500 ml</span>`;
-
             const summaryBadge = document.getElementById('water-summary-badge');
             if (summaryBadge) summaryBadge.innerText = `${appData.water} / 3500 ml`;
         }
@@ -1289,36 +1166,28 @@
         function addWater(amount) {
             appData.lastWaterAdded = amount;
             appData.water = Math.min(6000, appData.water + amount);
-            saveData();
-            renderTopCards();
-            renderWaterSection();
+            saveData(); renderTopCards(); renderWaterSection();
             showToast(`+${amount} ml d'acqua registrati! 🥤`);
         }
 
         function undoWater() {
             if (appData.water > 0) {
                 appData.water = Math.max(0, appData.water - (appData.lastWaterAdded || 200));
-                saveData();
-                renderTopCards();
-                renderWaterSection();
+                saveData(); renderTopCards(); renderWaterSection();
                 showToast(`Annullati -${appData.lastWaterAdded || 200} ml`);
             }
         }
 
         function resetWater() {
             appData.water = 0;
-            saveData();
-            renderTopCards();
-            renderWaterSection();
+            saveData(); renderTopCards(); renderWaterSection();
             showToast('Contatore acqua azzerato');
         }
 
-        // ACCORDION SECTIONS & MODALS MANAGEMENT
         function toggleSection(id) {
             const sec = document.getElementById(id);
             const icon = document.getElementById(`${id}-icon`);
             if (!sec) return;
-
             const isHidden = sec.classList.contains('hidden');
             if (isHidden) {
                 sec.classList.remove('hidden');
@@ -1336,7 +1205,7 @@
             ['sec-uni', 'sec-fit', 'sec-tiktok', 'sec-water'].forEach(id => {
                 const sec = document.getElementById(id);
                 const icon = document.getElementById(`${id}-icon`);
-                const isVisible = appData.sectionsState[id] !== false;
+                const isVisible = appData.sectionsState ? (appData.sectionsState[id] !== false) : true;
                 if (sec) {
                     if (isVisible) {
                         sec.classList.remove('hidden');
@@ -1350,25 +1219,23 @@
         }
 
         function toggleAllSections(expand) {
+            if (!appData.sectionsState) appData.sectionsState = {};
             ['sec-uni', 'sec-fit', 'sec-tiktok', 'sec-water'].forEach(id => {
                 appData.sectionsState[id] = expand;
             });
-            saveData();
-            applySectionsState();
+            saveData(); applySectionsState();
         }
 
         function openWeightModal() {
             const modal = document.getElementById('modal-weight');
             const input = document.getElementById('input-weight-val');
             if (input) input.value = appData.weight;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
         }
 
         function openHistoryModal() {
             const modal = document.getElementById('modal-history');
             const listContainer = document.getElementById('history-content-list');
-
             if (listContainer) {
                 if (!appData.weightHistory || appData.weightHistory.length === 0) {
                     listContainer.innerHTML = `<div class="text-center py-4 text-slate-500">Nessun dato registrato.</div>`;
@@ -1396,17 +1263,12 @@
                     }).join('');
                 }
             }
-
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
         }
 
         function closeModal(id) {
             const modal = document.getElementById(id);
-            if (modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
+            if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); }
         }
 
         function showToast(msg) {
@@ -1419,43 +1281,12 @@
             setTimeout(() => toast.remove(), 2500);
         }
 
-        // Safe Immediate Initialization Guard (Fixes Preview Load Error)
-        const startAppSafely = () => {
-            initApp().catch(err => console.warn("App start notification:", err));
-        };
-
+        const startAppSafely = () => { initApp().catch(err => console.warn(err)); };
         if (document.readyState === 'complete' || document.readyState === 'interactive') {
             startAppSafely();
         } else {
             document.addEventListener('DOMContentLoaded', startAppSafely);
         }
-
-        // Global Event Binding
-        window.switchAuthTab = switchAuthTab;
-        window.handleLogin = handleLogin;
-        window.handleRegister = handleRegister;
-        window.updateAccountSettings = updateAccountSettings;
-        window.logoutAccount = logoutAccount;
-        window.openAccountModal = openAccountModal;
-        window.switchAccountProfile = switchAccountProfile;
-        window.createNewProfile = createNewProfile;
-        window.selectUniDay = selectUniDay;
-        window.toggleWorkout = toggleWorkout;
-        window.openWeightModal = openWeightModal;
-        window.saveNewWeight = saveNewWeight;
-        window.openTikTokModal = openTikTokModal;
-        window.saveTikTokIdea = saveTikTokIdea;
-        window.deleteTikTokIdea = deleteTikTokIdea;
-        window.addWater = addWater;
-        window.undoWater = undoWater;
-        window.resetWater = resetWater;
-        window.toggleSection = toggleSection;
-        window.toggleAllSections = toggleAllSections;
-        window.openHistoryModal = openHistoryModal;
-        window.closeModal = closeModal;
-        window.handleSwipeStart = handleSwipeStart;
-        window.handleSwipeMove = handleSwipeMove;
-        window.handleSwipeEnd = handleSwipeEnd;
     </script>
 </body>
 </html>
