@@ -10,10 +10,9 @@
     <meta name="application-name" content="Lord Tracker">
     <meta name="theme-color" content="#0b0f19">
     
-    <!-- TITOLO DECENTE E FIGO -->
     <title>LORD TRACKER • Activity & Life Hub</title>
     
-    <!-- IMMAGINETTA/FAVICON EMBEDDED CON LA "L" E GLI ANELLI IN STILE CON L'APP -->
+    <!-- FAVICON CON LA "L" E GLI ANELLI DI ATTIVITÀ -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322c55e'/%3E%3Cstop offset='50%25' stop-color='%2306b6d4'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%230b0f19'/%3E%3Ccircle cx='50' cy='50' r='38' stroke='%2322c55e' stroke-width='4' fill='none' stroke-dasharray='5 2' opacity='0.5'/%3E%3Ccircle cx='50' cy='50' r='30' stroke='%2306b6d4' stroke-width='4' fill='none' opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='22' stroke='%23ec4899' stroke-width='4' fill='none' opacity='0.8'/%3E%3Cpath d='M42 32 V62 H58' stroke='url(%23g)' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M42 32 V62 H58' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.9'/%3E%3C/svg%3E">
     <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322c55e'/%3E%3Cstop offset='50%25' stop-color='%2306b6d4'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%230b0f19'/%3E%3Ccircle cx='50' cy='50' r='38' stroke='%2322c55e' stroke-width='4' fill='none' stroke-dasharray='5 2' opacity='0.5'/%3E%3Ccircle cx='50' cy='50' r='30' stroke='%2306b6d4' stroke-width='4' fill='none' opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='22' stroke='%23ec4899' stroke-width='4' fill='none' opacity='0.8'/%3E%3Cpath d='M42 32 V62 H58' stroke='url(%23g)' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M42 32 V62 H58' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.9'/%3E%3C/svg%3E">
 
@@ -379,7 +378,7 @@
             </div>
         </div>
 
-        <!-- SECTION 1: ACCORDION - UNIVERSITÀ & SCUOLA LEZIONI -->
+        <!-- SECTION 1: ACCORDION - UNIVERSITÀ & SCUOLA LEZIONI (CON SWIPE GESTURE) -->
         <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
             <button onclick="toggleSection('sec-uni')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
                 <div class="flex items-center space-x-3">
@@ -404,7 +403,8 @@
                         <i class="fa-solid fa-plus text-xs"></i> Nuova Lezione / Materia
                     </button>
                 </div>
-                <div id="uni-lessons-container" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
+                <p class="text-[10px] text-slate-400 italic">👈 Swipa a sinistra sulla lezione per scoprire Modifica/Elimina. Swipa a destra 👉 per richiudere.</p>
+                <div id="uni-lessons-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
             </div>
         </section>
 
@@ -1327,17 +1327,34 @@
                     lessonsContainer.innerHTML = `<div class="col-span-2 text-center py-6 text-slate-500 text-xs font-semibold">Nessuna lezione/materia salvata per ${appData.selectedUniDay}! Clicca "+ Nuova Lezione / Materia" per aggiungerne una. 📚</div>`;
                 } else {
                     lessonsContainer.innerHTML = list.map((item, idx) => `
-                        <div class="bg-dark-950 p-3 rounded-xl border border-slate-800 space-y-1.5 relative group">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${item.type === 'Laboratorio' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : (item.type === 'Studio' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20')}">${item.type}</span>
-                                <div class="flex items-center space-x-1.5">
-                                    <span class="text-[10px] font-bold text-slate-400"><i class="fa-regular fa-clock mr-1"></i>${item.time}</span>
-                                    <button onclick="openScheduleModal('${appData.selectedUniDay}', ${idx})" title="Modifica" class="text-slate-400 hover:text-blue-400 text-xs px-1"><i class="fa-solid fa-pen"></i></button>
-                                    <button onclick="deleteScheduleItem('${appData.selectedUniDay}', ${idx})" title="Elimina" class="text-slate-400 hover:text-rose-400 text-xs px-1"><i class="fa-solid fa-trash"></i></button>
-                                </div>
+                        <div class="swipe-container group">
+                            <div class="swipe-actions">
+                                <button onclick="openScheduleModal('${appData.selectedUniDay}', ${idx})" title="Modifica" class="w-9 h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button onclick="deleteScheduleItem('${appData.selectedUniDay}', ${idx})" title="Elimina" class="w-9 h-9 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </div>
-                            <h4 class="font-bold text-xs text-white">${item.course}</h4>
-                            <p class="text-[10px] text-slate-400 flex items-center gap-1"><i class="fa-solid fa-location-dot text-rose-400"></i> ${item.room || 'Aula / Classe non specificata'}</p>
+                            <div id="sched-card-${idx}" 
+                                 class="swipe-card p-3 rounded-xl border border-slate-800 space-y-1.5 cursor-grab active:cursor-grabbing"
+                                 ontouchstart="handleSwipeStart(event, 'sched-card-${idx}')"
+                                 ontouchmove="handleSwipeMove(event, 'sched-card-${idx}')"
+                                 ontouchend="handleSwipeEnd(event, 'sched-card-${idx}')"
+                                 onmousedown="handleSwipeStart(event, 'sched-card-${idx}')"
+                                 onmousemove="handleSwipeMove(event, 'sched-card-${idx}')"
+                                 onmouseup="handleSwipeEnd(event, 'sched-card-${idx}')"
+                                 onmouseleave="handleSwipeEnd(event, 'sched-card-${idx}')">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${item.type === 'Laboratorio' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : (item.type === 'Studio' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20')}">${item.type}</span>
+                                    <div class="flex items-center space-x-1.5">
+                                        <span class="text-[10px] font-bold text-slate-400"><i class="fa-regular fa-clock mr-1"></i>${item.time}</span>
+                                        <span class="text-[10px] text-slate-500 font-bold ml-1">Swipe 🪶</span>
+                                    </div>
+                                </div>
+                                <h4 class="font-bold text-xs text-white">${item.course}</h4>
+                                <p class="text-[10px] text-slate-400 flex items-center gap-1"><i class="fa-solid fa-location-dot text-rose-400"></i> ${item.room || 'Aula / Classe non specificata'}</p>
+                            </div>
                         </div>
                     `).join('');
                 }
@@ -1536,24 +1553,34 @@
             return 'bg-pink-500/10 text-pink-400 border border-pink-500/20';
         }
 
+        // GESTIONE SWIPE GENERICA (VALIDA SIA PER TIKTOK CHE PER LEZIONI ORARIO)
         let swipeState = { activeId: null, startX: 0, currentTranslate: 0, isDragging: false };
 
-        function handleSwipeStart(e, id) {
-            swipeState.activeId = id;
+        function getNormalizedCardId(elementId) {
+            if (typeof elementId === 'string' && (elementId.startsWith('sched-card-') || elementId.startsWith('tt-card-'))) {
+                return elementId;
+            }
+            return `tt-card-${elementId}`;
+        }
+
+        function handleSwipeStart(e, elementId) {
+            const cardId = getNormalizedCardId(elementId);
+            swipeState.activeId = cardId;
             swipeState.startX = e.touches ? e.touches[0].clientX : e.clientX;
             swipeState.isDragging = true;
-            const card = document.getElementById(`tt-card-${id}`);
+            const card = document.getElementById(cardId);
             if (card) {
                 const transform = card.style.transform;
                 swipeState.currentTranslate = (transform && transform.includes('translateX')) ? (parseInt(transform.replace(/[^\d.-]/g, '')) || 0) : 0;
             }
         }
 
-        function handleSwipeMove(e, id) {
-            if (!swipeState.isDragging || swipeState.activeId !== id) return;
+        function handleSwipeMove(e, elementId) {
+            const cardId = getNormalizedCardId(elementId);
+            if (!swipeState.isDragging || swipeState.activeId !== cardId) return;
             const currentX = e.touches ? e.touches[0].clientX : e.clientX;
             const deltaX = currentX - swipeState.startX;
-            const card = document.getElementById(`tt-card-${id}`);
+            const card = document.getElementById(cardId);
             if (!card) return;
             let newTranslate = swipeState.currentTranslate + deltaX;
             if (newTranslate < -110) newTranslate = -110;
@@ -1561,10 +1588,11 @@
             card.style.transform = `translateX(${newTranslate}px)`;
         }
 
-        function handleSwipeEnd(e, id) {
-            if (!swipeState.isDragging || swipeState.activeId !== id) return;
+        function handleSwipeEnd(e, elementId) {
+            const cardId = getNormalizedCardId(elementId);
+            if (!swipeState.isDragging || swipeState.activeId !== cardId) return;
             swipeState.isDragging = false;
-            const card = document.getElementById(`tt-card-${id}`);
+            const card = document.getElementById(cardId);
             if (!card) return;
             const transform = card.style.transform;
             let currentX = (transform && transform.includes('translateX')) ? (parseInt(transform.replace(/[^\d.-]/g, '')) || 0) : 0;
