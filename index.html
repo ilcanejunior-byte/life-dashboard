@@ -6,8 +6,17 @@
     <!-- PWA & Mobile Web App Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Lord Tracker">
+    <meta name="application-name" content="Lord Tracker">
     <meta name="theme-color" content="#0b0f19">
-    <title>Life & University Multi-Account Hub</title>
+    
+    <!-- TITOLO DECENTE E FIGO -->
+    <title>LORD TRACKER • Activity & Life Hub</title>
+    
+    <!-- IMMAGINETTA/FAVICON EMBEDDED CON LA "L" E GLI ANELLI IN STILE CON L'APP -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322c55e'/%3E%3Cstop offset='50%25' stop-color='%2306b6d4'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%230b0f19'/%3E%3Ccircle cx='50' cy='50' r='38' stroke='%2322c55e' stroke-width='4' fill='none' stroke-dasharray='5 2' opacity='0.5'/%3E%3Ccircle cx='50' cy='50' r='30' stroke='%2306b6d4' stroke-width='4' fill='none' opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='22' stroke='%23ec4899' stroke-width='4' fill='none' opacity='0.8'/%3E%3Cpath d='M42 32 V62 H58' stroke='url(%23g)' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M42 32 V62 H58' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.9'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322c55e'/%3E%3Cstop offset='50%25' stop-color='%2306b6d4'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%230b0f19'/%3E%3Ccircle cx='50' cy='50' r='38' stroke='%2322c55e' stroke-width='4' fill='none' stroke-dasharray='5 2' opacity='0.5'/%3E%3Ccircle cx='50' cy='50' r='30' stroke='%2306b6d4' stroke-width='4' fill='none' opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='22' stroke='%23ec4899' stroke-width='4' fill='none' opacity='0.8'/%3E%3Cpath d='M42 32 V62 H58' stroke='url(%23g)' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M42 32 V62 H58' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.9'/%3E%3C/svg%3E">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -116,7 +125,7 @@
                 <i class="fa-solid fa-user-lock"></i>
             </div>
             <div>
-                <h2 class="text-lg font-black text-white">Life Dashboard Hub</h2>
+                <h2 class="text-lg font-black text-white">LORD TRACKER</h2>
                 <p class="text-xs text-slate-400 mt-1">Accedi al tuo account o registrati per iniziare</p>
             </div>
 
@@ -170,7 +179,7 @@
             </button>
             <div>
                 <h1 class="text-xs sm:text-sm font-extrabold text-white tracking-tight flex items-center gap-1.5">
-                    LIFE DASHBOARD <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-semibold">ACTIVITY RINGS</span>
+                    LORD TRACKER <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-semibold">ACTIVITY RINGS</span>
                 </h1>
                 <p id="today-date-text" class="text-[10px] text-slate-400 font-medium">Caricamento...</p>
             </div>
@@ -370,16 +379,16 @@
             </div>
         </div>
 
-        <!-- SECTION 1: ACCORDION - UNIVERSITÀ & LEZIONI -->
+        <!-- SECTION 1: ACCORDION - UNIVERSITÀ & SCUOLA LEZIONI -->
         <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
             <button onclick="toggleSection('sec-uni')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
                 <div class="flex items-center space-x-3">
                     <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-university text-sm"></i>
+                        <i class="fa-solid fa-graduation-cap text-sm"></i>
                     </div>
                     <div>
-                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Orario Lezioni & Università</h2>
-                        <p class="text-[10px] sm:text-[11px] text-slate-400">Orario ufficiale del profilo attivo</p>
+                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Orario Lezioni & Materie</h2>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400">Orario scolastico / universitario personalizzabile</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-2">
@@ -389,7 +398,12 @@
             </button>
 
             <div id="sec-uni" class="p-4 space-y-3 border-t border-slate-800/80">
-                <div class="flex space-x-1.5 overflow-x-auto pb-1" id="uni-days-tabs"></div>
+                <div class="flex justify-between items-center flex-wrap gap-2">
+                    <div class="flex space-x-1.5 overflow-x-auto pb-1" id="uni-days-tabs"></div>
+                    <button onclick="openScheduleModal()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-md shadow-blue-600/20">
+                        <i class="fa-solid fa-plus text-xs"></i> Nuova Lezione / Materia
+                    </button>
+                </div>
                 <div id="uni-lessons-container" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
             </div>
         </section>
@@ -486,7 +500,7 @@
 
         <!-- SECTION 4: ACCORDION - IDRATAZIONE (3.5 LITRI) -->
         <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
-            <button onclick="toggleSection('sec-water')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
+            <button onclick="toggleSection('sec-water')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition text-sm">
                 <div class="flex items-center space-x-3">
                     <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
                         <i class="fa-solid fa-glass-water text-sm"></i>
@@ -542,6 +556,7 @@
     </main>
 
     <!-- MODALI -->
+    <!-- MODALE GESTIONE ACCOUNT -->
     <div id="modal-account" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-4 sm:p-5 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -569,10 +584,55 @@
                 </button>
             </form>
 
-            <!-- PULSANTE PER ELIMINARE DEFINTIVAMENTE L'ACCOUNT -->
             <div class="border-t border-slate-800/80 pt-3">
                 <button onclick="deleteCurrentAccount()" class="w-full py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5">
                     <i class="fa-solid fa-trash-can"></i> Elimina Account Definitivamente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE AGGIUNGI/MODIFICA LEZIONE O MATERIA -->
+    <div id="modal-schedule" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-4 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 id="sched-modal-title" class="font-bold text-sm text-white">Aggiungi Lezione / Materia</h3>
+                <button onclick="closeModal('modal-schedule')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <input type="hidden" id="sched-editing-index" value="-1">
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="text-slate-400 font-semibold">Giorno della Settimana:</label>
+                    <select id="sched-day" class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-blue-500">
+                        <option value="Lunedì">Lunedì</option>
+                        <option value="Martedì">Martedì</option>
+                        <option value="Mercoledì">Mercoledì</option>
+                        <option value="Giovedì">Giovedì</option>
+                        <option value="Venerdì">Venerdì</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Materia / Corso:</label>
+                    <input type="text" id="sched-course" placeholder="Es. Italiano, Matematica, Programmazione..." required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Orario:</label>
+                    <input type="text" id="sched-time" placeholder="Es. 08:30 - 10:30" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Tipologia:</label>
+                    <select id="sched-type" class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-blue-500">
+                        <option value="Lezione">Lezione / Materia</option>
+                        <option value="Laboratorio">Laboratorio / Esercitazione</option>
+                        <option value="Studio">Studio / Ripasso</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Aula / Classe / Note:</label>
+                    <input type="text" id="sched-room" placeholder="Es. Classe 5A, Aula G13, Online..." class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <button onclick="saveScheduleItem()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition">
+                    Salva Orario
                 </button>
             </div>
         </div>
@@ -738,28 +798,26 @@
                         { type: 'Lezione', time: '10:30 - 12:30', course: 'MATEMATICA I', room: 'BETA - Informatica - Celoria 18' }
                     ],
                     'Mercoledì': [
-                        { type: 'Lezione', time: '08:30 - 10:30', course: 'PROGRAMMAZIONE I', room: '501 - Centro Universitario (ex Isu)' },
-                        { type: 'Lezione', time: '10:30 - 11:30', course: 'MATEMATICA I', room: '501 - Centro Universitario (ex Isu)' },
-                        { type: 'Laboratorio', time: '13:30 - 18:30', course: 'ARCHITETTURA DEGLI ELABORATORI I - lab', room: 'SIGMA Lab - Informatica - Celoria 18' }
+                        { type: 'Lezione', time: '08:30 - 10:30', course: 'PROGRAMMAZIONE I', room: '501 - Isu' },
+                        { type: 'Laboratorio', time: '13:30 - 18:30', course: 'ARCHITETTURA DEGLI ELABORATORI I - lab', room: 'SIGMA Lab' }
                     ],
                     'Giovedì': [
-                        { type: 'Lezione', time: '08:30 - 10:30', course: 'ARCHITETTURA DEGLI ELABORATORI I', room: 'V6 - Venezian' },
-                        { type: 'Lezione', time: '10:30 - 12:30', course: 'MATEMATICA I', room: 'V6 - Venezian' },
-                        { type: 'Laboratorio', time: '13:30 - 17:30', course: 'PROGRAMMAZIONE I - Lab', room: 'SIGMA Lab - Informatica - Celoria 18' }
+                        { type: 'Lezione', time: '08:30 - 10:30', course: 'ARCHITETTURA DEGLI ELABORATORI I', room: 'V6' },
+                        { type: 'Laboratorio', time: '13:30 - 17:30', course: 'PROGRAMMAZIONE I - Lab', room: 'SIGMA Lab' }
                     ],
                     'Venerdì': [
                         { type: 'Lezione', time: '08:30 - 10:30', course: 'PROGRAMMAZIONE I', room: 'G12 - Golgi' }
                     ]
                 } : {
-                    'Lunedì': [{ type: 'Lezione', time: '09:00 - 11:00', course: 'CORSO SPECIALISTICO', room: 'Aula 1' }],
-                    'Martedì': [{ type: 'Lezione', time: '11:00 - 13:00', course: 'LABORATORIO', room: 'Lab A' }],
-                    'Mercoledì': [{ type: 'Lezione', time: '14:00 - 16:00', course: 'SEMINARIO', room: 'Aula Magna' }],
-                    'Giovedì': [{ type: 'Lezione', time: '10:00 - 12:00', course: 'ESERCITAZIONE', room: 'Aula 3' }],
-                    'Venerdì': [{ type: 'Lezione', time: '09:00 - 12:00', course: 'STUDIO GUIDATO', room: 'Biblioteca' }]
+                    'Lunedì': [{ type: 'Lezione', time: '08:00 - 09:00', course: 'ITALIANO', room: 'Classe 5A' }],
+                    'Martedì': [{ type: 'Lezione', time: '09:00 - 10:00', course: 'MATEMATICA', room: 'Classe 5A' }],
+                    'Mercoledì': [{ type: 'Lezione', time: '10:00 - 11:00', course: 'INGLESE', room: 'Classe 5A' }],
+                    'Giovedì': [{ type: 'Lezione', time: '11:00 - 12:00', course: 'STORIA', room: 'Classe 5A' }],
+                    'Venerdì': [{ type: 'Lezione', time: '08:00 - 10:00', course: 'FILOSOFIA', room: 'Classe 5A' }]
                 },
                 weightHistory: [{ date: today, weight: isLord ? 118.0 : 60.0 }],
                 tiktokIdeas: [
-                    { id: 101, title: 'Cosa mangio e come mi alleno all\'Università', hook: 'L\'università non è più una scusa!', status: 'Da Registrare' }
+                    { id: 101, title: 'Cosa mangio e come mi alleno all\'Università / Scuola', hook: 'Lo studio non è una scusa!', status: 'Da Registrare' }
                 ]
             };
         }
@@ -822,7 +880,6 @@
                             allProfiles[profileName] = appData;
                             renderAll();
                         } else if (!doc.exists && activeProfileName === profileName) {
-                            // Se il documento è stato eliminato esternamente su Firebase, disconnetti
                             logoutAccount();
                             showToast('Questo account è stato eliminato.');
                         }
@@ -848,7 +905,6 @@
             const authScreen = document.getElementById('auth-screen');
 
             if (loggedUser) {
-                // Verifica se esiste davvero su Cloud prima di far entrare l'utente
                 try {
                     const userDoc = await db.collection('users').doc(loggedUser.toLowerCase()).get();
                     if (userDoc.exists) {
@@ -860,7 +916,6 @@
                         renderAll();
                         return;
                     } else {
-                        // Se è stato eliminato da Firebase, pulisci la cache del browser
                         delete allProfiles[loggedUser];
                         localStorage.removeItem(LOGGED_USER_KEY);
                         localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
@@ -909,13 +964,12 @@
                     activeProfileName = userDoc.data().data?.accountName || userInput;
                     appData = userDoc.data().data || createDefaultProfileData(activeProfileName, passInput);
                 } else {
-                    // Se l'account è stato rimosso da Firebase, elimina eventuale residuo locale
                     if (allProfiles[userInput]) {
                         delete allProfiles[userInput];
                         localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
                         saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
                     }
-                    showToast('Account non trovato su Cloud! Verifica il nickname o Registrati.');
+                    showToast('Account non trovato su Cloud! Registrati prima di accedere.');
                     return;
                 }
 
@@ -1009,18 +1063,15 @@
 
             const targetName = activeProfileName;
             try {
-                // 1. Elimina da Cloud Firebase
                 if (db) {
                     await db.collection('users').doc(targetName.toLowerCase()).delete();
                 }
 
-                // 2. Elimina dalla cache locale
                 delete allProfiles[targetName];
                 localStorage.removeItem(LOGGED_USER_KEY);
                 localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
                 await saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
 
-                // 3. Disconnetti ed esci
                 closeModal('modal-account');
                 logoutAccount();
                 showToast(`Account "${targetName}" eliminato con successo.`);
@@ -1273,16 +1324,20 @@
 
             if (lessonsContainer) {
                 if (list.length === 0) {
-                    lessonsContainer.innerHTML = `<div class="col-span-2 text-center py-6 text-slate-500 text-xs font-semibold">Nessuna lezione in programma per ${appData.selectedUniDay}! 🏖️</div>`;
+                    lessonsContainer.innerHTML = `<div class="col-span-2 text-center py-6 text-slate-500 text-xs font-semibold">Nessuna lezione/materia salvata per ${appData.selectedUniDay}! Clicca "+ Nuova Lezione / Materia" per aggiungerne una. 📚</div>`;
                 } else {
-                    lessonsContainer.innerHTML = list.map(item => `
-                        <div class="bg-dark-950 p-3 rounded-xl border border-slate-800 space-y-1.5">
+                    lessonsContainer.innerHTML = list.map((item, idx) => `
+                        <div class="bg-dark-950 p-3 rounded-xl border border-slate-800 space-y-1.5 relative group">
                             <div class="flex items-center justify-between">
-                                <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${item.type === 'Laboratorio' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'}">${item.type}</span>
-                                <span class="text-[10px] font-bold text-slate-400"><i class="fa-regular fa-clock mr-1"></i>${item.time}</span>
+                                <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${item.type === 'Laboratorio' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : (item.type === 'Studio' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20')}">${item.type}</span>
+                                <div class="flex items-center space-x-1.5">
+                                    <span class="text-[10px] font-bold text-slate-400"><i class="fa-regular fa-clock mr-1"></i>${item.time}</span>
+                                    <button onclick="openScheduleModal('${appData.selectedUniDay}', ${idx})" title="Modifica" class="text-slate-400 hover:text-blue-400 text-xs px-1"><i class="fa-solid fa-pen"></i></button>
+                                    <button onclick="deleteScheduleItem('${appData.selectedUniDay}', ${idx})" title="Elimina" class="text-slate-400 hover:text-rose-400 text-xs px-1"><i class="fa-solid fa-trash"></i></button>
+                                </div>
                             </div>
                             <h4 class="font-bold text-xs text-white">${item.course}</h4>
-                            <p class="text-[10px] text-slate-400 flex items-center gap-1"><i class="fa-solid fa-location-dot text-rose-400"></i> ${item.room}</p>
+                            <p class="text-[10px] text-slate-400 flex items-center gap-1"><i class="fa-solid fa-location-dot text-rose-400"></i> ${item.room || 'Aula / Classe non specificata'}</p>
                         </div>
                     `).join('');
                 }
@@ -1293,6 +1348,86 @@
             appData.selectedUniDay = day;
             saveData();
             renderUniSection();
+        }
+
+        function openScheduleModal(day = null, idx = null) {
+            const modal = document.getElementById('modal-schedule');
+            const daySelect = document.getElementById('sched-day');
+            const courseInput = document.getElementById('sched-course');
+            const timeInput = document.getElementById('sched-time');
+            const typeSelect = document.getElementById('sched-type');
+            const roomInput = document.getElementById('sched-room');
+            const editingIndex = document.getElementById('sched-editing-index');
+            const titleEl = document.getElementById('sched-modal-title');
+
+            const targetDay = day || appData.selectedUniDay || 'Lunedì';
+            daySelect.value = targetDay;
+
+            if (idx !== null && idx >= 0 && appData.schedule && appData.schedule[targetDay] && appData.schedule[targetDay][idx]) {
+                const item = appData.schedule[targetDay][idx];
+                editingIndex.value = idx;
+                courseInput.value = item.course;
+                timeInput.value = item.time;
+                typeSelect.value = item.type || 'Lezione';
+                roomInput.value = item.room || '';
+                titleEl.innerText = 'Modifica Lezione / Materia';
+            } else {
+                editingIndex.value = -1;
+                courseInput.value = '';
+                timeInput.value = '08:30 - 10:30';
+                typeSelect.value = 'Lezione';
+                roomInput.value = '';
+                titleEl.innerText = 'Nuova Lezione / Materia';
+            }
+
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+        }
+
+        function saveScheduleItem() {
+            const daySelect = document.getElementById('sched-day').value;
+            const courseInput = document.getElementById('sched-course').value.trim();
+            const timeInput = document.getElementById('sched-time').value.trim();
+            const typeSelect = document.getElementById('sched-type').value;
+            const roomInput = document.getElementById('sched-room').value.trim();
+            const editingIdx = parseInt(document.getElementById('sched-editing-index').value);
+
+            if (!courseInput || !timeInput) {
+                showToast('Inserisci materia ed orario!');
+                return;
+            }
+
+            if (!appData.schedule) appData.schedule = {};
+            if (!appData.schedule[daySelect]) appData.schedule[daySelect] = [];
+
+            const newItem = {
+                type: typeSelect,
+                time: timeInput,
+                course: courseInput,
+                room: roomInput || 'Classe / Aula'
+            };
+
+            if (editingIdx >= 0 && appData.schedule[daySelect][editingIdx]) {
+                appData.schedule[daySelect][editingIdx] = newItem;
+            } else {
+                appData.schedule[daySelect].push(newItem);
+            }
+
+            appData.selectedUniDay = daySelect;
+            saveData();
+            renderUniSection();
+            renderTopCards();
+            closeModal('modal-schedule');
+            showToast('Orario aggiornato con successo!');
+        }
+
+        function deleteScheduleItem(day, idx) {
+            if (appData.schedule && appData.schedule[day] && appData.schedule[day][idx] !== undefined) {
+                appData.schedule[day].splice(idx, 1);
+                saveData();
+                renderUniSection();
+                renderTopCards();
+                showToast('Materia rimossa dall\'orario.');
+            }
         }
 
         function renderFitnessSection() {
