@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="it" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- PWA & Mobile Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0b0f19">
+    <title>Life & University Multi-Account Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            950: '#0b0f19',
+                            900: '#111827',
+                            850: '#1e293b',
+                            800: '#334155'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0f19;
+            color: #f1f5f9;
+            touch-action: pan-y;
+            user-select: none;
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+        .glass-card {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(11, 15, 25, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 9999px;
+        }
+        .water-wave {
+            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .swipe-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            width: 100%;
+            touch-action: pan-y;
+        }
+        .swipe-actions {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding-right: 0.5rem;
+            z-index: 5;
+        }
+        .swipe-card {
+            position: relative;
+            z-index: 10;
+            transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            background: #090d16;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col pb-6">
+
+    <!-- FULLSCREEN AUTHENTICATION OVERLAY -->
+    <div id="auth-screen" class="fixed inset-0 z-50 bg-[#0b0f19] flex items-center justify-center p-4">
+        <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-6 space-y-5 text-center shadow-2xl">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 mx-auto flex items-center justify-center text-white text-2xl shadow-lg shadow-cyan-500/30">
+                <i class="fa-solid fa-user-lock"></i>
+            </div>
+            <div>
+                <h2 class="text-lg font-black text-white">Life Dashboard Hub</h2>
+                <p class="text-xs text-slate-400 mt-1">Accedi al tuo account o registrati per iniziare</p>
+            </div>
+
+            <!-- Tab Switcher: Accedi / Registrati -->
+            <div class="grid grid-cols-2 p-1 bg-dark-950 rounded-xl border border-slate-800 text-xs font-bold">
+                <button id="tab-btn-login" onclick="switchAuthTab('login')" class="py-2 rounded-lg bg-cyan-600 text-white transition">Accedi</button>
+                <button id="tab-btn-register" onclick="switchAuthTab('register')" class="py-2 rounded-lg text-slate-400 hover:text-white transition">Registrati</button>
+            </div>
+
+            <!-- FORM ACCEDI -->
+            <form id="form-login" onsubmit="handleLogin(event)" class="space-y-3.5 text-left">
+                <div>
+                    <label class="text-[11px] font-bold text-slate-300">Nickname:</label>
+                    <input type="text" id="login-username" placeholder="Es. lord arts" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-3 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
+                </div>
+                <div>
+                    <label class="text-[11px] font-bold text-slate-300">Password:</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-3 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl transition shadow-lg shadow-cyan-500/25 active:scale-95">
+                    Entra nel tuo Account
+                </button>
+            </form>
+
+            <!-- FORM REGISTRATI -->
+            <form id="form-register" onsubmit="handleRegister(event)" class="space-y-3 text-left hidden">
+                <div>
+                    <label class="text-[11px] font-bold text-slate-300">Nuovo Nickname:</label>
+                    <input type="text" id="reg-username" placeholder="Es. giulia_fit" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
+                </div>
+                <div>
+                    <label class="text-[11px] font-bold text-slate-300">Password:</label>
+                    <input type="password" id="reg-password" placeholder="••••••••" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
+                </div>
+                <div>
+                    <label class="text-[11px] font-bold text-slate-300">Conferma Password:</label>
+                    <input type="password" id="reg-password-confirm" placeholder="••••••••" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
+                </div>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl transition shadow-lg shadow-emerald-500/25 active:scale-95">
+                    Crea Nuovo Account
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 glass-nav px-3 py-2 flex items-center justify-between shadow-lg">
+        <div class="flex items-center space-x-2">
+            <!-- User Settings Quick Button -->
+            <button onclick="openAccountModal()" title="Impostazioni Account" class="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-md shadow-cyan-500/20 hover:scale-105 transition">
+                <i class="fa-solid fa-user-gear text-sm"></i>
+            </button>
+            <div>
+                <h1 class="text-xs sm:text-sm font-extrabold text-white tracking-tight flex items-center gap-1.5">
+                    LIFE DASHBOARD <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-semibold">ACCOUNT PRIVATO</span>
+                </h1>
+                <p id="today-date-text" class="text-[10px] text-slate-400 font-medium">Caricamento...</p>
+            </div>
+        </div>
+
+        <!-- Global Action Controls & Account Switcher -->
+        <div class="flex items-center space-x-1.5 sm:space-x-2">
+            <!-- Account Badge -->
+            <button onclick="openAccountModal()" class="px-2.5 py-1 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 rounded-lg text-[11px] font-bold transition flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-user-circle text-indigo-400"></i>
+                <span id="header-user-name" class="max-w-[80px] sm:max-w-[110px] truncate">lord arts</span>
+            </button>
+
+            <!-- Logout Button -->
+            <button onclick="logoutAccount()" title="Disconnetti" class="px-2 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 rounded-lg text-[11px] font-bold transition flex items-center gap-1">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+
+            <!-- Sync Badge -->
+            <div id="storage-status-badge" class="px-2 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-lg text-[10px] font-bold flex items-center gap-1">
+                <i id="storage-status-icon" class="fa-solid fa-cloud-arrow-up text-xs"></i>
+                <span id="storage-status-text" class="hidden sm:inline">Sincronizzato</span>
+            </div>
+
+            <button onclick="toggleAllSections(true)" title="Espandi Tutto" class="px-2 py-1 bg-dark-900 text-slate-300 rounded-lg text-[11px] font-semibold border border-slate-800 transition">
+                <i class="fa-solid fa-angles-down text-purple-400 text-xs"></i>
+            </button>
+            <button onclick="toggleAllSections(false)" title="Riduci Tutto" class="px-2 py-1 bg-dark-900 text-slate-300 rounded-lg text-[11px] font-semibold border border-slate-800 transition">
+                <i class="fa-solid fa-angles-up text-pink-400 text-xs"></i>
+            </button>
+            <button onclick="openHistoryModal()" class="px-2.5 py-1 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-lg text-[11px] font-bold border border-cyan-500/30 transition flex items-center gap-1 shadow-md shadow-cyan-500/20">
+                <i class="fa-solid fa-clock-rotate-left"></i> <span class="hidden sm:inline">Storico</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Toast Banner -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl w-full mx-auto px-3 sm:px-6 pt-3 space-y-3 flex-grow">
+
+        <!-- TOP SUMMARY WIDGETS -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+                <div>
+                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Acqua Oggi</p>
+                    <p id="top-water-display" class="text-sm sm:text-base font-extrabold text-cyan-400 mt-0.5">0 / 3.5 L</p>
+                </div>
+                <div class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
+                    <i class="fa-solid fa-glass-water text-sm"></i>
+                </div>
+            </div>
+
+            <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+                <div>
+                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Peso Attuale</p>
+                    <p id="top-weight-display" class="text-sm sm:text-base font-extrabold text-emerald-400 mt-0.5">118.0 kg</p>
+                </div>
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                    <i class="fa-solid fa-weight-scale text-sm"></i>
+                </div>
+            </div>
+
+            <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+                <div>
+                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Workout Oggi</p>
+                    <p id="top-workout-display" class="text-sm sm:text-base font-extrabold text-purple-400 mt-0.5">0 / 5</p>
+                </div>
+                <div class="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center">
+                    <i class="fa-solid fa-dumbbell text-sm"></i>
+                </div>
+            </div>
+
+            <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+                <div>
+                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Lezioni Oggi</p>
+                    <p id="top-lessons-display" class="text-sm sm:text-base font-extrabold text-amber-400 mt-0.5">0 Lezioni</p>
+                </div>
+                <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
+                    <i class="fa-solid fa-graduation-cap text-sm"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 1: ACCORDION - UNIVERSITÀ & LEZIONI -->
+        <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
+            <button onclick="toggleSection('sec-uni')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-university text-sm"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Orario Lezioni & Università</h2>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400">Orario ufficiale del profilo attivo</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span id="uni-summary-badge" class="text-[10px] font-semibold bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/20">5 Giorni</span>
+                    <i id="sec-uni-icon" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
+                </div>
+            </button>
+
+            <div id="sec-uni" class="p-4 space-y-3 border-t border-slate-800/80">
+                <!-- Days Tab Selector -->
+                <div class="flex space-x-1.5 overflow-x-auto pb-1" id="uni-days-tabs"></div>
+
+                <!-- Lessons Content Area -->
+                <div id="uni-lessons-container" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: ACCORDION - FITNESS & PIANO DIMAGRIMENTO -->
+        <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
+            <button onclick="toggleSection('sec-fit')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-person-running text-sm"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Fitness, Peso & Allenamento Oggi</h2>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400">Obiettivo Dimagrimento | Check Esercizi "Tic Fatto"</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span id="fit-summary-badge" class="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">Peso: 118.0 kg</span>
+                    <i id="sec-fit-icon" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
+                </div>
+            </button>
+
+            <div id="sec-fit" class="p-4 space-y-4 border-t border-slate-800/80">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    
+                    <!-- Left: Weight Tracker -->
+                    <div class="bg-dark-900/80 p-3.5 rounded-xl border border-slate-800 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-xs uppercase text-slate-400 tracking-wider">Tracker Peso</h3>
+                            <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full font-bold">Target: 95 kg</span>
+                        </div>
+                        <div class="flex items-center justify-between bg-dark-950 p-3 rounded-xl border border-slate-800">
+                            <div>
+                                <p class="text-[11px] text-slate-400">Peso Registrato</p>
+                                <p id="current-weight-val" class="text-xl sm:text-2xl font-extrabold text-white">118.0 <span class="text-xs text-slate-400">kg</span></p>
+                            </div>
+                            <button onclick="openWeightModal()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-md shadow-emerald-600/20">
+                                <i class="fa-solid fa-plus text-xs"></i> Aggiorna
+                            </button>
+                        </div>
+
+                        <!-- Reminder Pesata Venerdì -->
+                        <div class="p-3 rounded-xl bg-gradient-to-r from-amber-500/10 to-purple-500/10 border border-amber-500/20 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-bell text-amber-400"></i> Reminder Pesata
+                                </span>
+                                <span class="text-[10px] bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded-md border border-amber-500/30">Venerdì Mattina</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 leading-snug">
+                                💡 Pesati il <span class="text-amber-400 font-bold">Venerdì mattina a digiuno</span> per misurare il progresso reale della settimana!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Workout Checklist -->
+                    <div class="lg:col-span-2 bg-dark-900/80 p-3.5 rounded-xl border border-slate-800 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-xs uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
+                                <i class="fa-solid fa-list-check text-emerald-400"></i> Esercizi del Giorno ("Tic Fatto")
+                            </h3>
+                            <span id="workout-progress-badge" class="text-[10px] font-bold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full">0/5 Completati</span>
+                        </div>
+
+                        <div id="workout-checklist" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: ACCORDION - TIKTOK PLANNER WITH SWIPE -->
+        <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
+            <button onclick="toggleSection('sec-tiktok')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center shrink-0">
+                        <i class="fa-brands fa-tiktok text-sm"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">TikTok Live & Content Planner</h2>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400">Idee video con swipe gesture (Sinistra per azioni ✏️🗑️, Destra per chiudere)</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span id="tiktok-summary-badge" class="text-[10px] font-semibold bg-pink-500/10 text-pink-400 px-2 py-0.5 rounded-full border border-pink-500/20">0 Video</span>
+                    <i id="sec-tiktok-icon" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
+                </div>
+            </button>
+
+            <div id="sec-tiktok" class="p-4 space-y-3 border-t border-slate-800/80">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-bold uppercase text-slate-400 tracking-wider">Idee Video TikTok</h3>
+                    <button onclick="openTikTokModal()" class="px-3 py-1.5 bg-pink-600 hover:bg-pink-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-md shadow-pink-600/20">
+                        <i class="fa-solid fa-plus text-xs"></i> Nuova Idea
+                    </button>
+                </div>
+
+                <p class="text-[10px] text-slate-400 italic">👈 Swipa a sinistra sulla scheda per scoprire Modifica/Elimina. Swipa a destra 👉 per richiudere.</p>
+
+                <div id="tiktok-ideas-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: ACCORDION - IDRATAZIONE (3.5 LITRI) -->
+        <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
+            <button onclick="toggleSection('sec-water')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-glass-water text-sm"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Idratazione Personalizzata (3.5 Litri / Giorno)</h2>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400">Target calcolato 3500 ml al giorno</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span id="water-summary-badge" class="text-[10px] font-semibold bg-cyan-500/10 text-cyan-400 px-2 py-0.5 rounded-full border border-cyan-500/20">0 / 3500 ml</span>
+                    <i id="sec-water-icon" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
+                </div>
+            </button>
+
+            <div id="sec-water" class="p-4 space-y-4 border-t border-slate-800/80">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+                    
+                    <!-- Water Level Visual -->
+                    <div class="bg-dark-950 p-4 rounded-xl border border-slate-800 flex flex-col items-center justify-center space-y-2 relative overflow-hidden">
+                        <div class="w-20 h-36 bg-dark-900 border-2 border-cyan-500/40 rounded-3xl relative overflow-hidden flex flex-col justify-end">
+                            <div id="water-fill-level" class="water-wave bg-gradient-to-t from-cyan-600 to-cyan-400 w-full rounded-b-2xl" style="height: 0%;"></div>
+                        </div>
+                        <p id="water-percentage" class="text-xs sm:text-sm font-extrabold text-cyan-400">0% Raggiunto</p>
+                    </div>
+
+                    <!-- Water Buttons -->
+                    <div class="sm:col-span-2 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2 bg-dark-900 p-3 rounded-xl border border-slate-800">
+                            <div>
+                                <p class="text-[11px] text-slate-400 flex items-center gap-1"><i class="fa-solid fa-glass-water text-cyan-400"></i> Acqua Bevuta Oggi</p>
+                                <p id="water-text-amount" class="text-xl sm:text-2xl font-extrabold text-white">0 <span class="text-xs text-slate-400">/ 3500 ml</span></p>
+                            </div>
+                            <div class="flex gap-1.5 flex-wrap">
+                                <button onclick="addWater(200)" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-indigo-600/20 active:scale-95 flex items-center gap-1">
+                                    <i class="fa-solid fa-glass-water"></i> 1 Bicchiere (200 ml)
+                                </button>
+                                <button onclick="addWater(250)" class="px-3 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-cyan-600/20 active:scale-95">
+                                    + 250 ml
+                                </button>
+                                <button onclick="addWater(500)" class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-blue-600/20 active:scale-95">
+                                    + 500 ml
+                                </button>
+                                <button onclick="undoWater()" class="px-2.5 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs rounded-xl border border-amber-500/30 transition flex items-center gap-1 font-semibold active:scale-95" title="Annulla">
+                                    <i class="fa-solid fa-rotate-left"></i> Annulla
+                                </button>
+                                <button onclick="resetWater()" class="px-2.5 py-2 bg-dark-800 hover:bg-dark-700 text-slate-400 hover:text-slate-200 text-xs rounded-xl border border-slate-700 transition active:scale-95" title="Azzera">
+                                    <i class="fa-solid fa-rotate-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL 1: MULTI-ACCOUNT PROFILE & CREDENTIALS MANAGER -->
+    <div id="modal-account" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-4 sm:p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-extrabold text-sm text-white flex items-center gap-2">
+                    <i class="fa-solid fa-user-gear text-indigo-400"></i> Gestione Profilo & Account
+                </h3>
+                <button onclick="closeModal('modal-account')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <form onsubmit="updateAccountSettings(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="text-slate-400 font-semibold">Modifica Nickname:</label>
+                    <input type="text" id="setting-new-nick" placeholder="Nuovo Nickname" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white font-bold focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Modifica Password:</label>
+                    <input type="password" id="setting-new-pass" placeholder="Nuova Password" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white font-bold focus:outline-none focus:border-indigo-500">
+                </div>
+                <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition shadow-md shadow-indigo-600/20">
+                    Salva Nuove Credenziali
+                </button>
+            </form>
+
+            <div class="border-t border-slate-800 pt-3 space-y-2 text-xs">
+                <label class="text-slate-400 font-semibold">Passa ad un altro Account presente sul dispositivo:</label>
+                <select id="account-profile-select" onchange="switchAccountProfile(this.value)" class="w-full bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white font-bold focus:outline-none focus:border-indigo-500">
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: WEIGHT UPDATE -->
+    <div id="modal-weight" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-card max-w-xs w-full rounded-2xl border border-slate-800 p-4 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                <h3 class="font-bold text-sm text-white">Aggiorna Peso Attuale</h3>
+                <button onclick="closeModal('modal-weight')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3">
+                <input type="number" step="0.1" id="input-weight-val" placeholder="Es. 117.5" class="w-full bg-dark-950 border border-slate-800 rounded-xl p-3 text-white text-lg font-bold text-center focus:outline-none focus:border-emerald-500">
+                <button onclick="saveNewWeight()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition">
+                    Salva Peso
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: TIKTOK MODAL -->
+    <div id="modal-tiktok" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-card max-w-md w-full rounded-2xl border border-slate-800 p-4 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 id="tt-modal-title" class="font-bold text-sm text-white">Nuova Idea Video TikTok</h3>
+                <button onclick="closeModal('modal-tiktok')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <input type="hidden" id="tt-editing-id" value="">
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="text-slate-400 font-semibold">Titolo / Argomento Video:</label>
+                    <input type="text" id="tt-title" placeholder="Es. Cosa mangio all'Università..." class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-pink-500">
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Hook (Gancio primi 3 sec):</label>
+                    <input type="text" id="tt-hook" placeholder="Es. Non fare questo errore..." class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-pink-500">
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Stato Video:</label>
+                    <select id="tt-status" class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-pink-500">
+                        <option value="Da Registrare">🔴 Da Registrare</option>
+                        <option value="Registrato">🎥 Registrato</option>
+                        <option value="Pubblicato">✅ Pubblicato</option>
+                    </select>
+                </div>
+                <button onclick="saveTikTokIdea()" class="w-full py-2.5 bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs rounded-xl transition">
+                    Salva Video TikTok
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 4: HISTORY MODAL -->
+    <div id="modal-history" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-card max-w-md w-full rounded-2xl border border-slate-800 p-4 space-y-4 max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i> Storico Progressi Account
+                </h3>
+                <button onclick="closeModal('modal-history')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="history-content-list" class="space-y-2 overflow-y-auto text-xs flex-grow pr-1"></div>
+        </div>
+    </div>
+
+    <!-- APP SCRIPT & AUTH LOGIC UPDATE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase Configuration & App ID
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'life-dashboard-app';
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+        let unsubscribeCloudListener = null;
+
+        // INDEXED DB PERSISTENT DATABASE FALLBACK SYSTEM
+        const IDB_NAME = 'LifeDashboardDB_v5';
+        const IDB_STORE = 'user_profiles_store';
+
+        function openIndexedDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(IDB_NAME, 1);
+                request.onupgradeneeded = (e) => {
+                    const dbInstance = e.target.result;
+                    if (!dbInstance.objectStoreNames.contains(IDB_STORE)) {
+                        dbInstance.createObjectStore(IDB_STORE);
+                    }
+                };
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function saveToIndexedDB(key, val) {
+            try {
+                const idb = await openIndexedDB();
+                const tx = idb.transaction(IDB_STORE, 'readwrite');
+                tx.objectStore(IDB_STORE).put(val, key);
+            } catch (e) {
+                console.warn("IndexedDB save note:", e);
+            }
+        }
+
+        async function getFromIndexedDB(key) {
+            try {
+                const idb = await openIndexedDB();
+                return new Promise((resolve) => {
+                    const tx = idb.transaction(IDB_STORE, 'readonly');
+                    const request = tx.objectStore(IDB_STORE).get(key);
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => resolve(null);
+                });
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // Firebase Initialization
+        try {
+            const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+                apiKey: "demo-key",
+                authDomain: "demo.firebaseapp.com",
+                projectId: "demo-project",
+                storageBucket: "demo.appspot.com",
+                messagingSenderId: "123456",
+                appId: "1:123456:web:123456"
+            };
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+        } catch(e) {
+            console.warn("Firestore fallback mode active", e);
+        }
+
+        const PROFILES_STORAGE_KEY = 'life_app_multi_profiles_v5';
+        const LOGGED_USER_KEY = 'life_app_logged_user_v5';
+        let activeProfileName = 'lord arts';
+        let allProfiles = {};
+        let appData = null;
+
+        // Default Template Data for New Accounts
+        function createDefaultProfileData(name, pass = '1234') {
+            const isLord = name.toLowerCase() === 'lord arts' || name.toLowerCase() === 'lorenzo';
+            return {
+                accountName: name,
+                password: pass,
+                lastDate: new Date().toISOString().split('T')[0],
+                water: 0,
+                waterGoal: 3500,
+                lastWaterAdded: 200,
+                weight: isLord ? 118.0 : 60.0,
+                selectedUniDay: 'Lunedì',
+                sectionsState: {
+                    'sec-uni': true,
+                    'sec-fit': true,
+                    'sec-tiktok': true,
+                    'sec-water': true
+                },
+                workouts: [
+                    { id: 1, name: 'Camminata Veloce (25-30 min)', desc: 'Passo sostenuto quotidiano', completed: false },
+                    { id: 2, name: 'Box Squat su sedia', desc: '3 serie x 12 rip', completed: false },
+                    { id: 3, name: 'Push-up inclinati su muro/tavolo', desc: '3 serie x 10 rip', completed: false },
+                    { id: 4, name: 'Trazioni assistite / Pull-up', desc: '3 serie con elastico', completed: false },
+                    { id: 5, name: 'Plank frontale + Stretching', desc: '30-45s plank + allungamento', completed: false }
+                ],
+                schedule: isLord ? {
+                    'Lunedì': [
+                        { type: 'Lezione', time: '10:30 - 12:30', course: 'MATEMATICA I', room: 'G13 - Golgi' },
+                        { type: 'Lezione', time: '14:30 - 16:30', course: 'ARCHITETTURA DEGLI ELABORATORI I', room: 'G13 - Golgi' }
+                    ],
+                    'Martedì': [
+                        { type: 'Lezione', time: '08:30 - 10:30', course: 'PROGRAMMAZIONE I', room: 'G12 - Golgi' },
+                        { type: 'Lezione', time: '10:30 - 12:30', course: 'MATEMATICA I', room: 'BETA - Informatica - Celoria 18' }
+                    ],
+                    'Mercoledì': [
+                        { type: 'Lezione', time: '08:30 - 10:30', course: 'PROGRAMMAZIONE I', room: '501 - Centro Universitario (ex Isu)' },
+                        { type: 'Lezione', time: '10:30 - 11:30', course: 'MATEMATICA I', room: '501 - Centro Universitario (ex Isu)' },
+                        { type: 'Laboratorio', time: '13:30 - 18:30', course: 'ARCHITETTURA DEGLI ELABORATORI I - lab', room: 'SIGMA Lab - Informatica - Celoria 18' }
+                    ],
+                    'Giovedì': [
+                        { type: 'Lezione', time: '08:30 - 10:30', course: 'ARCHITETTURA DEGLI ELABORATORI I', room: 'V6 - Venezian' },
+                        { type: 'Lezione', time: '10:30 - 12:30', course: 'MATEMATICA I', room: 'V6 - Venezian' },
+                        { type: 'Laboratorio', time: '13:30 - 17:30', course: 'PROGRAMMAZIONE I - Lab', room: 'SIGMA Lab - Informatica - Celoria 18' }
+                    ],
+                    'Venerdì': [
+                        { type: 'Lezione', time: '08:30 - 10:30', course: 'PROGRAMMAZIONE I', room: 'G12 - Golgi' }
+                    ]
+                } : {
+                    'Lunedì': [{ type: 'Lezione', time: '09:00 - 11:00', course: 'CORSO SPECIALISTICO', room: 'Aula 1' }],
+                    'Martedì': [{ type: 'Lezione', time: '11:00 - 13:00', course: 'LABORATORIO', room: 'Lab A' }],
+                    'Mercoledì': [{ type: 'Lezione', time: '14:00 - 16:00', course: 'SEMINARIO', room: 'Aula Magna' }],
+                    'Giovedì': [{ type: 'Lezione', time: '10:00 - 12:00', course: 'ESERCITAZIONE', room: 'Aula 3' }],
+                    'Venerdì': [{ type: 'Lezione', time: '09:00 - 12:00', course: 'STUDIO GUIDATO', room: 'Biblioteca' }]
+                },
+                weightHistory: [{ date: new Date().toISOString().split('T')[0], weight: isLord ? 118.0 : 60.0 }],
+                tiktokIdeas: [
+                    { id: 101, title: 'Cosa mangio e come mi alleno all\'Università', hook: 'L\'università non è più una scusa!', status: 'Da Registrare' }
+                ]
+            };
+        }
+
+        async function initAuthAndCloud() {
+            if (auth) {
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                    currentUser = auth.currentUser;
+                } catch(e) {
+                    console.warn("Auth note", e);
+                }
+            }
+        }
+
+        async function saveData() {
+            if (!activeProfileName || !appData) return;
+            allProfiles[activeProfileName] = appData;
+            try {
+                localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
+            } catch (e) {}
+            await saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
+
+            const statusIcon = document.getElementById('storage-status-icon');
+            const statusText = document.getElementById('storage-status-text');
+            if (statusIcon && statusText) {
+                statusIcon.className = 'fa-solid fa-cloud-arrow-up text-xs text-emerald-400';
+                statusText.innerText = 'Sincronizzato';
+            }
+
+            if (db && currentUser && activeProfileName) {
+                try {
+                    const userDocRef = doc(db, 'apps', appId, 'users', activeProfileName);
+                    await setDoc(userDocRef, { appData, updatedAt: new Date().toISOString() }, { merge: true });
+                } catch(e) {
+                    console.warn("Cloud sync note:", e);
+                }
+            }
+        }
+
+        function checkDailyReset() {
+            if (!appData) return;
+            const today = new Date().toISOString().split('T')[0];
+            if (appData.lastDate !== today) {
+                appData.lastDate = today;
+                appData.water = 0;
+                if (appData.workouts) {
+                    appData.workouts.forEach(w => w.completed = false);
+                }
+                saveData();
+            }
+        }
+
+        function updateProfileDropdownOptions() {
+            const select = document.getElementById('account-profile-select');
+            if (!select) return;
+            select.innerHTML = Object.keys(allProfiles).map(name => 
+                `<option value="${name}" ${name === activeProfileName ? 'selected' : ''}>${name}</option>`
+            ).join('');
+        }
+
+        function switchAccountProfile(newName) {
+            if (!newName || !allProfiles[newName]) return;
+            activeProfileName = newName;
+            appData = allProfiles[activeProfileName];
+            localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
+            saveData();
+            checkDailyReset();
+            setupCloudListener(activeProfileName);
+            renderAll();
+            closeModal('modal-account');
+            showToast(`Passato all'account: ${activeProfileName}`);
+        }
+
+        function logoutAccount() {
+            localStorage.removeItem(LOGGED_USER_KEY);
+            activeProfileName = '';
+            appData = null;
+            const authScreen = document.getElementById('auth-screen');
+            if (authScreen) authScreen.classList.remove('hidden');
+            showToast('Disconnesso con successo');
+        }
+
+        function setupCloudListener(profileName) {
+            if (unsubscribeCloudListener) {
+                unsubscribeCloudListener();
+                unsubscribeCloudListener = null;
+            }
+            if (db && currentUser && profileName) {
+                try {
+                    const userDocRef = doc(db, 'apps', appId, 'users', profileName);
+                    unsubscribeCloudListener = onSnapshot(userDocRef, (snapshot) => {
+                        if (snapshot.exists()) {
+                            const data = snapshot.data();
+                            if (data && data.appData) {
+                                appData = data.appData;
+                                allProfiles[profileName] = appData;
+                                try {
+                                    localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
+                                } catch(e) {}
+                                saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
+                                renderAll();
+                            }
+                        }
+                    });
+                } catch(e) {
+                    console.warn("Cloud listener error:", e);
+                }
+            }
+        }
+
+        async function initApp() {
+            await initAuthAndCloud();
+
+            try {
+                const savedProfilesJson = localStorage.getItem(PROFILES_STORAGE_KEY);
+                if (savedProfilesJson) {
+                    allProfiles = JSON.parse(savedProfilesJson);
+                }
+            } catch (e) {
+                console.warn('LocalStorage read note, checking IndexedDB', e);
+            }
+
+            if (!allProfiles || Object.keys(allProfiles).length === 0) {
+                const idbProfiles = await getFromIndexedDB(PROFILES_STORAGE_KEY);
+                if (idbProfiles) allProfiles = idbProfiles;
+            }
+
+            // Default initial account: ONLY lord arts (no demo accounts)
+            if (!allProfiles['lord arts']) {
+                allProfiles['lord arts'] = createDefaultProfileData('lord arts', '1234');
+            }
+
+            let loggedUser = localStorage.getItem(LOGGED_USER_KEY);
+            if (!loggedUser) loggedUser = await getFromIndexedDB(LOGGED_USER_KEY);
+
+            const authScreen = document.getElementById('auth-screen');
+
+            if (loggedUser && allProfiles[loggedUser]) {
+                activeProfileName = loggedUser;
+                appData = allProfiles[activeProfileName];
+                if (authScreen) authScreen.classList.add('hidden');
+                checkDailyReset();
+                updateProfileDropdownOptions();
+                setupCloudListener(activeProfileName);
+                renderAll();
+            } else {
+                if (authScreen) authScreen.classList.remove('hidden');
+            }
+        }
+
+        // AUTH TAB SWITCHER & LOGIN / REGISTRATION HANDLERS
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('form-login');
+            const regForm = document.getElementById('form-register');
+            const loginBtn = document.getElementById('tab-btn-login');
+            const regBtn = document.getElementById('tab-btn-register');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                loginBtn.className = 'py-2 rounded-lg bg-cyan-600 text-white transition';
+                regBtn.className = 'py-2 rounded-lg text-slate-400 hover:text-white transition';
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                regBtn.className = 'py-2 rounded-lg bg-emerald-600 text-white transition';
+                loginBtn.className = 'py-2 rounded-lg text-slate-400 hover:text-white transition';
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('login-username').value.trim();
+            const passInput = document.getElementById('login-password').value.trim();
+
+            if (!userInput || !passInput) return;
+
+            if (!allProfiles[userInput]) {
+                showToast('Account non trovato! Registrati prima di accedere.');
+                return;
+            }
+
+            if (allProfiles[userInput].password && allProfiles[userInput].password !== passInput) {
+                showToast('Password errata!');
+                return;
+            }
+
+            activeProfileName = userInput;
+            appData = allProfiles[activeProfileName];
+            localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
+            saveData();
+            setupCloudListener(activeProfileName);
+
+            const authScreen = document.getElementById('auth-screen');
+            if (authScreen) authScreen.classList.add('hidden');
+
+            checkDailyReset();
+            updateProfileDropdownOptions();
+            renderAll();
+            showToast(`Bentornato, ${activeProfileName}!`);
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('reg-username').value.trim();
+            const passInput = document.getElementById('reg-password').value.trim();
+            const passConfirm = document.getElementById('reg-password-confirm').value.trim();
+
+            if (!userInput || !passInput) return;
+
+            if (allProfiles[userInput]) {
+                showToast('Errore: Nickname già esistente!');
+                return;
+            }
+
+            if (passInput !== passConfirm) {
+                showToast('Le password non coincidono!');
+                return;
+            }
+
+            allProfiles[userInput] = createDefaultProfileData(userInput, passInput);
+            activeProfileName = userInput;
+            appData = allProfiles[activeProfileName];
+            localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
+            saveData();
+            setupCloudListener(activeProfileName);
+
+            const authScreen = document.getElementById('auth-screen');
+            if (authScreen) authScreen.classList.add('hidden');
+
+            checkDailyReset();
+            updateProfileDropdownOptions();
+            renderAll();
+            showToast(`Account "${activeProfileName}" registrato! 🎉`);
+        }
+
+        function updateAccountSettings(e) {
+            e.preventDefault();
+            const newNick = document.getElementById('setting-new-nick').value.trim();
+            const newPass = document.getElementById('setting-new-pass').value.trim();
+
+            if (!newNick || !newPass) return;
+
+            if (newNick !== activeProfileName && allProfiles[newNick]) {
+                showToast('Questo nickname è già occupato!');
+                return;
+            }
+
+            const oldName = activeProfileName;
+            if (newNick !== oldName) {
+                allProfiles[newNick] = appData;
+                allProfiles[newNick].accountName = newNick;
+                delete allProfiles[oldName];
+                activeProfileName = newNick;
+            }
+
+            appData.password = newPass;
+            localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
+            saveData();
+            renderAccountHeader();
+            closeModal('modal-account');
+            showToast('Credenziali aggiornate!');
+        }
+
+        function openAccountModal() {
+            const modal = document.getElementById('modal-account');
+            const nickInput = document.getElementById('setting-new-nick');
+            const passInput = document.getElementById('setting-new-pass');
+
+            if (nickInput) nickInput.value = activeProfileName;
+            if (passInput) passInput.value = appData.password || '';
+
+            updateProfileDropdownOptions();
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function createNewProfile() {
+            const input = document.getElementById('new-profile-input');
+            if (!input) return;
+            const name = input.value.trim();
+            if (!name) return;
+
+            if (!allProfiles[name]) {
+                allProfiles[name] = createDefaultProfileData(name, '1234');
+                input.value = '';
+                updateProfileDropdownOptions();
+                switchAccountProfile(name);
+            } else {
+                showToast('Profilo già esistente!');
+            }
+        }
+
+        // UI RENDERERS
+        function renderAll() {
+            if (!appData) return;
+            renderHeaderDate();
+            renderAccountHeader();
+            renderTopCards();
+            renderUniSection();
+            renderFitnessSection();
+            renderTikTokSection();
+            renderWaterSection();
+            applySectionsState();
+        }
+
+        function renderHeaderDate() {
+            const el = document.getElementById('today-date-text');
+            if (el) {
+                const now = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                el.innerText = now.toLocaleDateString('it-IT', options);
+            }
+        }
+
+        function renderAccountHeader() {
+            const el = document.getElementById('header-user-name');
+            if (el) el.innerText = activeProfileName;
+        }
+
+        function renderTopCards() {
+            const waterEl = document.getElementById('top-water-display');
+            if (waterEl) waterEl.innerText = `${(appData.water / 1000).toFixed(1)} / ${(appData.waterGoal / 1000).toFixed(1)} L`;
+
+            const weightEl = document.getElementById('top-weight-display');
+            if (weightEl) weightEl.innerText = `${appData.weight.toFixed(1)} kg`;
+
+            const workoutEl = document.getElementById('top-workout-display');
+            const doneCount = appData.workouts ? appData.workouts.filter(w => w.completed).length : 0;
+            if (workoutEl) workoutEl.innerText = `${doneCount} / ${appData.workouts ? appData.workouts.length : 0}`;
+
+            const lessonsEl = document.getElementById('top-lessons-display');
+            const todayDay = new Date().toLocaleDateString('it-IT', { weekday: 'long' });
+            const capitalizedDay = todayDay.charAt(0).toUpperCase() + todayDay.slice(1);
+            const todayLessons = appData.schedule[capitalizedDay] ? appData.schedule[capitalizedDay].length : 0;
+            if (lessonsEl) lessonsEl.innerText = `${todayLessons} Lezioni`;
+        }
+
+        // UNIVERSITY SECTION
+        function renderUniSection() {
+            const days = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
+            const tabsContainer = document.getElementById('uni-days-tabs');
+            
+            if (tabsContainer) {
+                tabsContainer.innerHTML = days.map(day => `
+                    <button onclick="selectUniDay('${day}')" class="px-3 py-1.5 rounded-xl font-bold text-xs shrink-0 transition ${appData.selectedUniDay === day ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' : 'bg-dark-950 text-slate-400 hover:text-white border border-slate-800'}">
+                        ${day}
+                    </button>
+                `).join('');
+            }
+
+            const lessonsContainer = document.getElementById('uni-lessons-container');
+            const list = appData.schedule[appData.selectedUniDay] || [];
+
+            if (lessonsContainer) {
+                if (list.length === 0) {
+                    lessonsContainer.innerHTML = `<div class="col-span-2 text-center py-6 text-slate-500 text-xs font-semibold">Nessuna lezione in programma per ${appData.selectedUniDay}! 🏖️</div>`;
+                } else {
+                    lessonsContainer.innerHTML = list.map(item => `
+                        <div class="bg-dark-950 p-3 rounded-xl border border-slate-800 space-y-1.5">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${item.type === 'Laboratorio' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'}">${item.type}</span>
+                                <span class="text-[10px] font-bold text-slate-400"><i class="fa-regular fa-clock mr-1"></i>${item.time}</span>
+                            </div>
+                            <h4 class="font-bold text-xs text-white">${item.course}</h4>
+                            <p class="text-[10px] text-slate-400 flex items-center gap-1"><i class="fa-solid fa-location-dot text-rose-400"></i> ${item.room}</p>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        function selectUniDay(day) {
+            appData.selectedUniDay = day;
+            saveData();
+            renderUniSection();
+        }
+
+        // FITNESS SECTION
+        function renderFitnessSection() {
+            const weightValEl = document.getElementById('current-weight-val');
+            if (weightValEl) weightValEl.innerHTML = `${appData.weight.toFixed(1)} <span class="text-xs text-slate-400">kg</span>`;
+
+            const badgeEl = document.getElementById('fit-summary-badge');
+            if (badgeEl) badgeEl.innerText = `Peso: ${appData.weight.toFixed(1)} kg`;
+
+            const checklistContainer = document.getElementById('workout-checklist');
+            const doneCount = appData.workouts.filter(w => w.completed).length;
+
+            const progressBadge = document.getElementById('workout-progress-badge');
+            if (progressBadge) progressBadge.innerText = `${doneCount}/${appData.workouts.length} Completati`;
+
+            if (checklistContainer) {
+                checklistContainer.innerHTML = appData.workouts.map(item => `
+                    <div onclick="toggleWorkout(${item.id})" class="p-2.5 rounded-xl border transition cursor-pointer flex items-center justify-between ${item.completed ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300' : 'bg-dark-950 border-slate-800 hover:border-slate-700 text-slate-300'}">
+                        <div class="space-y-0.5 pr-2">
+                            <p class="font-bold text-xs ${item.completed ? 'line-through text-emerald-400' : 'text-white'}">${item.name}</p>
+                            <p class="text-[10px] text-slate-400">${item.desc}</p>
+                        </div>
+                        <div class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${item.completed ? 'bg-emerald-500 text-white' : 'border border-slate-700 bg-dark-900'}">
+                            ${item.completed ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleWorkout(id) {
+            const item = appData.workouts.find(w => w.id === id);
+            if (item) {
+                item.completed = !item.completed;
+                saveData();
+                renderTopCards();
+                renderFitnessSection();
+            }
+        }
+
+        function saveNewWeight() {
+            const input = document.getElementById('input-weight-val');
+            if (input && input.value) {
+                const val = parseFloat(input.value);
+                if (!isNaN(val) && val > 0) {
+                    appData.weight = val;
+                    appData.weightHistory.push({
+                        date: new Date().toISOString().split('T')[0],
+                        weight: val
+                    });
+                    saveData();
+                    renderTopCards();
+                    renderFitnessSection();
+                    closeModal('modal-weight');
+                    showToast(`Peso aggiornato a ${val.toFixed(1)} kg!`);
+                }
+            }
+        }
+
+        // TIKTOK SECTION WITH SWIPE GESTURE & COMPACT ICONS
+        function renderTikTokSection() {
+            const listContainer = document.getElementById('tiktok-ideas-list');
+            
+            if (!appData.tiktokIdeas || appData.tiktokIdeas.length === 0) {
+                listContainer.innerHTML = `<div class="col-span-3 text-center py-6 text-slate-500 text-xs font-semibold">Nessun video in scaletta. Clicca "+ Nuova Idea" per iniziare! 🎥</div>`;
+            } else {
+                listContainer.innerHTML = appData.tiktokIdeas.map(item => `
+                    <div class="swipe-container group">
+                        <!-- Action compact icon buttons revealed on left-swipe -->
+                        <div class="swipe-actions">
+                            <button onclick="openTikTokModal(${item.id})" title="Modifica" class="w-9 h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button onclick="deleteTikTokIdea(${item.id})" title="Elimina" class="w-9 h-9 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+
+                        <!-- Swipeable Top Card -->
+                        <div id="tt-card-${item.id}" 
+                             class="swipe-card p-3.5 rounded-xl border border-slate-800 space-y-2 cursor-grab active:cursor-grabbing"
+                             ontouchstart="handleSwipeStart(event, ${item.id})"
+                             ontouchmove="handleSwipeMove(event, ${item.id})"
+                             ontouchend="handleSwipeEnd(event, ${item.id})"
+                             onmousedown="handleSwipeStart(event, ${item.id})"
+                             onmousemove="handleSwipeMove(event, ${item.id})"
+                             onmouseup="handleSwipeEnd(event, ${item.id})"
+                             onmouseleave="handleSwipeEnd(event, ${item.id})">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${getStatusBadgeClass(item.status)}">${item.status}</span>
+                                <span class="text-[10px] text-slate-500 font-bold">Swipe 🪶</span>
+                            </div>
+                            <h4 class="font-extrabold text-xs text-white leading-snug">${item.title}</h4>
+                            <p class="text-[11px] text-slate-400 italic">" Hook: ${item.hook} "</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const summaryEl = document.getElementById('tiktok-summary-badge');
+            if (summaryEl) summaryEl.innerText = `${appData.tiktokIdeas ? appData.tiktokIdeas.length : 0} Video in Scaletta`;
+        }
+
+        function getStatusBadgeClass(status) {
+            if (status === 'Pubblicato') return 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
+            if (status === 'Registrato') return 'bg-blue-500/10 text-blue-400 border border-blue-500/20';
+            return 'bg-pink-500/10 text-pink-400 border border-pink-500/20';
+        }
+
+        // Robust Bidirectional Swipe logic
+        let swipeState = { activeId: null, startX: 0, currentTranslate: 0, isDragging: false };
+
+        function handleSwipeStart(e, id) {
+            swipeState.activeId = id;
+            swipeState.startX = e.touches ? e.touches[0].clientX : e.clientX;
+            swipeState.isDragging = true;
+            
+            const card = document.getElementById(`tt-card-${id}`);
+            if (card) {
+                const transform = card.style.transform;
+                if (transform && transform.includes('translateX')) {
+                    swipeState.currentTranslate = parseInt(transform.replace(/[^\d.-]/g, '')) || 0;
+                } else {
+                    swipeState.currentTranslate = 0;
+                }
+            }
+        }
+
+        function handleSwipeMove(e, id) {
+            if (!swipeState.isDragging || swipeState.activeId !== id) return;
+            const currentX = e.touches ? e.touches[0].clientX : e.clientX;
+            const deltaX = currentX - swipeState.startX;
+            const card = document.getElementById(`tt-card-${id}`);
+            if (!card) return;
+
+            let newTranslate = swipeState.currentTranslate + deltaX;
+            if (newTranslate < -110) newTranslate = -110;
+            if (newTranslate > 0) newTranslate = 0;
+
+            card.style.transform = `translateX(${newTranslate}px)`;
+        }
+
+        function handleSwipeEnd(e, id) {
+            if (!swipeState.isDragging || swipeState.activeId !== id) return;
+            swipeState.isDragging = false;
+            const card = document.getElementById(`tt-card-${id}`);
+            if (!card) return;
+
+            const transform = card.style.transform;
+            let currentX = 0;
+            if (transform && transform.includes('translateX')) {
+                currentX = parseInt(transform.replace(/[^\d.-]/g, '')) || 0;
+            }
+
+            if (currentX < -40) {
+                card.style.transform = 'translateX(-95px)';
+            } else {
+                card.style.transform = 'translateX(0px)';
+            }
+        }
+
+        function openTikTokModal(id = null) {
+            const modal = document.getElementById('modal-tiktok');
+            const titleInput = document.getElementById('tt-title');
+            const hookInput = document.getElementById('tt-hook');
+            const statusSelect = document.getElementById('tt-status');
+            const editingIdInput = document.getElementById('tt-editing-id');
+
+            if (id) {
+                const item = appData.tiktokIdeas.find(t => t.id === id);
+                if (item) {
+                    editingIdInput.value = item.id;
+                    titleInput.value = item.title;
+                    hookInput.value = item.hook;
+                    statusSelect.value = item.status;
+                    document.getElementById('tt-modal-title').innerText = 'Modifica Video TikTok';
+                }
+            } else {
+                editingIdInput.value = '';
+                titleInput.value = '';
+                hookInput.value = '';
+                statusSelect.value = 'Da Registrare';
+                document.getElementById('tt-modal-title').innerText = 'Nuova Idea Video TikTok';
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function saveTikTokIdea() {
+            const titleInput = document.getElementById('tt-title');
+            const hookInput = document.getElementById('tt-hook');
+            const statusSelect = document.getElementById('tt-status');
+            const editingId = document.getElementById('tt-editing-id').value;
+
+            if (!titleInput.value.trim()) {
+                showToast('Inserisci un titolo per il video!');
+                return;
+            }
+
+            if (editingId) {
+                const item = appData.tiktokIdeas.find(t => t.id === parseInt(editingId));
+                if (item) {
+                    item.title = titleInput.value.trim();
+                    item.hook = hookInput.value.trim();
+                    item.status = statusSelect.value;
+                }
+            } else {
+                appData.tiktokIdeas.push({
+                    id: Date.now(),
+                    title: titleInput.value.trim(),
+                    hook: hookInput.value.trim() || 'Gancio non inserito',
+                    status: statusSelect.value
+                });
+            }
+
+            saveData();
+            renderTikTokSection();
+            closeModal('modal-tiktok');
+            showToast('Idea TikTok salvata!');
+        }
+
+        function deleteTikTokIdea(id) {
+            appData.tiktokIdeas = appData.tiktokIdeas.filter(t => t.id !== id);
+            saveData();
+            renderTikTokSection();
+            showToast('Video rimosso');
+        }
+
+        // WATER SECTION
+        function renderWaterSection() {
+            const pct = Math.min(100, Math.round((appData.water / appData.waterGoal) * 100));
+            
+            const fillEl = document.getElementById('water-fill-level');
+            if (fillEl) fillEl.style.height = `${pct}%`;
+
+            const pctText = document.getElementById('water-percentage');
+            if (pctText) pctText.innerText = `${pct}% Raggiunto`;
+
+            const textAmount = document.getElementById('water-text-amount');
+            if (textAmount) textAmount.innerHTML = `${appData.water} <span class="text-xs text-slate-400">/ 3500 ml</span>`;
+
+            const summaryBadge = document.getElementById('water-summary-badge');
+            if (summaryBadge) summaryBadge.innerText = `${appData.water} / 3500 ml`;
+        }
+
+        function addWater(amount) {
+            appData.lastWaterAdded = amount;
+            appData.water = Math.min(6000, appData.water + amount);
+            saveData();
+            renderTopCards();
+            renderWaterSection();
+            showToast(`+${amount} ml d'acqua registrati! 🥤`);
+        }
+
+        function undoWater() {
+            if (appData.water > 0) {
+                appData.water = Math.max(0, appData.water - (appData.lastWaterAdded || 200));
+                saveData();
+                renderTopCards();
+                renderWaterSection();
+                showToast(`Annullati -${appData.lastWaterAdded || 200} ml`);
+            }
+        }
+
+        function resetWater() {
+            appData.water = 0;
+            saveData();
+            renderTopCards();
+            renderWaterSection();
+            showToast('Contatore acqua azzerato');
+        }
+
+        // ACCORDION SECTIONS & MODALS MANAGEMENT
+        function toggleSection(id) {
+            const sec = document.getElementById(id);
+            const icon = document.getElementById(`${id}-icon`);
+            if (!sec) return;
+
+            const isHidden = sec.classList.contains('hidden');
+            if (isHidden) {
+                sec.classList.remove('hidden');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+                appData.sectionsState[id] = true;
+            } else {
+                sec.classList.add('hidden');
+                if (icon) icon.style.transform = 'rotate(-90deg)';
+                appData.sectionsState[id] = false;
+            }
+            saveData();
+        }
+
+        function applySectionsState() {
+            ['sec-uni', 'sec-fit', 'sec-tiktok', 'sec-water'].forEach(id => {
+                const sec = document.getElementById(id);
+                const icon = document.getElementById(`${id}-icon`);
+                const isVisible = appData.sectionsState[id] !== false;
+                if (sec) {
+                    if (isVisible) {
+                        sec.classList.remove('hidden');
+                        if (icon) icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        sec.classList.add('hidden');
+                        if (icon) icon.style.transform = 'rotate(-90deg)';
+                    }
+                }
+            });
+        }
+
+        function toggleAllSections(expand) {
+            ['sec-uni', 'sec-fit', 'sec-tiktok', 'sec-water'].forEach(id => {
+                appData.sectionsState[id] = expand;
+            });
+            saveData();
+            applySectionsState();
+        }
+
+        function openWeightModal() {
+            const modal = document.getElementById('modal-weight');
+            const input = document.getElementById('input-weight-val');
+            if (input) input.value = appData.weight;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function openHistoryModal() {
+            const modal = document.getElementById('modal-history');
+            const listContainer = document.getElementById('history-content-list');
+
+            if (listContainer) {
+                if (!appData.weightHistory || appData.weightHistory.length === 0) {
+                    listContainer.innerHTML = `<div class="text-center py-4 text-slate-500">Nessun dato registrato.</div>`;
+                } else {
+                    const sorted = [...appData.weightHistory].reverse();
+                    listContainer.innerHTML = sorted.map((item, idx) => {
+                        const prev = sorted[idx + 1];
+                        let diffText = '';
+                        if (prev) {
+                            const diff = (item.weight - prev.weight).toFixed(1);
+                            if (diff < 0) diffText = `<span class="text-emerald-400 font-bold ml-2">🔻 ${diff} kg</span>`;
+                            else if (diff > 0) diffText = `<span class="text-rose-400 font-bold ml-2">🔺 +${diff} kg</span>`;
+                        }
+                        return `
+                            <div class="bg-dark-950 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center">
+                                <div>
+                                    <p class="font-bold text-white">${item.date}</p>
+                                    <p class="text-[10px] text-slate-400">Profilo: ${activeProfileName}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-extrabold text-white">${item.weight.toFixed(1)} kg ${diffText}</p>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = 'bg-slate-900 border border-slate-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-xl flex items-center gap-2 animate-bounce pointer-events-auto';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-cyan-400"></i> ${msg}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
+        }
+
+        // Safe Immediate Initialization Guard (Fixes Preview Load Error)
+        const startAppSafely = () => {
+            initApp().catch(err => console.warn("App start notification:", err));
+        };
+
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            startAppSafely();
+        } else {
+            document.addEventListener('DOMContentLoaded', startAppSafely);
+        }
+
+        // Global Event Binding
+        window.switchAuthTab = switchAuthTab;
+        window.handleLogin = handleLogin;
+        window.handleRegister = handleRegister;
+        window.updateAccountSettings = updateAccountSettings;
+        window.logoutAccount = logoutAccount;
+        window.openAccountModal = openAccountModal;
+        window.switchAccountProfile = switchAccountProfile;
+        window.createNewProfile = createNewProfile;
+        window.selectUniDay = selectUniDay;
+        window.toggleWorkout = toggleWorkout;
+        window.openWeightModal = openWeightModal;
+        window.saveNewWeight = saveNewWeight;
+        window.openTikTokModal = openTikTokModal;
+        window.saveTikTokIdea = saveTikTokIdea;
+        window.deleteTikTokIdea = deleteTikTokIdea;
+        window.addWater = addWater;
+        window.undoWater = undoWater;
+        window.resetWater = resetWater;
+        window.toggleSection = toggleSection;
+        window.toggleAllSections = toggleAllSections;
+        window.openHistoryModal = openHistoryModal;
+        window.closeModal = closeModal;
+        window.handleSwipeStart = handleSwipeStart;
+        window.handleSwipeMove = handleSwipeMove;
+        window.handleSwipeEnd = handleSwipeEnd;
+    </script>
+</body>
+</html>
