@@ -568,6 +568,13 @@
                     Salva Nuove Credenziali
                 </button>
             </form>
+
+            <!-- PULSANTE PER ELIMINARE DEFINTIVAMENTE L'ACCOUNT -->
+            <div class="border-t border-slate-800/80 pt-3">
+                <button onclick="deleteCurrentAccount()" class="w-full py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-trash-can"></i> Elimina Account Definitivamente
+                </button>
+            </div>
         </div>
     </div>
 
@@ -646,7 +653,7 @@
 
         const PROFILES_STORAGE_KEY = 'life_app_multi_profiles_v6';
         const LOGGED_USER_KEY = 'life_app_logged_user_v6';
-        let activeProfileName = 'lord arts';
+        let activeProfileName = '';
         let allProfiles = {};
         let appData = null;
         let unsubscribeCloudListener = null;
@@ -693,7 +700,7 @@
         }
 
         function createDefaultProfileData(name, pass = '1234') {
-            const isLord = name.toLowerCase() === 'lord arts' || name.toLowerCase() === 'lorenzo';
+            const isLord = name.toLowerCase() === 'lord arts' || name.toLowerCase() === 'lordarts';
             const today = getTodayStr();
             const defaultWorkouts = [
                 { id: 1, name: 'Camminata Veloce (25-30 min)', desc: 'Passo sostenuto quotidiano', completed: false },
@@ -814,6 +821,10 @@
                             appData = doc.data().data;
                             allProfiles[profileName] = appData;
                             renderAll();
+                        } else if (!doc.exists && activeProfileName === profileName) {
+                            // Se il documento è stato eliminato esternamente su Firebase, disconnetti
+                            logoutAccount();
+                            showToast('Questo account è stato eliminato.');
                         }
                     });
                 } catch(e) { console.warn("Cloud listener note:", e); }
@@ -831,25 +842,36 @@
                 if (idbProfiles) allProfiles = idbProfiles;
             }
 
-            if (!allProfiles['lord arts']) {
-                allProfiles['lord arts'] = createDefaultProfileData('lord arts', '1234');
-            }
-
             let loggedUser = localStorage.getItem(LOGGED_USER_KEY);
             if (!loggedUser) loggedUser = await getFromIndexedDB(LOGGED_USER_KEY);
 
             const authScreen = document.getElementById('auth-screen');
 
-            if (loggedUser && allProfiles[loggedUser]) {
-                activeProfileName = loggedUser;
-                appData = allProfiles[activeProfileName];
-                if (authScreen) authScreen.classList.add('hidden');
-                ensureDailyLogExists(selectedDateStr);
-                setupCloudListener(activeProfileName);
-                renderAll();
-            } else {
-                if (authScreen) authScreen.classList.remove('hidden');
+            if (loggedUser) {
+                // Verifica se esiste davvero su Cloud prima di far entrare l'utente
+                try {
+                    const userDoc = await db.collection('users').doc(loggedUser.toLowerCase()).get();
+                    if (userDoc.exists) {
+                        activeProfileName = loggedUser;
+                        appData = userDoc.data().data || createDefaultProfileData(loggedUser, userDoc.data().password);
+                        if (authScreen) authScreen.classList.add('hidden');
+                        ensureDailyLogExists(selectedDateStr);
+                        setupCloudListener(activeProfileName);
+                        renderAll();
+                        return;
+                    } else {
+                        // Se è stato eliminato da Firebase, pulisci la cache del browser
+                        delete allProfiles[loggedUser];
+                        localStorage.removeItem(LOGGED_USER_KEY);
+                        localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
+                        await saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
+                    }
+                } catch(err) {
+                    console.warn("Verifica Cloud fallita:", err);
+                }
             }
+
+            if (authScreen) authScreen.classList.remove('hidden');
         }
 
         function switchAuthTab(tab) {
@@ -884,16 +906,17 @@
                     if (cloudPass !== passInput) {
                         showToast('Password errata!'); return;
                     }
-                    activeProfileName = userInput;
-                    appData = userDoc.data().data || createDefaultProfileData(userInput, passInput);
-                } else if (allProfiles[userInput]) {
-                    if (allProfiles[userInput].password && allProfiles[userInput].password !== passInput) {
-                        showToast('Password errata!'); return;
-                    }
-                    activeProfileName = userInput;
-                    appData = allProfiles[activeProfileName];
+                    activeProfileName = userDoc.data().data?.accountName || userInput;
+                    appData = userDoc.data().data || createDefaultProfileData(activeProfileName, passInput);
                 } else {
-                    showToast('Account non trovato! Registrati prima di accedere.'); return;
+                    // Se l'account è stato rimosso da Firebase, elimina eventuale residuo locale
+                    if (allProfiles[userInput]) {
+                        delete allProfiles[userInput];
+                        localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
+                        saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
+                    }
+                    showToast('Account non trovato su Cloud! Verifica il nickname o Registrati.');
+                    return;
                 }
 
                 localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
@@ -908,7 +931,7 @@
                 showToast(`Bentornato, ${activeProfileName}!`);
             } catch(err) {
                 console.error(err);
-                showToast('Errore di accesso Cloud');
+                showToast('Errore di connessione o accesso Cloud');
             }
         }
 
@@ -926,7 +949,7 @@
 
             try {
                 const userDoc = await db.collection('users').doc(userInput.toLowerCase()).get();
-                if (userDoc.exists || allProfiles[userInput]) {
+                if (userDoc.exists) {
                     showToast('Errore: Nickname già esistente!'); return;
                 }
 
@@ -936,7 +959,7 @@
 
                 localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
                 ensureDailyLogExists(selectedDateStr);
-                saveData();
+                await saveData();
                 setupCloudListener(activeProfileName);
 
                 const authScreen = document.getElementById('auth-screen');
@@ -962,16 +985,14 @@
                 return;
             }
 
-            if (newNick !== activeProfileName && allProfiles[newNick]) {
-                showToast('Questo nickname è già occupato!'); return;
-            }
-
             const oldName = activeProfileName;
             if (newNick !== oldName) {
-                allProfiles[newNick] = appData;
-                allProfiles[newNick].accountName = newNick;
                 delete allProfiles[oldName];
+                if (db) {
+                    db.collection('users').doc(oldName.toLowerCase()).delete();
+                }
                 activeProfileName = newNick;
+                appData.accountName = newNick;
             }
 
             appData.password = newPass;
@@ -980,6 +1001,33 @@
             renderAccountHeader();
             closeModal('modal-account');
             showToast('Credenziali aggiornate con successo!');
+        }
+
+        async function deleteCurrentAccount() {
+            if (!activeProfileName) return;
+            if (!confirm(`Sei sicuro di voler eliminare definitivamente l'account "${activeProfileName}"? Tutti i dati andranno persi.`)) return;
+
+            const targetName = activeProfileName;
+            try {
+                // 1. Elimina da Cloud Firebase
+                if (db) {
+                    await db.collection('users').doc(targetName.toLowerCase()).delete();
+                }
+
+                // 2. Elimina dalla cache locale
+                delete allProfiles[targetName];
+                localStorage.removeItem(LOGGED_USER_KEY);
+                localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
+                await saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
+
+                // 3. Disconnetti ed esci
+                closeModal('modal-account');
+                logoutAccount();
+                showToast(`Account "${targetName}" eliminato con successo.`);
+            } catch(err) {
+                console.error(err);
+                showToast('Errore durante la cancellazione dell\'account.');
+            }
         }
 
         function openAccountModal() {
