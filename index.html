@@ -30,7 +30,7 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Font Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Firebase SDKs (Compatibili) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -49,11 +49,11 @@
         }
         .glass-card {
             background: rgba(17, 24, 39, 0.75);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .glass-nav {
-            background: rgba(11, 15, 25, 0.92);
+            background: rgba(11, 15, 25, 0.94);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
@@ -68,6 +68,11 @@
             background: #334155;
             border-radius: 9999px;
         }
+        .ring-circle {
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
         .water-wave {
             transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -80,13 +85,9 @@
         }
         .swipe-actions {
             position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding-right: 0.5rem;
+            top: 0; right: 0; bottom: 0;
+            display: flex; align-items: center;
+            gap: 0.5rem; padding-right: 0.5rem;
             z-index: 5;
         }
         .swipe-card {
@@ -96,9 +97,17 @@
             background: #090d16;
             width: 100%;
         }
+        .day-ring-btn {
+            transition: all 0.2s ease;
+        }
+        .day-ring-btn.active {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col pb-6">
+<body class="min-h-screen flex flex-col pb-8">
 
     <!-- FULLSCREEN AUTHENTICATION OVERLAY -->
     <div id="auth-screen" class="fixed inset-0 z-50 bg-[#0b0f19] flex items-center justify-center p-4">
@@ -111,7 +120,7 @@
                 <p class="text-xs text-slate-400 mt-1">Accedi al tuo account o registrati per iniziare</p>
             </div>
 
-            <!-- Tab Switcher: Accedi / Registrati -->
+            <!-- Tab Switcher -->
             <div class="grid grid-cols-2 p-1 bg-dark-950 rounded-xl border border-slate-800 text-xs font-bold">
                 <button id="tab-btn-login" onclick="switchAuthTab('login')" class="py-2 rounded-lg bg-cyan-600 text-white transition">Accedi</button>
                 <button id="tab-btn-register" onclick="switchAuthTab('register')" class="py-2 rounded-lg text-slate-400 hover:text-white transition">Registrati</button>
@@ -153,46 +162,35 @@
         </div>
     </div>
 
-    <!-- Top Navigation Header -->
+    <!-- Header Navigation -->
     <header class="sticky top-0 z-40 glass-nav px-3 py-2 flex items-center justify-between shadow-lg">
         <div class="flex items-center space-x-2">
-            <!-- User Settings Quick Button -->
             <button onclick="openAccountModal()" title="Impostazioni Account" class="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-md shadow-cyan-500/20 hover:scale-105 transition">
                 <i class="fa-solid fa-user-gear text-sm"></i>
             </button>
             <div>
                 <h1 class="text-xs sm:text-sm font-extrabold text-white tracking-tight flex items-center gap-1.5">
-                    LIFE DASHBOARD <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-semibold">CLOUD SYNC</span>
+                    LIFE DASHBOARD <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-semibold">ACTIVITY RINGS</span>
                 </h1>
                 <p id="today-date-text" class="text-[10px] text-slate-400 font-medium">Caricamento...</p>
             </div>
         </div>
 
-        <!-- Global Action Controls & Account Switcher -->
         <div class="flex items-center space-x-1.5 sm:space-x-2">
-            <!-- Account Badge -->
             <button onclick="openAccountModal()" class="px-2.5 py-1 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 rounded-lg text-[11px] font-bold transition flex items-center gap-1.5 shadow-sm">
                 <i class="fa-solid fa-user-circle text-indigo-400"></i>
                 <span id="header-user-name" class="max-w-[80px] sm:max-w-[110px] truncate">lord arts</span>
             </button>
 
-            <!-- Logout Button -->
             <button onclick="logoutAccount()" title="Disconnetti" class="px-2 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 rounded-lg text-[11px] font-bold transition flex items-center gap-1">
                 <i class="fa-solid fa-right-from-bracket"></i>
             </button>
 
-            <!-- Sync Badge -->
             <div id="storage-status-badge" class="px-2 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-lg text-[10px] font-bold flex items-center gap-1">
                 <i id="storage-status-icon" class="fa-solid fa-cloud-arrow-up text-xs"></i>
                 <span id="storage-status-text" class="hidden sm:inline">Cloud Attivo</span>
             </div>
 
-            <button onclick="toggleAllSections(true)" title="Espandi Tutto" class="px-2 py-1 bg-dark-900 text-slate-300 rounded-lg text-[11px] font-semibold border border-slate-800 transition">
-                <i class="fa-solid fa-angles-down text-purple-400 text-xs"></i>
-            </button>
-            <button onclick="toggleAllSections(false)" title="Riduci Tutto" class="px-2 py-1 bg-dark-900 text-slate-300 rounded-lg text-[11px] font-semibold border border-slate-800 transition">
-                <i class="fa-solid fa-angles-up text-pink-400 text-xs"></i>
-            </button>
             <button onclick="openHistoryModal()" class="px-2.5 py-1 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-lg text-[11px] font-bold border border-cyan-500/30 transition flex items-center gap-1 shadow-md shadow-cyan-500/20">
                 <i class="fa-solid fa-clock-rotate-left"></i> <span class="hidden sm:inline">Storico</span>
             </button>
@@ -203,13 +201,137 @@
     <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
     <!-- Main Container -->
-    <main class="max-w-6xl w-full mx-auto px-3 sm:px-6 pt-3 space-y-3 flex-grow">
+    <main class="max-w-6xl w-full mx-auto px-3 sm:px-6 pt-3 space-y-3.5 flex-grow">
+
+        <!-- BARRA NAVIGAZIONE DATA & STRISCIA 7 GIORNI AD ANELLI (STILE APPLE FITNESS) -->
+        <section class="glass-card rounded-2xl p-3 border border-slate-800 space-y-2.5">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-1.5">
+                    <button onclick="changeSelectedDate(-1)" title="Giorno Precedente" class="px-2.5 py-1 bg-dark-900 hover:bg-dark-800 text-white rounded-lg border border-slate-800 text-xs font-bold transition active:scale-95">
+                        <i class="fa-solid fa-chevron-left text-cyan-400"></i>
+                    </button>
+                    <div class="flex items-center space-x-2 bg-dark-950 px-3 py-1 rounded-xl border border-slate-800">
+                        <i class="fa-regular fa-calendar-days text-xs text-cyan-400"></i>
+                        <span id="selected-date-display" class="text-xs font-extrabold text-white">Caricamento...</span>
+                    </div>
+                    <button onclick="changeSelectedDate(1)" title="Giorno Successivo" class="px-2.5 py-1 bg-dark-900 hover:bg-dark-800 text-white rounded-lg border border-slate-800 text-xs font-bold transition active:scale-95">
+                        <i class="fa-solid fa-chevron-right text-cyan-400"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <button id="btn-go-today" onclick="goToToday()" class="hidden px-2.5 py-1 bg-cyan-600/20 text-cyan-400 border border-cyan-500/30 rounded-lg text-xs font-extrabold transition hover:bg-cyan-600/30">
+                        Vai a Oggi
+                    </button>
+                    <input type="date" id="date-picker-input" onchange="onDatePickerChange(this.value)" class="bg-dark-950 border border-slate-800 text-white text-xs font-bold rounded-lg px-2 py-1 focus:outline-none focus:border-cyan-500">
+                </div>
+            </div>
+
+            <!-- Striscia dei 7 giorni della settimana con Mini Anelli SVG -->
+            <div id="weekly-rings-strip" class="grid grid-cols-7 gap-1 sm:gap-2"></div>
+        </section>
+
+        <!-- MAIN WIDGET: ANELLI DI ATTIVITÀ CONCENTRICI (APPLE FITNESS STYLE) -->
+        <section class="glass-card rounded-2xl p-4 sm:p-5 border border-slate-800 relative overflow-hidden">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+                
+                <!-- SVG Activity Rings Graphic -->
+                <div class="md:col-span-5 flex flex-col items-center justify-center relative">
+                    <div class="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center">
+                        <svg class="w-full h-full" viewBox="0 0 180 180">
+                            <defs>
+                                <linearGradient id="grad-fitness" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#22c55e" />
+                                    <stop offset="100%" stop-color="#4ade80" />
+                                </linearGradient>
+                                <linearGradient id="grad-water" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#06b6d4" />
+                                    <stop offset="100%" stop-color="#38bdf8" />
+                                </linearGradient>
+                                <linearGradient id="grad-tiktok" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#ec4899" />
+                                    <stop offset="100%" stop-color="#f43f5e" />
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Background Track Rings -->
+                            <circle cx="90" cy="90" r="70" stroke="rgba(34, 197, 94, 0.15)" stroke-width="13" fill="none" />
+                            <circle cx="90" cy="90" r="52" stroke="rgba(6, 182, 212, 0.15)" stroke-width="13" fill="none" />
+                            <circle cx="90" cy="90" r="34" stroke="rgba(236, 72, 153, 0.15)" stroke-width="13" fill="none" />
+
+                            <!-- Dynamic Animated Rings -->
+                            <circle id="ring-fitness" class="ring-circle" cx="90" cy="90" r="70" stroke="url(#grad-fitness)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="439.82" stroke-dashoffset="439.82" />
+                            <circle id="ring-water" class="ring-circle" cx="90" cy="90" r="52" stroke="url(#grad-water)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="326.72" stroke-dashoffset="326.72" />
+                            <circle id="ring-tiktok" class="ring-circle" cx="90" cy="90" r="34" stroke="url(#grad-tiktok)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="213.63" stroke-dashoffset="213.63" />
+                        </svg>
+
+                        <!-- Central Stats Percentage -->
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                            <span id="center-total-pct" class="text-2xl sm:text-3xl font-black text-white tracking-tighter">0%</span>
+                            <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Chiusura Anelli</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ring Progress Breakdown List -->
+                <div class="md:col-span-7 space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
+                        <h2 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-chart-pie text-cyan-400"></i> Command Hub Attività
+                        </h2>
+                        <span id="active-day-label" class="text-[11px] font-extrabold text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full border border-cyan-500/20">Oggi</span>
+                    </div>
+
+                    <!-- Ring 1: Fitness -->
+                    <div class="bg-dark-950 p-3 rounded-xl border border-slate-800/90 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-sm">
+                                🟢
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white">Fitness & Allenamento</p>
+                                <p id="ring-desc-fitness" class="text-[10px] text-slate-400">0 di 5 Esercizi Tic Fatto</p>
+                            </div>
+                        </div>
+                        <span id="ring-val-fitness" class="text-xs sm:text-sm font-extrabold text-emerald-400">0%</span>
+                    </div>
+
+                    <!-- Ring 2: Idratazione -->
+                    <div class="bg-dark-950 p-3 rounded-xl border border-slate-800/90 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold text-sm">
+                                🔵
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white">Idratazione 3.5 L</p>
+                                <p id="ring-desc-water" class="text-[10px] text-slate-400">0 / 3500 ml</p>
+                            </div>
+                        </div>
+                        <span id="ring-val-water" class="text-xs sm:text-sm font-extrabold text-cyan-400">0%</span>
+                    </div>
+
+                    <!-- Ring 3: TikTok / Content -->
+                    <div class="bg-dark-950 p-3 rounded-xl border border-slate-800/90 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-lg bg-pink-500/10 text-pink-400 flex items-center justify-center font-bold text-sm">
+                                💗
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white">TikTok & Produttività</p>
+                                <p id="ring-desc-tiktok" class="text-[10px] text-slate-400">0 Video registrati/pubblicati</p>
+                            </div>
+                        </div>
+                        <span id="ring-val-tiktok" class="text-xs sm:text-sm font-extrabold text-pink-400">0%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- TOP SUMMARY WIDGETS -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
             <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-center justify-between">
                 <div>
-                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Acqua Oggi</p>
+                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Acqua Data</p>
                     <p id="top-water-display" class="text-sm sm:text-base font-extrabold text-cyan-400 mt-0.5">0 / 3.5 L</p>
                 </div>
                 <div class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
@@ -229,7 +351,7 @@
 
             <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-center justify-between">
                 <div>
-                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Workout Oggi</p>
+                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Workout Data</p>
                     <p id="top-workout-display" class="text-sm sm:text-base font-extrabold text-purple-400 mt-0.5">0 / 5</p>
                 </div>
                 <div class="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center">
@@ -239,7 +361,7 @@
 
             <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-center justify-between">
                 <div>
-                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Lezioni Oggi</p>
+                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Lezioni Data</p>
                     <p id="top-lessons-display" class="text-sm sm:text-base font-extrabold text-amber-400 mt-0.5">0 Lezioni</p>
                 </div>
                 <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
@@ -280,7 +402,7 @@
                         <i class="fa-solid fa-person-running text-sm"></i>
                     </div>
                     <div>
-                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Fitness, Peso & Allenamento Oggi</h2>
+                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Fitness, Peso & Allenamento Data</h2>
                         <p class="text-[10px] sm:text-[11px] text-slate-400">Obiettivo Dimagrimento | Check Esercizi "Tic Fatto"</p>
                     </div>
                 </div>
@@ -322,7 +444,7 @@
                     <div class="lg:col-span-2 bg-dark-900/80 p-3.5 rounded-xl border border-slate-800 space-y-3">
                         <div class="flex justify-between items-center">
                             <h3 class="font-bold text-xs uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
-                                <i class="fa-solid fa-list-check text-emerald-400"></i> Esercizi del Giorno ("Tic Fatto")
+                                <i class="fa-solid fa-list-check text-emerald-400"></i> Esercizi della Data ("Tic Fatto")
                             </h3>
                             <span id="workout-progress-badge" class="text-[10px] font-bold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full">0/5 Completati</span>
                         </div>
@@ -392,7 +514,7 @@
                     <div class="sm:col-span-2 space-y-3">
                         <div class="flex flex-wrap items-center justify-between gap-2 bg-dark-900 p-3 rounded-xl border border-slate-800">
                             <div>
-                                <p class="text-[11px] text-slate-400 flex items-center gap-1"><i class="fa-solid fa-glass-water text-cyan-400"></i> Acqua Bevuta Oggi</p>
+                                <p class="text-[11px] text-slate-400 flex items-center gap-1"><i class="fa-solid fa-glass-water text-cyan-400"></i> Acqua Bevuta Nella Data</p>
                                 <p id="water-text-amount" class="text-xl sm:text-2xl font-extrabold text-white">0 <span class="text-xs text-slate-400">/ 3500 ml</span></p>
                             </div>
                             <div class="flex gap-1.5 flex-wrap">
@@ -524,15 +646,19 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        const PROFILES_STORAGE_KEY = 'life_app_multi_profiles_v5';
-        const LOGGED_USER_KEY = 'life_app_logged_user_v5';
+        const PROFILES_STORAGE_KEY = 'life_app_multi_profiles_v6';
+        const LOGGED_USER_KEY = 'life_app_logged_user_v6';
         let activeProfileName = 'lord arts';
         let allProfiles = {};
         let appData = null;
         let unsubscribeCloudListener = null;
 
+        // DATA DI NAVIGAZIONE CORRENTE (di default OGGGI: YYYY-MM-DD)
+        const getTodayStr = () => new Date().toISOString().split('T')[0];
+        let selectedDateStr = getTodayStr();
+
         // INDEXEDDB FALLBACK
-        const IDB_NAME = 'LifeDashboardDB_v5';
+        const IDB_NAME = 'LifeDashboardDB_v6';
         const IDB_STORE = 'user_profiles_store';
 
         function openIndexedDB() {
@@ -571,25 +697,33 @@
 
         function createDefaultProfileData(name, pass = '1234') {
             const isLord = name.toLowerCase() === 'lord arts' || name.toLowerCase() === 'lorenzo';
+            const today = getTodayStr();
+            const defaultWorkouts = [
+                { id: 1, name: 'Camminata Veloce (25-30 min)', desc: 'Passo sostenuto quotidiano', completed: false },
+                { id: 2, name: 'Box Squat su sedia', desc: '3 serie x 12 rip', completed: false },
+                { id: 3, name: 'Push-up inclinati su muro/tavolo', desc: '3 serie x 10 rip', completed: false },
+                { id: 4, name: 'Trazioni assistite / Pull-up', desc: '3 serie con elastico', completed: false },
+                { id: 5, name: 'Plank frontale + Stretching', desc: '30-45s plank + allungamento', completed: false }
+            ];
+
+            const initialLogs = {};
+            initialLogs[today] = {
+                water: 0,
+                lastWaterAdded: 200,
+                workouts: JSON.parse(JSON.stringify(defaultWorkouts))
+            };
+
             return {
                 accountName: name,
                 password: pass,
-                lastDate: new Date().toISOString().split('T')[0],
-                water: 0,
                 waterGoal: 3500,
-                lastWaterAdded: 200,
                 weight: isLord ? 118.0 : 60.0,
                 selectedUniDay: 'Lunedì',
                 sectionsState: {
                     'sec-uni': true, 'sec-fit': true, 'sec-tiktok': true, 'sec-water': true
                 },
-                workouts: [
-                    { id: 1, name: 'Camminata Veloce (25-30 min)', desc: 'Passo sostenuto quotidiano', completed: false },
-                    { id: 2, name: 'Box Squat su sedia', desc: '3 serie x 12 rip', completed: false },
-                    { id: 3, name: 'Push-up inclinati su muro/tavolo', desc: '3 serie x 10 rip', completed: false },
-                    { id: 4, name: 'Trazioni assistite / Pull-up', desc: '3 serie con elastico', completed: false },
-                    { id: 5, name: 'Plank frontale + Stretching', desc: '30-45s plank + allungamento', completed: false }
-                ],
+                defaultWorkouts: defaultWorkouts,
+                dailyLogs: initialLogs,
                 schedule: isLord ? {
                     'Lunedì': [
                         { type: 'Lezione', time: '10:30 - 12:30', course: 'MATEMATICA I', room: 'G13 - Golgi' },
@@ -619,11 +753,35 @@
                     'Giovedì': [{ type: 'Lezione', time: '10:00 - 12:00', course: 'ESERCITAZIONE', room: 'Aula 3' }],
                     'Venerdì': [{ type: 'Lezione', time: '09:00 - 12:00', course: 'STUDIO GUIDATO', room: 'Biblioteca' }]
                 },
-                weightHistory: [{ date: new Date().toISOString().split('T')[0], weight: isLord ? 118.0 : 60.0 }],
+                weightHistory: [{ date: today, weight: isLord ? 118.0 : 60.0 }],
                 tiktokIdeas: [
                     { id: 101, title: 'Cosa mangio e come mi alleno all\'Università', hook: 'L\'università non è più una scusa!', status: 'Da Registrare' }
                 ]
             };
+        }
+
+        function ensureDailyLogExists(dateStr) {
+            if (!appData) return;
+            if (!appData.dailyLogs) appData.dailyLogs = {};
+            if (!appData.dailyLogs[dateStr]) {
+                const baseWorkouts = appData.defaultWorkouts || [
+                    { id: 1, name: 'Camminata Veloce (25-30 min)', desc: 'Passo sostenuto quotidiano', completed: false },
+                    { id: 2, name: 'Box Squat su sedia', desc: '3 serie x 12 rip', completed: false },
+                    { id: 3, name: 'Push-up inclinati su muro/tavolo', desc: '3 serie x 10 rip', completed: false },
+                    { id: 4, name: 'Trazioni assistite / Pull-up', desc: '3 serie con elastico', completed: false },
+                    { id: 5, name: 'Plank frontale + Stretching', desc: '30-45s plank + allungamento', completed: false }
+                ];
+                appData.dailyLogs[dateStr] = {
+                    water: 0,
+                    lastWaterAdded: 200,
+                    workouts: JSON.parse(JSON.stringify(baseWorkouts))
+                };
+            }
+        }
+
+        function getCurrentDayLog() {
+            ensureDailyLogExists(selectedDateStr);
+            return appData.dailyLogs[selectedDateStr];
         }
 
         async function saveData() {
@@ -647,17 +805,6 @@
                         updatedAt: new Date().toISOString()
                     }, { merge: true });
                 } catch(e) { console.warn("Cloud save note:", e); }
-            }
-        }
-
-        function checkDailyReset() {
-            if (!appData) return;
-            const today = new Date().toISOString().split('T')[0];
-            if (appData.lastDate !== today) {
-                appData.lastDate = today;
-                appData.water = 0;
-                if (appData.workouts) appData.workouts.forEach(w => w.completed = false);
-                saveData();
             }
         }
 
@@ -700,7 +847,7 @@
                 activeProfileName = loggedUser;
                 appData = allProfiles[activeProfileName];
                 if (authScreen) authScreen.classList.add('hidden');
-                checkDailyReset();
+                ensureDailyLogExists(selectedDateStr);
                 updateProfileDropdownOptions();
                 setupCloudListener(activeProfileName);
                 renderAll();
@@ -754,13 +901,13 @@
                 }
 
                 localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
+                ensureDailyLogExists(selectedDateStr);
                 saveData();
                 setupCloudListener(activeProfileName);
 
                 const authScreen = document.getElementById('auth-screen');
                 if (authScreen) authScreen.classList.add('hidden');
 
-                checkDailyReset();
                 updateProfileDropdownOptions();
                 renderAll();
                 showToast(`Bentornato, ${activeProfileName}!`);
@@ -793,13 +940,13 @@
                 appData = allProfiles[activeProfileName];
 
                 localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
+                ensureDailyLogExists(selectedDateStr);
                 saveData();
                 setupCloudListener(activeProfileName);
 
                 const authScreen = document.getElementById('auth-screen');
                 if (authScreen) authScreen.classList.add('hidden');
 
-                checkDailyReset();
                 updateProfileDropdownOptions();
                 renderAll();
                 showToast(`Account "${activeProfileName}" registrato! 🎉`);
@@ -858,8 +1005,8 @@
             activeProfileName = newName;
             appData = allProfiles[activeProfileName];
             localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
+            ensureDailyLogExists(selectedDateStr);
             saveData();
-            checkDailyReset();
             setupCloudListener(activeProfileName);
             renderAll();
             closeModal('modal-account');
@@ -876,10 +1023,161 @@
             showToast('Disconnesso con successo');
         }
 
+        // GESTIONE DATA E STRISCIA AD ANELLI SETTIMANALE
+        function changeSelectedDate(daysOffset) {
+            const curr = new Date(selectedDateStr);
+            curr.setDate(curr.getDate() + daysOffset);
+            selectedDateStr = curr.toISOString().split('T')[0];
+            ensureDailyLogExists(selectedDateStr);
+            renderAll();
+        }
+
+        function selectDate(dateStr) {
+            selectedDateStr = dateStr;
+            ensureDailyLogExists(selectedDateStr);
+            renderAll();
+        }
+
+        function goToToday() {
+            selectedDateStr = getTodayStr();
+            ensureDailyLogExists(selectedDateStr);
+            renderAll();
+        }
+
+        function onDatePickerChange(val) {
+            if (val) {
+                selectedDateStr = val;
+                ensureDailyLogExists(selectedDateStr);
+                renderAll();
+            }
+        }
+
+        function getCalculatedDayPcts(dateStr) {
+            ensureDailyLogExists(dateStr);
+            const log = appData.dailyLogs[dateStr];
+            
+            // Fitness
+            const workouts = log.workouts || [];
+            const completedW = workouts.filter(w => w.completed).length;
+            const fitnessPct = workouts.length > 0 ? Math.round((completedW / workouts.length) * 100) : 0;
+
+            // Water
+            const water = log.water || 0;
+            const waterGoal = appData.waterGoal || 3500;
+            const waterPct = Math.min(100, Math.round((water / waterGoal) * 100));
+
+            // TikTok
+            const ttList = appData.tiktokIdeas || [];
+            const doneTT = ttList.filter(t => t.status === 'Registrato' || t.status === 'Pubblicato').length;
+            const tiktokPct = ttList.length > 0 ? Math.min(100, Math.round((doneTT / ttList.length) * 100)) : 0;
+
+            return { fitnessPct, waterPct, tiktokPct, completedW, totalW: workouts.length, water, waterGoal, doneTT, totalTT: ttList.length };
+        }
+
+        function renderWeeklyRingsStrip() {
+            const container = document.getElementById('weekly-rings-strip');
+            if (!container) return;
+
+            const currDate = new Date(selectedDateStr);
+            const dayOfWeek = currDate.getDay(); // 0 (Sun) - 6 (Sat)
+            // Impostiamo Lunedì come primo giorno della settimana
+            const distToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+            const monday = new Date(currDate);
+            monday.setDate(currDate.getDate() - distToMonday);
+
+            const dayLabels = ['L', 'M', 'M', 'G', 'V', 'S', 'D'];
+            let html = '';
+
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(monday);
+                d.setDate(monday.getDate() + i);
+                const dStr = d.toISOString().split('T')[0];
+                const stats = getCalculatedDayPcts(dStr);
+                const isSelected = (dStr === selectedDateStr);
+                const isToday = (dStr === getTodayStr());
+
+                // Calculo SVG Mini Rings (Radius 16, 12, 8)
+                const cFit = 2 * Math.PI * 16;
+                const cWat = 2 * Math.PI * 12;
+                const cTT  = 2 * Math.PI * 8;
+
+                const oFit = cFit * (1 - stats.fitnessPct / 100);
+                const oWat = cWat * (1 - stats.waterPct / 100);
+                const oTT  = cTT * (1 - stats.tiktokPct / 100);
+
+                html += `
+                    <button onclick="selectDate('${dStr}')" class="day-ring-btn p-1.5 sm:p-2 rounded-xl flex flex-col items-center justify-center border text-center relative ${isSelected ? 'active border-blue-500 bg-blue-500/10' : 'border-slate-800/80 bg-dark-950/60 hover:bg-dark-900'}">
+                        ${isToday ? '<span class="absolute -top-1 w-2 h-2 rounded-full bg-cyan-400"></span>' : ''}
+                        <span class="text-[10px] font-extrabold uppercase ${isSelected ? 'text-cyan-400' : 'text-slate-400'}">${dayLabels[i]}</span>
+                        <div class="w-8 h-8 sm:w-10 sm:h-10 my-1 relative flex items-center justify-center">
+                            <svg class="w-full h-full" viewBox="0 0 40 40">
+                                <circle cx="20" cy="20" r="16" stroke="rgba(34,197,94,0.15)" stroke-width="3" fill="none" />
+                                <circle cx="20" cy="20" r="12" stroke="rgba(6,182,212,0.15)" stroke-width="3" fill="none" />
+                                <circle cx="20" cy="20" r="8" stroke="rgba(236,72,153,0.15)" stroke-width="3" fill="none" />
+
+                                <circle class="ring-circle" cx="20" cy="20" r="16" stroke="#22c55e" stroke-width="3" stroke-linecap="round" fill="none" stroke-dasharray="${cFit}" stroke-dashoffset="${oFit}" />
+                                <circle class="ring-circle" cx="20" cy="20" r="12" stroke="#06b6d4" stroke-width="3" stroke-linecap="round" fill="none" stroke-dasharray="${cWat}" stroke-dashoffset="${oWat}" />
+                                <circle class="ring-circle" cx="20" cy="20" r="8" stroke="#ec4899" stroke-width="3" stroke-linecap="round" fill="none" stroke-dasharray="${cTT}" stroke-dashoffset="${oTT}" />
+                            </svg>
+                        </div>
+                        <span class="text-[9px] font-bold ${isSelected ? 'text-white' : 'text-slate-400'}">${d.getDate()}</span>
+                    </button>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function renderActivityRingsWidget() {
+            const stats = getCalculatedDayPcts(selectedDateStr);
+
+            // Circumferences: R1=70 (439.82), R2=52 (326.72), R3=34 (213.63)
+            const cFit = 439.82;
+            const cWat = 326.72;
+            const cTT  = 213.63;
+
+            const ringFit = document.getElementById('ring-fitness');
+            const ringWat = document.getElementById('ring-water');
+            const ringTT  = document.getElementById('ring-tiktok');
+
+            if (ringFit) ringFit.style.strokeDashoffset = cFit * (1 - stats.fitnessPct / 100);
+            if (ringWat) ringWat.style.strokeDashoffset = cWat * (1 - stats.waterPct / 100);
+            if (ringTT)  ringTT.style.strokeDashoffset  = cTT * (1 - stats.tiktokPct / 100);
+
+            const totalPct = Math.round((stats.fitnessPct + stats.waterPct + stats.tiktokPct) / 3);
+            const centerText = document.getElementById('center-total-pct');
+            if (centerText) centerText.innerText = `${totalPct}%`;
+
+            // Text Labels Update
+            const fitVal = document.getElementById('ring-val-fitness');
+            const watVal = document.getElementById('ring-val-water');
+            const ttVal  = document.getElementById('ring-val-tiktok');
+
+            if (fitVal) fitVal.innerText = `${stats.fitnessPct}%`;
+            if (watVal) watVal.innerText = `${stats.waterPct}%`;
+            if (ttVal)  ttVal.innerText  = `${stats.tiktokPct}%`;
+
+            const fitDesc = document.getElementById('ring-desc-fitness');
+            const watDesc = document.getElementById('ring-desc-water');
+            const ttDesc  = document.getElementById('ring-desc-tiktok');
+
+            if (fitDesc) fitDesc.innerText = `${stats.completedW} di ${stats.totalW} Esercizi Tic Fatto`;
+            if (watDesc) watDesc.innerText = `${stats.water} / ${stats.waterGoal} ml`;
+            if (ttDesc)  ttDesc.innerText  = `${stats.doneTT} di ${stats.totalTT} Video Registrati/Pubblicati`;
+
+            const dateLabel = document.getElementById('active-day-label');
+            if (dateLabel) {
+                if (selectedDateStr === getTodayStr()) dateLabel.innerText = 'Oggi';
+                else dateLabel.innerText = selectedDateStr;
+            }
+        }
+
         function renderAll() {
             if (!appData) return;
             renderHeaderDate();
             renderAccountHeader();
+            renderWeeklyRingsStrip();
+            renderActivityRingsWidget();
             renderTopCards();
             renderUniSection();
             renderFitnessSection();
@@ -890,10 +1188,21 @@
 
         function renderHeaderDate() {
             const el = document.getElementById('today-date-text');
-            if (el) {
-                const now = new Date();
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                el.innerText = now.toLocaleDateString('it-IT', options);
+            const selDisp = document.getElementById('selected-date-display');
+            const dateInput = document.getElementById('date-picker-input');
+            const goTodayBtn = document.getElementById('btn-go-today');
+
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            if (el) el.innerText = now.toLocaleDateString('it-IT', options);
+
+            const selDateObj = new Date(selectedDateStr);
+            if (selDisp) selDisp.innerText = selDateObj.toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'short' });
+            if (dateInput) dateInput.value = selectedDateStr;
+
+            if (goTodayBtn) {
+                if (selectedDateStr === getTodayStr()) goTodayBtn.classList.add('hidden');
+                else goTodayBtn.classList.remove('hidden');
             }
         }
 
@@ -903,19 +1212,21 @@
         }
 
         function renderTopCards() {
+            const log = getCurrentDayLog();
             const waterEl = document.getElementById('top-water-display');
-            if (waterEl) waterEl.innerText = `${(appData.water / 1000).toFixed(1)} / ${(appData.waterGoal / 1000).toFixed(1)} L`;
+            if (waterEl) waterEl.innerText = `${(log.water / 1000).toFixed(1)} / ${(appData.waterGoal / 1000).toFixed(1)} L`;
 
             const weightEl = document.getElementById('top-weight-display');
             if (weightEl) weightEl.innerText = `${appData.weight.toFixed(1)} kg`;
 
             const workoutEl = document.getElementById('top-workout-display');
-            const doneCount = appData.workouts ? appData.workouts.filter(w => w.completed).length : 0;
-            if (workoutEl) workoutEl.innerText = `${doneCount} / ${appData.workouts ? appData.workouts.length : 0}`;
+            const doneCount = log.workouts ? log.workouts.filter(w => w.completed).length : 0;
+            if (workoutEl) workoutEl.innerText = `${doneCount} / ${log.workouts ? log.workouts.length : 0}`;
 
             const lessonsEl = document.getElementById('top-lessons-display');
-            const todayDay = new Date().toLocaleDateString('it-IT', { weekday: 'long' });
-            const capitalizedDay = todayDay.charAt(0).toUpperCase() + todayDay.slice(1);
+            const selDateObj = new Date(selectedDateStr);
+            const dayName = selDateObj.toLocaleDateString('it-IT', { weekday: 'long' });
+            const capitalizedDay = dayName.charAt(0).toUpperCase() + dayName.slice(1);
             const todayLessons = appData.schedule && appData.schedule[capitalizedDay] ? appData.schedule[capitalizedDay].length : 0;
             if (lessonsEl) lessonsEl.innerText = `${todayLessons} Lezioni`;
         }
@@ -959,6 +1270,7 @@
         }
 
         function renderFitnessSection() {
+            const log = getCurrentDayLog();
             const weightValEl = document.getElementById('current-weight-val');
             if (weightValEl) weightValEl.innerHTML = `${appData.weight.toFixed(1)} <span class="text-xs text-slate-400">kg</span>`;
 
@@ -966,13 +1278,13 @@
             if (badgeEl) badgeEl.innerText = `Peso: ${appData.weight.toFixed(1)} kg`;
 
             const checklistContainer = document.getElementById('workout-checklist');
-            const doneCount = appData.workouts ? appData.workouts.filter(w => w.completed).length : 0;
+            const doneCount = log.workouts ? log.workouts.filter(w => w.completed).length : 0;
 
             const progressBadge = document.getElementById('workout-progress-badge');
-            if (progressBadge) progressBadge.innerText = `${doneCount}/${appData.workouts ? appData.workouts.length : 0} Completati`;
+            if (progressBadge) progressBadge.innerText = `${doneCount}/${log.workouts ? log.workouts.length : 0} Completati`;
 
             if (checklistContainer) {
-                checklistContainer.innerHTML = appData.workouts.map(item => `
+                checklistContainer.innerHTML = log.workouts.map(item => `
                     <div onclick="toggleWorkout(${item.id})" class="p-2.5 rounded-xl border transition cursor-pointer flex items-center justify-between ${item.completed ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300' : 'bg-dark-950 border-slate-800 hover:border-slate-700 text-slate-300'}">
                         <div class="space-y-0.5 pr-2">
                             <p class="font-bold text-xs ${item.completed ? 'line-through text-emerald-400' : 'text-white'}">${item.name}</p>
@@ -987,10 +1299,13 @@
         }
 
         function toggleWorkout(id) {
-            const item = appData.workouts.find(w => w.id === id);
+            const log = getCurrentDayLog();
+            const item = log.workouts.find(w => w.id === id);
             if (item) {
                 item.completed = !item.completed;
                 saveData();
+                renderWeeklyRingsStrip();
+                renderActivityRingsWidget();
                 renderTopCards();
                 renderFitnessSection();
             }
@@ -1004,7 +1319,7 @@
                     appData.weight = val;
                     if (!appData.weightHistory) appData.weightHistory = [];
                     appData.weightHistory.push({
-                        date: new Date().toISOString().split('T')[0],
+                        date: selectedDateStr,
                         weight: val
                     });
                     saveData();
@@ -1143,44 +1458,69 @@
                     status: statusSelect.value
                 });
             }
-            saveData(); renderTikTokSection(); closeModal('modal-tiktok'); showToast('Idea TikTok salvata!');
+            saveData();
+            renderWeeklyRingsStrip();
+            renderActivityRingsWidget();
+            renderTikTokSection();
+            closeModal('modal-tiktok');
+            showToast('Idea TikTok salvata!');
         }
 
         function deleteTikTokIdea(id) {
             appData.tiktokIdeas = appData.tiktokIdeas.filter(t => t.id !== id);
-            saveData(); renderTikTokSection(); showToast('Video rimosso');
+            saveData();
+            renderWeeklyRingsStrip();
+            renderActivityRingsWidget();
+            renderTikTokSection();
+            showToast('Video rimosso');
         }
 
         function renderWaterSection() {
-            const pct = Math.min(100, Math.round((appData.water / appData.waterGoal) * 100));
+            const log = getCurrentDayLog();
+            const pct = Math.min(100, Math.round((log.water / appData.waterGoal) * 100));
             const fillEl = document.getElementById('water-fill-level');
             if (fillEl) fillEl.style.height = `${pct}%`;
             const pctText = document.getElementById('water-percentage');
             if (pctText) pctText.innerText = `${pct}% Raggiunto`;
             const textAmount = document.getElementById('water-text-amount');
-            if (textAmount) textAmount.innerHTML = `${appData.water} <span class="text-xs text-slate-400">/ 3500 ml</span>`;
+            if (textAmount) textAmount.innerHTML = `${log.water} <span class="text-xs text-slate-400">/ 3500 ml</span>`;
             const summaryBadge = document.getElementById('water-summary-badge');
-            if (summaryBadge) summaryBadge.innerText = `${appData.water} / 3500 ml`;
+            if (summaryBadge) summaryBadge.innerText = `${log.water} / 3500 ml`;
         }
 
         function addWater(amount) {
-            appData.lastWaterAdded = amount;
-            appData.water = Math.min(6000, appData.water + amount);
-            saveData(); renderTopCards(); renderWaterSection();
+            const log = getCurrentDayLog();
+            log.lastWaterAdded = amount;
+            log.water = Math.min(6000, log.water + amount);
+            saveData();
+            renderWeeklyRingsStrip();
+            renderActivityRingsWidget();
+            renderTopCards();
+            renderWaterSection();
             showToast(`+${amount} ml d'acqua registrati! 🥤`);
         }
 
         function undoWater() {
-            if (appData.water > 0) {
-                appData.water = Math.max(0, appData.water - (appData.lastWaterAdded || 200));
-                saveData(); renderTopCards(); renderWaterSection();
-                showToast(`Annullati -${appData.lastWaterAdded || 200} ml`);
+            const log = getCurrentDayLog();
+            if (log.water > 0) {
+                log.water = Math.max(0, log.water - (log.lastWaterAdded || 200));
+                saveData();
+                renderWeeklyRingsStrip();
+                renderActivityRingsWidget();
+                renderTopCards();
+                renderWaterSection();
+                showToast(`Annullati -${log.lastWaterAdded || 200} ml`);
             }
         }
 
         function resetWater() {
-            appData.water = 0;
-            saveData(); renderTopCards(); renderWaterSection();
+            const log = getCurrentDayLog();
+            log.water = 0;
+            saveData();
+            renderWeeklyRingsStrip();
+            renderActivityRingsWidget();
+            renderTopCards();
+            renderWaterSection();
             showToast('Contatore acqua azzerato');
         }
 
@@ -1216,14 +1556,6 @@
                     }
                 }
             });
-        }
-
-        function toggleAllSections(expand) {
-            if (!appData.sectionsState) appData.sectionsState = {};
-            ['sec-uni', 'sec-fit', 'sec-tiktok', 'sec-water'].forEach(id => {
-                appData.sectionsState[id] = expand;
-            });
-            saveData(); applySectionsState();
         }
 
         function openWeightModal() {
