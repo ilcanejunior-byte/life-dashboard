@@ -815,8 +815,15 @@
                 <button onclick="closeModal('modal-quick-create')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <!-- PAGINATED CONTAINER (2 PAGES CAROUSEL) -->
-            <div class="overflow-hidden relative w-full">
+            <!-- PAGINATED CONTAINER (2 PAGES CAROUSEL WITH SWIPE SUPPORT) -->
+            <div class="overflow-hidden relative w-full touch-pan-y"
+                 ontouchstart="handleQuickSwipeStart(event)"
+                 ontouchmove="handleQuickSwipeMove(event)"
+                 ontouchend="handleQuickSwipeEnd(event)"
+                 onmousedown="handleQuickSwipeStart(event)"
+                 onmousemove="handleQuickSwipeMove(event)"
+                 onmouseup="handleQuickSwipeEnd(event)"
+                 onmouseleave="handleQuickSwipeEnd(event)">
                 <div id="quick-create-carousel" class="flex transition-transform duration-300 ease-out w-full">
                     
                     <!-- PAGE 1: EXISTING 4 OPTIONS -->
@@ -1561,6 +1568,7 @@
 
         // BOTTOM SHEETS OPEN/CLOSE CONTROLLERS
         let currentQuickPage = 0;
+        let quickSwipeState = { startX: 0, currentDelta: 0, isDragging: false };
 
         function openQuickCreateSheet() { 
             setQuickCreatePage(0);
@@ -1568,23 +1576,61 @@
         }
 
         function setQuickCreatePage(pageIndex) {
-            currentQuickPage = pageIndex;
+            currentQuickPage = Math.max(0, Math.min(1, pageIndex));
             const carousel = document.getElementById('quick-create-carousel');
             const dot0 = document.getElementById('quick-dot-0');
             const dot1 = document.getElementById('quick-dot-1');
 
             if (carousel) {
-                carousel.style.transform = `translateX(-${pageIndex * 100}%)`;
+                carousel.style.transition = 'transform 0.3s ease-out';
+                carousel.style.transform = `translateX(-${currentQuickPage * 100}%)`;
             }
 
             if (dot0 && dot1) {
-                if (pageIndex === 0) {
+                if (currentQuickPage === 0) {
                     dot0.className = 'w-5 h-2.5 rounded-full bg-cyan-400 transition-all duration-300';
                     dot1.className = 'w-2.5 h-2.5 rounded-full bg-white/20 transition-all duration-300';
                 } else {
                     dot0.className = 'w-2.5 h-2.5 rounded-full bg-white/20 transition-all duration-300';
                     dot1.className = 'w-5 h-2.5 rounded-full bg-pink-400 transition-all duration-300';
                 }
+            }
+        }
+
+        function handleQuickSwipeStart(e) {
+            quickSwipeState.startX = e.touches ? e.touches[0].clientX : e.clientX;
+            quickSwipeState.isDragging = true;
+            quickSwipeState.currentDelta = 0;
+            const carousel = document.getElementById('quick-create-carousel');
+            if (carousel) {
+                carousel.style.transition = 'none';
+            }
+        }
+
+        function handleQuickSwipeMove(e) {
+            if (!quickSwipeState.isDragging) return;
+            const currentX = e.touches ? e.touches[0].clientX : e.clientX;
+            quickSwipeState.currentDelta = currentX - quickSwipeState.startX;
+            const carousel = document.getElementById('quick-create-carousel');
+            if (carousel) {
+                const containerWidth = carousel.parentElement ? carousel.parentElement.clientWidth : 300;
+                const basePercent = -currentQuickPage * 100;
+                const dragPercent = (quickSwipeState.currentDelta / containerWidth) * 100;
+                carousel.style.transform = `translateX(${basePercent + dragPercent}%)`;
+            }
+        }
+
+        function handleQuickSwipeEnd(e) {
+            if (!quickSwipeState.isDragging) return;
+            quickSwipeState.isDragging = false;
+            
+            const threshold = 40;
+            if (quickSwipeState.currentDelta < -threshold && currentQuickPage === 0) {
+                setQuickCreatePage(1);
+            } else if (quickSwipeState.currentDelta > threshold && currentQuickPage === 1) {
+                setQuickCreatePage(0);
+            } else {
+                setQuickCreatePage(currentQuickPage);
             }
         }
 
