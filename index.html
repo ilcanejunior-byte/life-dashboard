@@ -8,12 +8,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Lord Tracker">
     <meta name="application-name" content="Lord Tracker">
-    <meta name="theme-color" content="#0b0f19">
+    <meta name="theme-color" content="#070a12">
     
     <title>LORD TRACKER • Activity & Life Hub</title>
     
-    <!-- FAVICON -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322c55e'/%3E%3Cstop offset='50%25' stop-color='%2306b6d4'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%230b0f19'/%3E%3Ccircle cx='50' cy='50' r='38' stroke='%2322c55e' stroke-width='4' fill='none' stroke-dasharray='5 2' opacity='0.5'/%3E%3Ccircle cx='50' cy='50' r='30' stroke='%2306b6d4' stroke-width='4' fill='none' opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='22' stroke='%23ec4899' stroke-width='4' fill='none' opacity='0.8'/%3E%3Cpath d='M42 32 V62 H58' stroke='url(%23g)' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M42 32 V62 H58' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.9'/%3E%3C/svg%3E">
+    <!-- FAVICON CON LA "L" E GLI ANELLI DI ATTIVITÀ -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322c55e'/%3E%3Cstop offset='50%25' stop-color='%2306b6d4'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%23070a12'/%3E%3Ccircle cx='50' cy='50' r='38' stroke='%2322c55e' stroke-width='4' fill='none' stroke-dasharray='5 2' opacity='0.5'/%3E%3Ccircle cx='50' cy='50' r='30' stroke='%2306b6d4' stroke-width='4' fill='none' opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='22' stroke='%23ec4899' stroke-width='4' fill='none' opacity='0.8'/%3E%3Cpath d='M42 32 V62 H58' stroke='url(%23g)' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M42 32 V62 H58' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.9'/%3E%3C/svg%3E">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -59,32 +59,43 @@
             height: 100%;
         }
         
-        /* Clean Glass Card Component Styling */
+        /* Clean Glassmorphism & Hover Depth Styling */
         .glass-card {
-            background: rgba(255, 255, 255, 0.035);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.015) 100%);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
-        }
-        .glass-card-hover {
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .glass-card-hover:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.15);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
         }
         
+        /* Hover Glow Effects */
+        .glass-card-hover:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+        .glow-cyan:hover { box-shadow: 0 8px 24px -4px rgba(6, 182, 212, 0.25); border-color: rgba(6, 182, 212, 0.4); }
+        .glow-emerald:hover { box-shadow: 0 8px 24px -4px rgba(34, 197, 94, 0.25); border-color: rgba(34, 197, 94, 0.4); }
+        .glow-pink:hover { box-shadow: 0 8px 24px -4px rgba(236, 72, 153, 0.25); border-color: rgba(236, 72, 153, 0.4); }
+        .glow-indigo:hover { box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.25); border-color: rgba(99, 102, 241, 0.4); }
+        
         .glass-nav {
-            background: rgba(7, 10, 18, 0.88);
+            background: rgba(7, 10, 18, 0.90);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-bottom-nav {
+            background: rgba(7, 10, 18, 0.92);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        /* Animated SVG Rings */
+        /* Animated SVG Activity Rings */
         .ring-circle {
-            transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
             transform: rotate(-90deg);
             transform-origin: 50% 50%;
         }
@@ -92,7 +103,7 @@
             transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Swipe Card Actions */
+        /* Dual-Direction Swipe Container System */
         .swipe-container {
             position: relative;
             overflow: hidden;
@@ -100,11 +111,18 @@
             width: 100%;
             touch-action: pan-y;
         }
-        .swipe-actions {
+        .swipe-actions-left {
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            display: flex; align-items: center;
+            padding-left: 0.75rem;
+            z-index: 5;
+        }
+        .swipe-actions-right {
             position: absolute;
             top: 0; right: 0; bottom: 0;
             display: flex; align-items: center;
-            gap: 0.5rem; padding-right: 0.5rem;
+            gap: 0.5rem; padding-right: 0.75rem;
             z-index: 5;
         }
         .swipe-card {
@@ -145,23 +163,26 @@
             }
         }
 
-        /* Custom Checkbox Micro-Interactions */
+        /* Custom Micro-Interactions */
         .check-circle-anim {
             transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .check-circle-anim:active {
-            transform: scale(0.85);
+            transform: scale(0.82);
         }
 
         /* Custom Scrollbars */
         ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
+            width: 5px;
+            height: 5px;
         }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.15);
             border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
         }
     </style>
 </head>
@@ -265,7 +286,7 @@
                     </div>
                     <div class="truncate">
                         <p id="desk-user-name" class="text-xs font-extrabold text-white truncate">lord arts</p>
-                        <p class="text-[9px] text-emerald-400 font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Cloud Attivo</p>
+                        <p id="storage-status-text-desk" class="text-[9px] text-emerald-400 font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Cloud Attivo</p>
                     </div>
                 </div>
                 <button onclick="openAccountModal()" title="Impostazioni Account" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center text-xs transition">
@@ -277,22 +298,24 @@
         <!-- CONTENT CONTAINER AREA -->
         <div class="flex-1 flex flex-col min-w-0 pb-24 lg:pb-8">
 
-            <!-- HEADER NAVIGATION BAR -->
+            <!-- CLEAN HEADER NAVIGATION BAR -->
             <header class="sticky top-0 z-30 glass-nav px-4 py-3 flex items-center justify-between shadow-lg">
+                <!-- Left Header: Greeting & Profile Avatar -->
                 <div class="flex items-center space-x-3">
-                    <!-- Mobile Account Quick Icon -->
-                    <button onclick="openAccountModal()" class="lg:hidden w-8 h-8 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xs shadow-md">
-                        <i class="fa-solid fa-user"></i>
-                    </button>
+                    <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xs shadow-md shadow-cyan-500/20">
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </div>
                     <div>
-                        <span id="header-user-name" class="lg:hidden text-xs font-black text-white block">lord arts</span>
-                        <p id="today-date-text" class="text-[11px] text-slate-400 font-medium">Caricamento...</p>
+                        <h2 id="header-greeting-text" class="text-xs sm:text-sm font-black text-white tracking-tight flex items-center gap-1.5">
+                            Dashboard — Ciao <span id="header-user-name" class="text-cyan-400">lord arts</span> 👋
+                        </h2>
+                        <p id="today-date-text" class="text-[10px] text-slate-400 font-medium">Caricamento data...</p>
                     </div>
                 </div>
 
-                <!-- Date Navigation Trigger & Calendar Button -->
+                <!-- Right Header Cluster: Apple Date Picker, Cloud Sync & Settings -->
                 <div class="flex items-center space-x-1.5 sm:space-x-2">
-                    <button onclick="changeSelectedDate(-1)" class="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/10 text-white flex items-center justify-center text-xs transition active:scale-95">
+                    <button onclick="changeSelectedDate(-1)" title="Giorno Precedente" class="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/10 text-white flex items-center justify-center text-xs transition active:scale-95 border border-white/5">
                         <i class="fa-solid fa-chevron-left text-cyan-400"></i>
                     </button>
 
@@ -303,7 +326,7 @@
                         <i class="fa-solid fa-caret-down text-[10px] text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
                     </button>
 
-                    <button onclick="changeSelectedDate(1)" class="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/10 text-white flex items-center justify-center text-xs transition active:scale-95">
+                    <button onclick="changeSelectedDate(1)" title="Giorno Successivo" class="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/10 text-white flex items-center justify-center text-xs transition active:scale-95 border border-white/5">
                         <i class="fa-solid fa-chevron-right text-cyan-400"></i>
                     </button>
 
@@ -311,7 +334,7 @@
                         Oggi
                     </button>
 
-                    <button onclick="openHistoryModal()" title="Storico Progressi" class="w-8 h-8 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-300 flex items-center justify-center text-xs transition ml-1">
+                    <button onclick="openHistoryModal()" title="Storico Progressi" class="w-8 h-8 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-300 flex items-center justify-center text-xs transition border border-white/5">
                         <i class="fa-solid fa-clock-rotate-left"></i>
                     </button>
                     
@@ -321,194 +344,214 @@
                 </div>
             </header>
 
-            <!-- MAIN TAB VIEW PAGES -->
-            <main class="max-w-5xl w-full mx-auto px-4 pt-4 space-y-4 flex-grow">
+            <!-- MAIN PAGES DISPLAY -->
+            <main class="max-w-6xl w-full mx-auto px-3 sm:px-6 pt-4 flex-grow">
 
-                <!-- 1. TAB DASHBOARD (HOME / COMMAND HUB) -->
+                <!-- 1. TAB DASHBOARD (HOME / COMMAND HUB - 2 COLUMNS ON DESKTOP) -->
                 <div id="tab-dashboard" class="space-y-4">
                     
-                    <!-- Activity Rings Concentric Command Hub Card -->
-                    <section class="glass-card p-5 border border-white/10 relative overflow-hidden">
-                        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+                    <!-- 2-COLUMN RESPONSIVE LAYOUT FOR DESKTOP (lg:grid-cols-12) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+                        
+                        <!-- LEFT COLUMN (60% width on Desktop: lg:col-span-7) -->
+                        <div class="lg:col-span-7 space-y-4">
                             
-                            <!-- SVG Activity Rings Graphic -->
-                            <div class="md:col-span-5 flex flex-col items-center justify-center relative">
-                                <div class="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center">
-                                    <svg class="w-full h-full" viewBox="0 0 180 180">
-                                        <defs>
-                                            <linearGradient id="grad-fitness" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                <stop offset="0%" stop-color="#22c55e" />
-                                                <stop offset="100%" stop-color="#4ade80" />
-                                            </linearGradient>
-                                            <linearGradient id="grad-water" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                <stop offset="0%" stop-color="#06b6d4" />
-                                                <stop offset="100%" stop-color="#38bdf8" />
-                                            </linearGradient>
-                                            <linearGradient id="grad-tiktok" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                <stop offset="0%" stop-color="#ec4899" />
-                                                <stop offset="100%" stop-color="#f43f5e" />
-                                            </linearGradient>
-                                        </defs>
+                            <!-- Activity Rings Command Hub Card -->
+                            <section class="glass-card p-5 border border-white/10 relative overflow-hidden">
+                                <div class="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center">
+                                    
+                                    <!-- Animated SVG Activity Rings Graphic -->
+                                    <div class="sm:col-span-5 flex flex-col items-center justify-center relative">
+                                        <div class="relative w-44 h-44 sm:w-52 sm:h-52 flex items-center justify-center">
+                                            <svg class="w-full h-full" viewBox="0 0 180 180">
+                                                <defs>
+                                                    <linearGradient id="grad-fitness" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                        <stop offset="0%" stop-color="#22c55e" />
+                                                        <stop offset="100%" stop-color="#4ade80" />
+                                                    </linearGradient>
+                                                    <linearGradient id="grad-water" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                        <stop offset="0%" stop-color="#06b6d4" />
+                                                        <stop offset="100%" stop-color="#38bdf8" />
+                                                    </linearGradient>
+                                                    <linearGradient id="grad-tiktok" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                        <stop offset="0%" stop-color="#ec4899" />
+                                                        <stop offset="100%" stop-color="#f43f5e" />
+                                                    </linearGradient>
+                                                </defs>
 
-                                        <!-- Track Background Rings -->
-                                        <circle cx="90" cy="90" r="70" stroke="rgba(34, 197, 94, 0.15)" stroke-width="13" fill="none" />
-                                        <circle cx="90" cy="90" r="52" stroke="rgba(6, 182, 212, 0.15)" stroke-width="13" fill="none" />
-                                        <circle cx="90" cy="90" r="34" stroke="rgba(236, 72, 153, 0.15)" stroke-width="13" fill="none" />
+                                                <!-- Track Background Rings -->
+                                                <circle cx="90" cy="90" r="70" stroke="rgba(34, 197, 94, 0.15)" stroke-width="13" fill="none" />
+                                                <circle cx="90" cy="90" r="52" stroke="rgba(6, 182, 212, 0.15)" stroke-width="13" fill="none" />
+                                                <circle cx="90" cy="90" r="34" stroke="rgba(236, 72, 153, 0.15)" stroke-width="13" fill="none" />
 
-                                        <!-- Dynamic Animated Rings -->
-                                        <circle id="ring-fitness" class="ring-circle" cx="90" cy="90" r="70" stroke="url(#grad-fitness)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="439.82" stroke-dashoffset="439.82" />
-                                        <circle id="ring-water" class="ring-circle" cx="90" cy="90" r="52" stroke="url(#grad-water)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="326.72" stroke-dashoffset="326.72" />
-                                        <circle id="ring-tiktok" class="ring-circle" cx="90" cy="90" r="34" stroke="url(#grad-tiktok)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="213.63" stroke-dashoffset="213.63" />
-                                    </svg>
+                                                <!-- Dynamic Animated Rings -->
+                                                <circle id="ring-fitness" class="ring-circle" cx="90" cy="90" r="70" stroke="url(#grad-fitness)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="439.82" stroke-dashoffset="439.82" />
+                                                <circle id="ring-water" class="ring-circle" cx="90" cy="90" r="52" stroke="url(#grad-water)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="326.72" stroke-dashoffset="326.72" />
+                                                <circle id="ring-tiktok" class="ring-circle" cx="90" cy="90" r="34" stroke="url(#grad-tiktok)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="213.63" stroke-dashoffset="213.63" />
+                                            </svg>
 
-                                    <!-- Central Stats Percentage -->
-                                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                                        <span id="center-total-pct" class="text-3xl font-black text-white tracking-tighter">0%</span>
-                                        <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Chiusura Anelli</span>
+                                            <!-- Central Stats Percentage -->
+                                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                                <span id="center-total-pct" class="text-3xl font-black text-white tracking-tighter">0%</span>
+                                                <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Chiusura Anelli</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Activity Breakdown List -->
+                                    <div class="sm:col-span-7 space-y-2.5">
+                                        <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                                            <h3 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
+                                                <i class="fa-solid fa-chart-pie text-cyan-400"></i> Activity Rings
+                                            </h3>
+                                            <span id="active-day-label" class="text-[10px] font-extrabold text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full border border-cyan-500/20">Oggi</span>
+                                        </div>
+
+                                        <!-- Ring 1: Fitness -->
+                                        <div onclick="switchTab('fitness')" class="glass-card p-2.5 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover glow-emerald">
+                                            <div class="flex items-center space-x-2.5">
+                                                <div class="w-7 h-7 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold text-xs">
+                                                    🟢
+                                                </div>
+                                                <div>
+                                                    <p class="text-xs font-bold text-white">Fitness & Allenamento</p>
+                                                    <p id="ring-desc-fitness" class="text-[10px] text-slate-400">0 / 5 Completati</p>
+                                                </div>
+                                            </div>
+                                            <span id="ring-val-fitness" class="text-xs font-extrabold text-emerald-400">0%</span>
+                                        </div>
+
+                                        <!-- Ring 2: Idratazione -->
+                                        <div onclick="openWaterSheet()" class="glass-card p-2.5 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover glow-cyan">
+                                            <div class="flex items-center space-x-2.5">
+                                                <div class="w-7 h-7 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center font-bold text-xs">
+                                                    🔵
+                                                </div>
+                                                <div>
+                                                    <p class="text-xs font-bold text-white">Idratazione (3.5 L Target)</p>
+                                                    <p id="ring-desc-water" class="text-[10px] text-slate-400">0 / 3500 ml</p>
+                                                </div>
+                                            </div>
+                                            <span id="ring-val-water" class="text-xs font-extrabold text-cyan-400">0%</span>
+                                        </div>
+
+                                        <!-- Ring 3: TikTok / Content -->
+                                        <div onclick="switchTab('content')" class="glass-card p-2.5 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover glow-pink">
+                                            <div class="flex items-center space-x-2.5">
+                                                <div class="w-7 h-7 rounded-xl bg-pink-500/15 text-pink-400 flex items-center justify-center font-bold text-xs">
+                                                    💗
+                                                </div>
+                                                <div>
+                                                    <p class="text-xs font-bold text-white">TikTok Content Planner</p>
+                                                    <p id="ring-desc-tiktok" class="text-[10px] text-slate-400">0 Video Pronti</p>
+                                                </div>
+                                            </div>
+                                            <span id="ring-val-tiktok" class="text-xs font-extrabold text-pink-400">0%</span>
+                                        </div>
                                     </div>
                                 </div>
+                            </section>
+
+                            <!-- Priority Tasks Preview Card with Dual Swipe & Mouse Hover Buttons -->
+                            <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
+                                        <i class="fa-solid fa-list-check text-indigo-400"></i> Task Prioritarie della Giornata
+                                    </h3>
+                                    <button onclick="switchTab('planner')" class="text-[10px] text-indigo-400 font-bold hover:underline">Vedi Tutte &rarr;</button>
+                                </div>
+                                <div id="dash-priority-tasks-list" class="space-y-2"></div>
                             </div>
 
-                            <!-- Activity Breakdown List -->
-                            <div class="md:col-span-7 space-y-3">
-                                <div class="flex items-center justify-between border-b border-white/10 pb-2">
-                                    <h2 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
-                                        <i class="fa-solid fa-chart-pie text-cyan-400"></i> Activity Rings Hub
-                                    </h2>
-                                    <span id="active-day-label" class="text-[10px] font-extrabold text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full border border-cyan-500/20">Oggi</span>
+                            <!-- TikTok Content Preview Card -->
+                            <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
+                                        <i class="fa-brands fa-tiktok text-pink-400"></i> Idee Content TikTok In Scaletta
+                                    </h3>
+                                    <button onclick="switchTab('content')" class="text-[10px] text-pink-400 font-bold hover:underline">Gestisci &rarr;</button>
                                 </div>
+                                <div id="dash-tiktok-preview-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+                            </div>
 
-                                <!-- Ring 1: Fitness -->
-                                <div onclick="switchTab('fitness')" class="glass-card p-3 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer hover:bg-white/5 transition">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold text-sm">
-                                            🟢
+                        </div>
+
+                        <!-- RIGHT COLUMN (40% width on Desktop: lg:col-span-5) - VERTICAL COMMAND BOARD -->
+                        <div class="lg:col-span-5 space-y-4">
+                            
+                            <!-- INTEGRATED COMPACT 2x2 INTERACTIVE WATER WIDGET -->
+                            <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3 glow-cyan">
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-8 h-8 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center text-sm">
+                                            <i class="fa-solid fa-glass-water"></i>
                                         </div>
                                         <div>
-                                            <p class="text-xs font-bold text-white">Fitness & Allenamento</p>
-                                            <p id="ring-desc-fitness" class="text-[10px] text-slate-400">0 di 5 Esercizi Completati</p>
+                                            <h3 class="text-xs font-bold text-white uppercase tracking-wider">Acqua Data</h3>
+                                            <p id="top-water-display" class="text-sm font-black text-cyan-400">0 / 3.5 L</p>
                                         </div>
                                     </div>
-                                    <span id="ring-val-fitness" class="text-sm font-extrabold text-emerald-400">0%</span>
+                                    <span id="dash-water-pct-badge" class="text-[10px] font-extrabold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20">0%</span>
                                 </div>
 
-                                <!-- Ring 2: Idratazione -->
-                                <div onclick="openWaterSheet()" class="glass-card p-3 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer hover:bg-white/5 transition">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-8 h-8 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center font-bold text-sm">
-                                            🔵
-                                        </div>
-                                        <div>
-                                            <p class="text-xs font-bold text-white">Idratazione (Target 3.5 L)</p>
-                                            <p id="ring-desc-water" class="text-[10px] text-slate-400">0 / 3500 ml</p>
-                                        </div>
+                                <!-- Fast Add Water Buttons Inside Card -->
+                                <div class="grid grid-cols-3 gap-1.5 pt-1 border-t border-white/5">
+                                    <button onclick="addWater(200)" class="py-2 bg-indigo-600/80 hover:bg-indigo-600 text-white font-bold text-[11px] rounded-xl transition shadow-sm active:scale-95 flex items-center justify-center gap-1">
+                                        +200 ml
+                                    </button>
+                                    <button onclick="addWater(250)" class="py-2 bg-cyan-600/80 hover:bg-cyan-600 text-white font-bold text-[11px] rounded-xl transition shadow-sm active:scale-95 flex items-center justify-center gap-1">
+                                        +250 ml
+                                    </button>
+                                    <button onclick="addWater(500)" class="py-2 bg-blue-600/80 hover:bg-blue-600 text-white font-bold text-[11px] rounded-xl transition shadow-sm active:scale-95 flex items-center justify-center gap-1">
+                                        +500 ml
+                                    </button>
+                                </div>
+                                <div class="flex justify-between items-center pt-0.5">
+                                    <button onclick="undoWater()" class="text-[10px] text-amber-400 hover:underline flex items-center gap-1 font-semibold">
+                                        <i class="fa-solid fa-rotate-left"></i> Annulla ultimo (+200ml)
+                                    </button>
+                                    <button onclick="openWaterSheet()" class="text-[10px] text-slate-400 hover:text-white underline">Dettagli &rarr;</button>
+                                </div>
+                            </div>
+
+                            <!-- WEIGHT TRACKER CARD -->
+                            <div onclick="openWeightModal()" class="glass-card p-4 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover glow-emerald">
+                                <div class="space-y-0.5">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Peso Registrato</span>
+                                        <span class="text-[9px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.2 rounded-full border border-emerald-500/20">Target: 95 kg</span>
                                     </div>
-                                    <span id="ring-val-water" class="text-sm font-extrabold text-cyan-400">0%</span>
+                                    <p id="top-weight-display" class="text-xl font-black text-emerald-400">118.0 kg</p>
+                                    <p class="text-[10px] text-amber-300 italic"><i class="fa-solid fa-bell mr-1 text-amber-400"></i>Pesata di controllo il Venerdì a digiuno</p>
                                 </div>
-
-                                <!-- Ring 3: TikTok / Content -->
-                                <div onclick="switchTab('content')" class="glass-card p-3 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer hover:bg-white/5 transition">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-8 h-8 rounded-xl bg-pink-500/15 text-pink-400 flex items-center justify-center font-bold text-sm">
-                                            💗
-                                        </div>
-                                        <div>
-                                            <p class="text-xs font-bold text-white">TikTok & Content Planner</p>
-                                            <p id="ring-desc-tiktok" class="text-[10px] text-slate-400">0 Video registrati/pubblicati</p>
-                                        </div>
-                                    </div>
-                                    <span id="ring-val-tiktok" class="text-sm font-extrabold text-pink-400">0%</span>
+                                <div class="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-lg shrink-0">
+                                    <i class="fa-solid fa-weight-scale"></i>
                                 </div>
                             </div>
-                        </div>
-                    </section>
 
-                    <!-- Quick Summary Row Cards -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <!-- Water Stat Card -->
-                        <div onclick="openWaterSheet()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover">
-                            <div>
-                                <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Acqua Data</p>
-                                <p id="top-water-display" class="text-sm sm:text-base font-extrabold text-cyan-400 mt-0.5">0 / 3.5 L</p>
+                            <!-- TASKS OVERVIEW CARD -->
+                            <div onclick="switchTab('planner')" class="glass-card p-4 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover glow-indigo">
+                                <div>
+                                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Avanzamento Task Data</p>
+                                    <p id="top-tasks-display" class="text-lg font-black text-indigo-400 mt-0.5">0 / 0 Completati</p>
+                                </div>
+                                <div class="w-9 h-9 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-list-check"></i>
+                                </div>
                             </div>
-                            <div class="w-9 h-9 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center text-sm">
-                                <i class="fa-solid fa-glass-water"></i>
-                            </div>
-                        </div>
 
-                        <!-- Weight Stat Card -->
-                        <div onclick="openWeightModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover">
-                            <div>
-                                <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Peso Attuale</p>
-                                <p id="top-weight-display" class="text-sm sm:text-base font-extrabold text-emerald-400 mt-0.5">118.0 kg</p>
+                            <!-- UPCOMING LESSONS SUMMARY CARD -->
+                            <div onclick="switchTab('planner')" class="glass-card p-4 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover">
+                                <div>
+                                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Lezioni Orario del Giorno</p>
+                                    <p id="top-lessons-display" class="text-lg font-black text-amber-400 mt-0.5">0 Lezioni</p>
+                                </div>
+                                <div class="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-sm">
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                </div>
                             </div>
-                            <div class="w-9 h-9 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-sm">
-                                <i class="fa-solid fa-weight-scale"></i>
-                            </div>
-                        </div>
 
-                        <!-- Tasks Stat Card -->
-                        <div onclick="switchTab('planner')" class="glass-card p-3.5 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover">
-                            <div>
-                                <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Task Data</p>
-                                <p id="top-tasks-display" class="text-sm sm:text-base font-extrabold text-indigo-400 mt-0.5">0 / 0</p>
-                            </div>
-                            <div class="w-9 h-9 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center text-sm">
-                                <i class="fa-solid fa-list-check"></i>
-                            </div>
                         </div>
-
-                        <!-- Lessons Stat Card -->
-                        <div onclick="switchTab('planner')" class="glass-card p-3.5 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover">
-                            <div>
-                                <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Lezioni Data</p>
-                                <p id="top-lessons-display" class="text-sm sm:text-base font-extrabold text-amber-400 mt-0.5">0 Lezioni</p>
-                            </div>
-                            <div class="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-sm">
-                                <i class="fa-solid fa-graduation-cap"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Hydration Fast Action Widget -->
-                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
-                                <i class="fa-solid fa-droplet text-cyan-400"></i> Idratazione Rapida (3.5L Target)
-                            </h3>
-                            <span id="dash-water-pct-badge" class="text-[10px] font-extrabold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20">0%</span>
-                        </div>
-                        <div class="flex items-center justify-between flex-wrap gap-2 bg-black/40 p-3 rounded-2xl border border-white/5">
-                            <div>
-                                <p class="text-[11px] text-slate-400">Acqua Bevuta Oggi</p>
-                                <p id="dash-water-text" class="text-xl font-extrabold text-white">0 <span class="text-xs text-slate-400">/ 3500 ml</span></p>
-                            </div>
-                            <div class="flex gap-2 flex-wrap">
-                                <button onclick="addWater(200)" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-indigo-600/20 active:scale-95 flex items-center gap-1">
-                                    +200 ml
-                                </button>
-                                <button onclick="addWater(250)" class="px-3 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-cyan-600/20 active:scale-95">
-                                    +250 ml
-                                </button>
-                                <button onclick="addWater(500)" class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-blue-600/20 active:scale-95">
-                                    +500 ml
-                                </button>
-                                <button onclick="undoWater()" class="px-2.5 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs rounded-xl border border-amber-500/30 transition flex items-center gap-1 font-semibold active:scale-95">
-                                    <i class="fa-solid fa-rotate-left"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Priority Tasks Preview Card -->
-                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
-                                <i class="fa-solid fa-list-check text-indigo-400"></i> Task Prioritarie della Giornata
-                            </h3>
-                            <button onclick="switchTab('planner')" class="text-[10px] text-indigo-400 font-bold hover:underline">Vedi Tutte &rarr;</button>
-                        </div>
-                        <div id="dash-priority-tasks-list" class="space-y-2"></div>
                     </div>
 
                 </div>
@@ -517,13 +560,13 @@
                 <div id="tab-planner" class="space-y-4 hidden">
                     
                     <!-- Task & Checklist Section -->
-                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
+                    <div class="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3">
                         <div class="flex justify-between items-center flex-wrap gap-2 border-b border-white/10 pb-3">
                             <div>
-                                <h2 class="font-bold text-sm text-white flex items-center gap-2">
+                                <h2 class="font-bold text-sm sm:text-base text-white flex items-center gap-2">
                                     <i class="fa-solid fa-list-check text-indigo-400"></i> Checklist Task Giornaliere
                                 </h2>
-                                <p class="text-[10px] text-slate-400">Attività ricorrenti o specifiche della data</p>
+                                <p class="text-[10px] text-slate-400">Swipa a destra per completare, a sinistra per gestire, o usa i tasti hover su PC</p>
                             </div>
                             <button onclick="openTaskModal()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-indigo-600/20">
                                 <i class="fa-solid fa-plus text-xs"></i> Nuova Task
@@ -544,13 +587,13 @@
                     </div>
 
                     <!-- School / Uni Timetable Section -->
-                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
+                    <div class="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3">
                         <div class="flex justify-between items-center flex-wrap gap-2 border-b border-white/10 pb-3">
                             <div>
-                                <h2 class="font-bold text-sm text-white flex items-center gap-2">
+                                <h2 class="font-bold text-sm sm:text-base text-white flex items-center gap-2">
                                     <i class="fa-solid fa-graduation-cap text-blue-400"></i> Orario Lezioni & Materie
                                 </h2>
-                                <p class="text-[10px] text-slate-400">Pianificazione per giorno della settimana</p>
+                                <p class="text-[10px] text-slate-400">Pianificazione lezioni e corsi per giorno della settimana</p>
                             </div>
                             <button onclick="openScheduleModal()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-blue-600/20">
                                 <i class="fa-solid fa-plus text-xs"></i> Nuova Lezione
@@ -570,10 +613,10 @@
                 <div id="tab-fitness" class="space-y-4 hidden">
                     
                     <!-- Weight & Target Card -->
-                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-4">
+                    <div class="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 space-y-4">
                         <div class="flex justify-between items-center">
                             <div>
-                                <h2 class="font-bold text-sm text-white flex items-center gap-2">
+                                <h2 class="font-bold text-sm sm:text-base text-white flex items-center gap-2">
                                     <i class="fa-solid fa-weight-scale text-emerald-400"></i> Tracker Peso & Forma
                                 </h2>
                                 <p class="text-[10px] text-slate-400">Obiettivo Dimagrimento | Target: 95.0 kg</p>
@@ -609,9 +652,9 @@
                     </div>
 
                     <!-- Daily Exercises Checklist -->
-                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
+                    <div class="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3">
                         <div class="flex justify-between items-center">
-                            <h2 class="font-bold text-sm text-white flex items-center gap-2">
+                            <h2 class="font-bold text-sm sm:text-base text-white flex items-center gap-2">
                                 <i class="fa-solid fa-dumbbell text-emerald-400"></i> Esercizi della Data ("Tic Fatto")
                             </h2>
                             <span id="workout-progress-badge" class="text-[10px] font-extrabold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">0/5 Completati</span>
@@ -624,13 +667,13 @@
                 <!-- 4. TAB CONTENT (TIKTOK PLANNER) -->
                 <div id="tab-content" class="space-y-4 hidden">
                     
-                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
+                    <div class="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3">
                         <div class="flex justify-between items-center flex-wrap gap-2 border-b border-white/10 pb-3">
                             <div>
-                                <h2 class="font-bold text-sm text-white flex items-center gap-2">
+                                <h2 class="font-bold text-sm sm:text-base text-white flex items-center gap-2">
                                     <i class="fa-brands fa-tiktok text-pink-400"></i> TikTok Live & Content Planner
                                 </h2>
-                                <p class="text-[10px] text-slate-400">Idee video, ganci (hook) e stato di pubblicazione</p>
+                                <p class="text-[10px] text-slate-400">Swipa a destra per contrassegnare come "Registrato/Pubblicato", a sinistra per opzioni</p>
                             </div>
                             <button onclick="openTikTokModal()" class="px-3 py-1.5 bg-pink-600 hover:bg-pink-500 text-white rounded-2xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-pink-600/20">
                                 <i class="fa-solid fa-plus text-xs"></i> Nuova Idea
@@ -648,7 +691,7 @@
     </div>
 
     <!-- MOBILE BOTTOM NAVIGATION BAR (FIXED AT BOTTOM) -->
-    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-nav px-3 py-2 flex items-center justify-around">
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-bottom-nav px-3 py-2 flex items-center justify-around">
         <button onclick="switchTab('dashboard')" id="mob-nav-dashboard" class="flex flex-col items-center gap-1 text-cyan-400 font-bold transition">
             <i class="fa-solid fa-house text-base"></i>
             <span class="text-[9px]">Home</span>
@@ -1079,7 +1122,7 @@
 
             const defaultRecurringTasks = [
                 { id: 't1', title: 'Bere 3.5 Litri di acqua', category: 'Salute', isRecurring: true },
-                { id: 't2', title: 'Completare l\'allenamento del giorno', category: 'Salute', isRecurring: true },
+                { id: 't2', title: 'Completare allenamento del giorno', category: 'Salute', isRecurring: true },
                 { id: 't3', title: 'Revisione orario lezioni & studio', category: 'Studio', isRecurring: true }
             ];
 
@@ -1130,7 +1173,8 @@
                 },
                 weightHistory: [{ date: today, weight: isLord ? 118.0 : 60.0 }],
                 tiktokIdeas: [
-                    { id: 101, title: 'Cosa mangio e come mi alleno all\'Università / Scuola', hook: 'Lo studio non è una scusa!', status: 'Da Registrare' }
+                    { id: 101, title: 'Cosa mangio e come mi alleno all\'Università / Scuola', hook: 'Lo studio non è una scusa!', status: 'Da Registrare' },
+                    { id: 102, title: 'Come organizzo la mia routine di studio', hook: 'Il segreto per voti alti', status: 'Registrato' }
                 ]
             };
         }
@@ -1338,7 +1382,7 @@
             }
         }
 
-        // TAB NAVIGATION SYSTEM (DESKTOP & MOBILE BOTTOM BAR)
+        // TAB NAVIGATION SYSTEM
         function switchTab(tabName) {
             currentTab = tabName;
             const tabs = ['dashboard', 'planner', 'fitness', 'content'];
@@ -1761,9 +1805,9 @@
             const watDesc = document.getElementById('ring-desc-water');
             const ttDesc  = document.getElementById('ring-desc-tiktok');
 
-            if (fitDesc) fitDesc.innerText = `${stats.completedW} di ${stats.totalW} Esercizi Completati`;
+            if (fitDesc) fitDesc.innerText = `${stats.completedW} / ${stats.totalW} Completati`;
             if (watDesc) watDesc.innerText = `${stats.water} / ${stats.waterGoal} ml`;
-            if (ttDesc)  ttDesc.innerText  = `${stats.doneTT} di ${stats.totalTT} Video Pronti/Pubblicati`;
+            if (ttDesc)  ttDesc.innerText  = `${stats.doneTT} / ${stats.totalTT} Pronti`;
 
             const dateLabel = document.getElementById('active-day-label');
             if (dateLabel) {
@@ -1782,7 +1826,7 @@
 
             const taskStats = getTaskCompletionStats(selectedDateStr);
             const tasksEl = document.getElementById('top-tasks-display');
-            if (tasksEl) tasksEl.innerText = `${taskStats.completed} / ${taskStats.total}`;
+            if (tasksEl) tasksEl.innerText = `${taskStats.completed} / ${taskStats.total} Completati`;
 
             const lessonsEl = document.getElementById('top-lessons-display');
             const selDateObj = new Date(selectedDateStr);
@@ -1794,29 +1838,126 @@
 
         function renderDashboardPage() {
             const log = getCurrentDayLog();
-            const dashWaterText = document.getElementById('dash-water-text');
             const dashWaterBadge = document.getElementById('dash-water-pct-badge');
             const pct = Math.min(100, Math.round((log.water / appData.waterGoal) * 100));
-
-            if (dashWaterText) dashWaterText.innerHTML = `${log.water} <span class="text-xs text-slate-400">/ 3500 ml</span>`;
             if (dashWaterBadge) dashWaterBadge.innerText = `${pct}%`;
 
+            // Priority Tasks List Rendering with Dual Swipe & Mouse Hover Actions
             const priorityListContainer = document.getElementById('dash-priority-tasks-list');
             const tasks = getTasksForDate(selectedDateStr);
 
             if (priorityListContainer) {
                 if (tasks.length === 0) {
-                    priorityListContainer.innerHTML = `<div class="text-center py-4 text-slate-500 text-xs font-medium">Nessuna task in programma per la data.</div>`;
+                    priorityListContainer.innerHTML = `<div class="text-center py-4 text-slate-500 text-xs font-medium">Nessuna task in programma per oggi.</div>`;
                 } else {
                     priorityListContainer.innerHTML = tasks.slice(0, 4).map(t => `
-                        <div onclick="toggleTask('${t.id}')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center justify-between cursor-pointer hover:bg-white/5 transition">
-                            <div class="flex items-center space-x-3 truncate">
-                                <div class="w-6 h-6 rounded-full check-circle-anim flex items-center justify-center shrink-0 ${t.completed ? 'bg-indigo-500 text-white' : 'border border-slate-700 bg-black/40'}">
-                                    ${t.completed ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
-                                </div>
-                                <span class="text-xs font-bold truncate ${t.completed ? 'line-through text-indigo-300/60' : 'text-white'}">${t.title}</span>
+                        <div class="swipe-container group">
+                            <!-- Left Swipe Action (Positive Mark Done) -->
+                            <div class="swipe-actions-left">
+                                <span class="text-xs font-extrabold text-emerald-400 bg-emerald-500/20 px-2 py-1 rounded-xl flex items-center gap-1 border border-emerald-500/30">
+                                    <i class="fa-solid fa-circle-check"></i> Fatto
+                                </span>
                             </div>
-                            <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${getTaskCategoryClass(t.category)}">${t.category}</span>
+
+                            <!-- Right Swipe Actions (Edit/Delete) -->
+                            <div class="swipe-actions-right">
+                                <button onclick="openTaskModal('${t.id}')" title="Modifica" class="w-8 h-8 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button onclick="deleteTask('${t.id}')" title="Elimina" class="w-8 h-8 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+
+                            <!-- Interactive Card Item -->
+                            <div id="dash-task-card-${t.id}" 
+                                 class="swipe-card p-3 rounded-2xl border border-white/5 flex items-center justify-between cursor-grab active:cursor-grabbing hover:bg-white/5 transition"
+                                 ontouchstart="handleSwipeStart(event, 'dash-task-card-${t.id}')"
+                                 ontouchmove="handleSwipeMove(event, 'dash-task-card-${t.id}')"
+                                 ontouchend="handleSwipeEnd(event, 'dash-task-card-${t.id}', 'task', '${t.id}')"
+                                 onmousedown="handleSwipeStart(event, 'dash-task-card-${t.id}')"
+                                 onmousemove="handleSwipeMove(event, 'dash-task-card-${t.id}')"
+                                 onmouseup="handleSwipeEnd(event, 'dash-task-card-${t.id}', 'task', '${t.id}')"
+                                 onmouseleave="handleSwipeEnd(event, 'dash-task-card-${t.id}', 'task', '${t.id}')">
+                                <div class="flex items-center space-x-3 truncate">
+                                    <button onclick="toggleTask('${t.id}')" class="w-6 h-6 rounded-full check-circle-anim flex items-center justify-center shrink-0 transition ${t.completed ? 'bg-indigo-500 text-white' : 'border border-slate-700 bg-black/40 hover:border-indigo-500'}">
+                                        ${t.completed ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+                                    </button>
+                                    <span class="text-xs font-bold truncate ${t.completed ? 'line-through text-indigo-300/60' : 'text-white'}">${t.title}</span>
+                                </div>
+                                
+                                <div class="flex items-center space-x-2 shrink-0">
+                                    <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${getTaskCategoryClass(t.category)}">${t.category}</span>
+                                    
+                                    <!-- Desktop Mouse Hover Quick Action Buttons -->
+                                    <div class="hidden sm:flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button onclick="toggleTask('${t.id}')" title="Completa" class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white flex items-center justify-center text-[10px] transition">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                        <button onclick="openTaskModal('${t.id}')" title="Modifica" class="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white flex items-center justify-center text-[10px] transition">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+                                        <button onclick="deleteTask('${t.id}')" title="Elimina" class="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white flex items-center justify-center text-[10px] transition">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // TikTok Ideas Dashboard Preview
+            const ttPreviewContainer = document.getElementById('dash-tiktok-preview-list');
+            const ttList = appData.tiktokIdeas || [];
+            if (ttPreviewContainer) {
+                if (ttList.length === 0) {
+                    ttPreviewContainer.innerHTML = `<div class="col-span-2 text-center py-4 text-slate-500 text-xs font-medium">Nessuna idea video salvata.</div>`;
+                } else {
+                    ttPreviewContainer.innerHTML = ttList.slice(0, 2).map(item => `
+                        <div class="swipe-container group">
+                            <!-- Left Swipe Action (Positive Mark Registered) -->
+                            <div class="swipe-actions-left">
+                                <span class="text-xs font-extrabold text-emerald-400 bg-emerald-500/20 px-2 py-1 rounded-xl flex items-center gap-1 border border-emerald-500/30">
+                                    <i class="fa-solid fa-circle-check"></i> Registrato
+                                </span>
+                            </div>
+
+                            <!-- Right Swipe Actions -->
+                            <div class="swipe-actions-right">
+                                <button onclick="openTikTokModal(${item.id})" title="Modifica" class="w-8 h-8 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button onclick="deleteTikTokIdea(${item.id})" title="Elimina" class="w-8 h-8 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+
+                            <div id="dash-tt-card-${item.id}" 
+                                 class="swipe-card p-3 rounded-2xl border border-white/5 space-y-1.5 cursor-grab active:cursor-grabbing hover:bg-white/5 transition"
+                                 ontouchstart="handleSwipeStart(event, 'dash-tt-card-${item.id}')"
+                                 ontouchmove="handleSwipeMove(event, 'dash-tt-card-${item.id}')"
+                                 ontouchend="handleSwipeEnd(event, 'dash-tt-card-${item.id}', 'tiktok', ${item.id})"
+                                 onmousedown="handleSwipeStart(event, 'dash-tt-card-${item.id}')"
+                                 onmousemove="handleSwipeMove(event, 'dash-tt-card-${item.id}')"
+                                 onmouseup="handleSwipeEnd(event, 'dash-tt-card-${item.id}', 'tiktok', ${item.id})"
+                                 onmouseleave="handleSwipeEnd(event, 'dash-tt-card-${item.id}', 'tiktok', ${item.id})">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${getStatusBadgeClass(item.status)}">${item.status}</span>
+                                    
+                                    <!-- Desktop PC Hover Buttons -->
+                                    <div class="hidden sm:flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button onclick="toggleTikTokStatus(${item.id})" title="Avanza Stato" class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white flex items-center justify-center text-[10px] transition">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                        <button onclick="openTikTokModal(${item.id})" title="Modifica" class="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white flex items-center justify-center text-[10px] transition">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <h4 class="font-bold text-xs text-white truncate">${item.title}</h4>
+                            </div>
                         </div>
                     `).join('');
                 }
@@ -1839,7 +1980,15 @@
                 } else {
                     tasksListContainer.innerHTML = tasks.map(t => `
                         <div class="swipe-container group">
-                            <div class="swipe-actions">
+                            <!-- Left Swipe Action (Positive Mark Done) -->
+                            <div class="swipe-actions-left">
+                                <span class="text-xs font-extrabold text-emerald-400 bg-emerald-500/20 px-2 py-1 rounded-xl flex items-center gap-1 border border-emerald-500/30">
+                                    <i class="fa-solid fa-circle-check"></i> Fatto
+                                </span>
+                            </div>
+
+                            <!-- Right Swipe Actions -->
+                            <div class="swipe-actions-right">
                                 <button onclick="openTaskModal('${t.id}')" title="Modifica" class="w-9 h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
@@ -1847,15 +1996,16 @@
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
+
                             <div id="task-card-${t.id}" 
-                                 class="swipe-card p-3 rounded-2xl border border-white/5 flex items-center justify-between cursor-grab active:cursor-grabbing"
+                                 class="swipe-card p-3 rounded-2xl border border-white/5 flex items-center justify-between cursor-grab active:cursor-grabbing hover:bg-white/5 transition"
                                  ontouchstart="handleSwipeStart(event, 'task-card-${t.id}')"
                                  ontouchmove="handleSwipeMove(event, 'task-card-${t.id}')"
-                                 ontouchend="handleSwipeEnd(event, 'task-card-${t.id}')"
+                                 ontouchend="handleSwipeEnd(event, 'task-card-${t.id}', 'task', '${t.id}')"
                                  onmousedown="handleSwipeStart(event, 'task-card-${t.id}')"
                                  onmousemove="handleSwipeMove(event, 'task-card-${t.id}')"
-                                 onmouseup="handleSwipeEnd(event, 'task-card-${t.id}')"
-                                 onmouseleave="handleSwipeEnd(event, 'task-card-${t.id}')">
+                                 onmouseup="handleSwipeEnd(event, 'task-card-${t.id}', 'task', '${t.id}')"
+                                 onmouseleave="handleSwipeEnd(event, 'task-card-${t.id}', 'task', '${t.id}')">
                                 <div class="flex items-center space-x-3 pr-2 overflow-hidden">
                                     <button onclick="toggleTask('${t.id}')" class="w-6 h-6 rounded-full check-circle-anim flex items-center justify-center shrink-0 transition ${t.completed ? 'bg-indigo-500 text-white' : 'border border-slate-700 bg-black/40 hover:border-indigo-500'}">
                                         ${t.completed ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
@@ -1867,6 +2017,19 @@
                                         </div>
                                         <p class="font-bold text-xs truncate ${t.completed ? 'line-through text-indigo-300/60' : 'text-white'}">${t.title}</p>
                                     </div>
+                                </div>
+
+                                <!-- Desktop PC Mouse Hover Quick Actions -->
+                                <div class="hidden sm:flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button onclick="toggleTask('${t.id}')" title="Completa" class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white flex items-center justify-center text-[10px] transition">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                    <button onclick="openTaskModal('${t.id}')" title="Modifica" class="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white flex items-center justify-center text-[10px] transition">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <button onclick="deleteTask('${t.id}')" title="Elimina" class="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white flex items-center justify-center text-[10px] transition">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -1894,7 +2057,7 @@
                 } else {
                     lessonsContainer.innerHTML = list.map((item, idx) => `
                         <div class="swipe-container group">
-                            <div class="swipe-actions">
+                            <div class="swipe-actions-right">
                                 <button onclick="openScheduleModal('${appData.selectedUniDay}', ${idx})" title="Modifica" class="w-9 h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
@@ -1903,7 +2066,7 @@
                                 </button>
                             </div>
                             <div id="sched-card-${idx}" 
-                                 class="swipe-card p-3 rounded-2xl border border-white/5 space-y-1.5 cursor-grab active:cursor-grabbing"
+                                 class="swipe-card p-3 rounded-2xl border border-white/5 space-y-1.5 cursor-grab active:cursor-grabbing hover:bg-white/5 transition"
                                  ontouchstart="handleSwipeStart(event, 'sched-card-${idx}')"
                                  ontouchmove="handleSwipeMove(event, 'sched-card-${idx}')"
                                  ontouchend="handleSwipeEnd(event, 'sched-card-${idx}')"
@@ -2075,7 +2238,15 @@
             } else {
                 listContainer.innerHTML = appData.tiktokIdeas.map(item => `
                     <div class="swipe-container group">
-                        <div class="swipe-actions">
+                        <!-- Left Swipe Action (Positive Mark Registered) -->
+                        <div class="swipe-actions-left">
+                            <span class="text-xs font-extrabold text-emerald-400 bg-emerald-500/20 px-2 py-1 rounded-xl flex items-center gap-1 border border-emerald-500/30">
+                                <i class="fa-solid fa-circle-check"></i> Registrato
+                            </span>
+                        </div>
+
+                        <!-- Right Swipe Actions -->
+                        <div class="swipe-actions-right">
                             <button onclick="openTikTokModal(${item.id})" title="Modifica" class="w-9 h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
                                 <i class="fa-solid fa-pen"></i>
                             </button>
@@ -2083,23 +2254,49 @@
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
+
                         <div id="tt-card-${item.id}" 
-                             class="swipe-card p-3.5 rounded-2xl border border-white/5 space-y-2 cursor-grab active:cursor-grabbing"
-                             ontouchstart="handleSwipeStart(event, ${item.id})"
-                             ontouchmove="handleSwipeMove(event, ${item.id})"
-                             ontouchend="handleSwipeEnd(event, ${item.id})"
-                             onmousedown="handleSwipeStart(event, ${item.id})"
-                             onmousemove="handleSwipeMove(event, ${item.id})"
-                             onmouseup="handleSwipeEnd(event, ${item.id})"
-                             onmouseleave="handleSwipeEnd(event, ${item.id})">
+                             class="swipe-card p-3.5 rounded-2xl border border-white/5 space-y-2 cursor-grab active:cursor-grabbing hover:bg-white/5 transition"
+                             ontouchstart="handleSwipeStart(event, 'tt-card-${item.id}')"
+                             ontouchmove="handleSwipeMove(event, 'tt-card-${item.id}')"
+                             ontouchend="handleSwipeEnd(event, 'tt-card-${item.id}', 'tiktok', ${item.id})"
+                             onmousedown="handleSwipeStart(event, 'tt-card-${item.id}')"
+                             onmousemove="handleSwipeMove(event, 'tt-card-${item.id}')"
+                             onmouseup="handleSwipeEnd(event, 'tt-card-${item.id}', 'tiktok', ${item.id})"
+                             onmouseleave="handleSwipeEnd(event, 'tt-card-${item.id}', 'tiktok', ${item.id})">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${getStatusBadgeClass(item.status)}">${item.status}</span>
+                                
+                                <!-- Desktop Mouse Hover Action Buttons -->
+                                <div class="hidden sm:flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button onclick="toggleTikTokStatus(${item.id})" title="Cambia Stato" class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white flex items-center justify-center text-[10px] transition">
+                                        <i class="fa-solid fa-check"></i>
+                                    </button>
+                                    <button onclick="openTikTokModal(${item.id})" title="Modifica" class="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white flex items-center justify-center text-[10px] transition">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <button onclick="deleteTikTokIdea(${item.id})" title="Elimina" class="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-400 hover:bg-rose-500 hover:text-white flex items-center justify-center text-[10px] transition">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
                             </div>
                             <h4 class="font-extrabold text-xs text-white leading-snug">${item.title}</h4>
                             <p class="text-[11px] text-slate-400 italic">" Hook: ${item.hook} "</p>
                         </div>
                     </div>
                 `).join('');
+            }
+        }
+
+        function toggleTikTokStatus(id) {
+            const item = appData.tiktokIdeas.find(t => t.id === id);
+            if (item) {
+                if (item.status === 'Da Registrare') item.status = 'Registrato';
+                else if (item.status === 'Registrato') item.status = 'Pubblicato';
+                else item.status = 'Da Registrare';
+                saveData();
+                renderAll();
+                showToast(`Stato TikTok aggiornato a "${item.status}"`);
             }
         }
 
@@ -2209,18 +2406,10 @@
             showToast('Contatore acqua azzerato');
         }
 
-        // SWIPE GESTURES FOR LIST CARDS
+        // DUAL-DIRECTION SWIPE GESTURE ENGINE
         let swipeState = { activeId: null, startX: 0, currentTranslate: 0, isDragging: false };
 
-        function getNormalizedCardId(elementId) {
-            if (typeof elementId === 'string' && (elementId.startsWith('sched-card-') || elementId.startsWith('tt-card-') || elementId.startsWith('task-card-'))) {
-                return elementId;
-            }
-            return `tt-card-${elementId}`;
-        }
-
-        function handleSwipeStart(e, elementId) {
-            const cardId = getNormalizedCardId(elementId);
+        function handleSwipeStart(e, cardId) {
             swipeState.activeId = cardId;
             swipeState.startX = e.touches ? e.touches[0].clientX : e.clientX;
             swipeState.isDragging = true;
@@ -2231,8 +2420,7 @@
             }
         }
 
-        function handleSwipeMove(e, elementId) {
-            const cardId = getNormalizedCardId(elementId);
+        function handleSwipeMove(e, cardId) {
             if (!swipeState.isDragging || swipeState.activeId !== cardId) return;
             const currentX = e.touches ? e.touches[0].clientX : e.clientX;
             const deltaX = currentX - swipeState.startX;
@@ -2240,19 +2428,34 @@
             if (!card) return;
             let newTranslate = swipeState.currentTranslate + deltaX;
             if (newTranslate < -110) newTranslate = -110;
-            if (newTranslate > 0) newTranslate = 0;
+            if (newTranslate > 100) newTranslate = 100;
             card.style.transform = `translateX(${newTranslate}px)`;
         }
 
-        function handleSwipeEnd(e, elementId) {
-            const cardId = getNormalizedCardId(elementId);
+        function handleSwipeEnd(e, cardId, type = null, targetId = null) {
             if (!swipeState.isDragging || swipeState.activeId !== cardId) return;
             swipeState.isDragging = false;
             const card = document.getElementById(cardId);
             if (!card) return;
+            
             const transform = card.style.transform;
             let currentX = (transform && transform.includes('translateX')) ? (parseInt(transform.replace(/[^\d.-]/g, '')) || 0) : 0;
-            card.style.transform = (currentX < -40) ? 'translateX(-95px)' : 'translateX(0px)';
+            
+            if (currentX > 50 && type && targetId) {
+                // POSITIVE RIGHT SWIPE TRIGGERED
+                card.style.transform = 'translateX(0px)';
+                if (type === 'task') {
+                    toggleTask(targetId);
+                    showToast('Task completata! ✓');
+                } else if (type === 'tiktok') {
+                    toggleTikTokStatus(targetId);
+                }
+            } else if (currentX < -40) {
+                // LEFT SWIPE (MANAGEMENT ACTION DRAWER)
+                card.style.transform = 'translateX(-95px)';
+            } else {
+                card.style.transform = 'translateX(0px)';
+            }
         }
 
         // ACCOUNT SETTINGS & HISTORY MODALS
