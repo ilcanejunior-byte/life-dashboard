@@ -815,34 +815,58 @@
                 <button onclick="closeModal('modal-quick-create')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div class="grid grid-cols-2 gap-2.5">
-                <button onclick="closeModal('modal-quick-create'); openTaskModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
-                    <div class="w-10 h-10 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg">
-                        <i class="fa-solid fa-list-check"></i>
-                    </div>
-                    <span class="text-xs font-bold text-white">Nuova Task</span>
-                </button>
+            <!-- PAGINATED CONTAINER (2 PAGES CAROUSEL) -->
+            <div class="overflow-hidden relative w-full">
+                <div id="quick-create-carousel" class="flex transition-transform duration-300 ease-out w-full">
+                    
+                    <!-- PAGE 1: EXISTING 4 OPTIONS -->
+                    <div class="w-full shrink-0 grid grid-cols-2 gap-2.5">
+                        <button onclick="closeModal('modal-quick-create'); openTaskModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
+                            <div class="w-10 h-10 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-list-check"></i>
+                            </div>
+                            <span class="text-xs font-bold text-white">Nuova Task</span>
+                        </button>
 
-                <button onclick="closeModal('modal-quick-create'); openScheduleModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
-                    <div class="w-10 h-10 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </div>
-                    <span class="text-xs font-bold text-white">Nuova Lezione</span>
-                </button>
+                        <button onclick="closeModal('modal-quick-create'); openScheduleModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
+                            <div class="w-10 h-10 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <span class="text-xs font-bold text-white">Nuova Lezione</span>
+                        </button>
 
-                <button onclick="closeModal('modal-quick-create'); openExerciseModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
-                    <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
-                        <i class="fa-solid fa-dumbbell"></i>
-                    </div>
-                    <span class="text-xs font-bold text-white">Nuovo Esercizio</span>
-                </button>
+                        <button onclick="closeModal('modal-quick-create'); openExerciseModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
+                            <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-dumbbell"></i>
+                            </div>
+                            <span class="text-xs font-bold text-white">Nuovo Esercizio</span>
+                        </button>
 
-                <button onclick="closeModal('modal-quick-create'); openWeightModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
-                    <div class="w-10 h-10 rounded-2xl bg-teal-500/20 text-teal-400 flex items-center justify-center text-lg">
-                        <i class="fa-solid fa-weight-scale"></i>
+                        <button onclick="closeModal('modal-quick-create'); openWeightModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
+                            <div class="w-10 h-10 rounded-2xl bg-teal-500/20 text-teal-400 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-weight-scale"></i>
+                            </div>
+                            <span class="text-xs font-bold text-white">Registra Peso</span>
+                        </button>
                     </div>
-                    <span class="text-xs font-bold text-white">Registra Peso</span>
-                </button>
+
+                    <!-- PAGE 2: NEW TIKTOK OPTION -->
+                    <div class="w-full shrink-0 grid grid-cols-2 gap-2.5">
+                        <button onclick="closeModal('modal-quick-create'); openTikTokModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition col-span-2 sm:col-span-1">
+                            <div class="w-10 h-10 rounded-2xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-lg">
+                                <i class="fa-brands fa-tiktok"></i>
+                            </div>
+                            <span class="text-xs font-bold text-white">Aggiungi un'idea per TikTok</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- PAGE DOTS INDICATOR -->
+            <div class="flex items-center justify-center space-x-2 pt-2">
+                <button id="quick-dot-0" onclick="setQuickCreatePage(0)" class="w-2.5 h-2.5 rounded-full bg-cyan-400 transition-all duration-300"></button>
+                <button id="quick-dot-1" onclick="setQuickCreatePage(1)" class="w-2.5 h-2.5 rounded-full bg-white/20 transition-all duration-300"></button>
             </div>
         </div>
     </div>
@@ -1536,7 +1560,34 @@
         }
 
         // BOTTOM SHEETS OPEN/CLOSE CONTROLLERS
-        function openQuickCreateSheet() { openSheetModal('modal-quick-create'); }
+        let currentQuickPage = 0;
+
+        function openQuickCreateSheet() { 
+            setQuickCreatePage(0);
+            openSheetModal('modal-quick-create'); 
+        }
+
+        function setQuickCreatePage(pageIndex) {
+            currentQuickPage = pageIndex;
+            const carousel = document.getElementById('quick-create-carousel');
+            const dot0 = document.getElementById('quick-dot-0');
+            const dot1 = document.getElementById('quick-dot-1');
+
+            if (carousel) {
+                carousel.style.transform = `translateX(-${pageIndex * 100}%)`;
+            }
+
+            if (dot0 && dot1) {
+                if (pageIndex === 0) {
+                    dot0.className = 'w-5 h-2.5 rounded-full bg-cyan-400 transition-all duration-300';
+                    dot1.className = 'w-2.5 h-2.5 rounded-full bg-white/20 transition-all duration-300';
+                } else {
+                    dot0.className = 'w-2.5 h-2.5 rounded-full bg-white/20 transition-all duration-300';
+                    dot1.className = 'w-5 h-2.5 rounded-full bg-pink-400 transition-all duration-300';
+                }
+            }
+        }
+
         function openWaterSheet() { renderWaterSheetData(); openSheetModal('modal-water-sheet'); }
 
         function renderWaterSheetData() {
