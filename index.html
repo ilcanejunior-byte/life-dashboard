@@ -13,7 +13,7 @@
     <title>LORD TRACKER • Activity & Life Hub</title>
     
     <!-- FAVICON -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offse t='0%25' stop-color='%2322c55e'/%3E%3Cstop offset='50%25' stop-color='%2306b6d4'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%23070a12'/%3E%3Ccircle cx='50' cy='50' r='38' stroke='%2322c55e' stroke-width='4' fill='none' stroke-dasharray='5 2' opacity='0.5'/%3E%3Ccircle cx='50' cy='50' r='30' stroke='%2306b6d4' stroke-width='4' fill='none' opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='22' stroke='%23ec4899' stroke-width='4' fill='none' opacity='0.8'/%3E%3Cpath d='M42 32 V62 H58' stroke='url(%23g)' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M42 32 V62 H58' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.9'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322c55e'/%3E%3Cstop offset='50%25' stop-color='%2306b6d4'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%23070a12'/%3E%3Ccircle cx='50' cy='50' r='38' stroke='%2322c55e' stroke-width='4' fill='none' stroke-dasharray='5 2' opacity='0.5'/%3E%3Ccircle cx='50' cy='50' r='30' stroke='%2306b6d4' stroke-width='4' fill='none' opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='22' stroke='%23ec4899' stroke-width='4' fill='none' opacity='0.8'/%3E%3Cpath d='M42 32 V62 H58' stroke='url(%23g)' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M42 32 V62 H58' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.9'/%3E%3C/svg%3E">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -164,9 +164,10 @@
         .swipe-container {
             position: relative;
             overflow: hidden;
-            border-radius: 16px;
+            border-radius: 18px;
             width: 100%;
             touch-action: pan-y;
+            padding: 2px;
         }
         .swipe-actions-left {
             position: absolute;
@@ -185,11 +186,11 @@
         .swipe-card {
             position: relative;
             z-index: 10;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
             background: #0d121f;
             width: 100%;
             border-radius: 16px;
-            will-change: transform;
+            will-change: transform, box-shadow, border-color;
         }
 
         /* Bottom Sheet Slide Overlay */
@@ -546,12 +547,12 @@
                                 </div>
                             </div>
 
-                            <!-- WEIGHT TRACKER CARD -->
+                            <!-- WEIGHT TRACKER CARD (DYNAMIC TARGET WEIGHT) -->
                             <div onclick="openWeightModal()" class="glass-card p-4 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover glow-emerald">
                                 <div class="space-y-0.5">
                                     <div class="flex items-center space-x-2">
                                         <span class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Peso Registrato</span>
-                                        <span class="text-[9px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.2 rounded-full border border-emerald-500/20">Target: 95 kg</span>
+                                        <span id="top-target-weight-badge" class="text-[9px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.2 rounded-full border border-emerald-500/20">Target: 95.0 kg</span>
                                     </div>
                                     <p id="top-weight-display" class="text-xl font-black text-emerald-400">118.0 kg</p>
                                     <p class="text-[10px] text-amber-300 italic"><i class="fa-solid fa-bell mr-1 text-amber-400"></i>Pesata di controllo il Venerdì a digiuno</p>
@@ -643,14 +644,14 @@
                 <!-- 3. TAB FITNESS -->
                 <div id="tab-fitness" class="space-y-4 hidden">
                     
-                    <!-- Weight & Target Card -->
+                    <!-- Weight & Target Card (DYNAMIC TARGET WEIGHT) -->
                     <div class="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 space-y-4">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h2 class="font-bold text-sm sm:text-base text-white flex items-center gap-2">
                                     <i class="fa-solid fa-weight-scale text-emerald-400"></i> Tracker Peso & Forma
                                 </h2>
-                                <p class="text-[10px] text-slate-400">Obiettivo Dimagrimento | Target: 95.0 kg</p>
+                                <p id="fitness-target-weight-text" class="text-[10px] text-slate-400">Obiettivo Dimagrimento | Target: 95.0 kg</p>
                             </div>
                             <button onclick="openWeightModal()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-emerald-600/20">
                                 <i class="fa-solid fa-plus text-xs"></i> Aggiorna Peso
@@ -680,13 +681,18 @@
                         </div>
                     </div>
 
-                    <!-- Daily Exercises Checklist -->
+                    <!-- Daily Exercises Checklist (DYNAMIC EXERCISE MANAGEMENT & ADD BUTTON IN UPPER SECTION) -->
                     <div class="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3">
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center flex-wrap gap-2">
                             <h2 class="font-bold text-sm sm:text-base text-white flex items-center gap-2">
                                 <i class="fa-solid fa-dumbbell text-emerald-400"></i> Esercizi della Data ("Tic Fatto")
                             </h2>
-                            <span id="workout-progress-badge" class="text-[10px] font-extrabold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">0/5 Completati</span>
+                            <div class="flex items-center gap-2">
+                                <span id="workout-progress-badge" class="text-[10px] font-extrabold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">0/5 Completati</span>
+                                <button onclick="openExerciseModal()" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-emerald-600/20">
+                                    <i class="fa-solid fa-plus text-xs"></i> Aggiungi esercizi
+                                </button>
+                            </div>
                         </div>
                         <div id="workout-checklist" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
                     </div>
@@ -757,7 +763,7 @@
                         </div>
 
                         <!-- TikTok Video Ideas Grid -->
-                        <div id="tiktok-ideas-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+                        <div id="tiktok-ideas-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 p-0.5"></div>
                     </div>
 
                 </div>
@@ -824,18 +830,18 @@
                     <span class="text-xs font-bold text-white">Nuova Lezione</span>
                 </button>
 
-                <button onclick="closeModal('modal-quick-create'); openWeightModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
+                <button onclick="closeModal('modal-quick-create'); openExerciseModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
                     <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+                    <span class="text-xs font-bold text-white">Nuovo Esercizio</span>
+                </button>
+
+                <button onclick="closeModal('modal-quick-create'); openWeightModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
+                    <div class="w-10 h-10 rounded-2xl bg-teal-500/20 text-teal-400 flex items-center justify-center text-lg">
                         <i class="fa-solid fa-weight-scale"></i>
                     </div>
                     <span class="text-xs font-bold text-white">Registra Peso</span>
-                </button>
-
-                <button onclick="closeModal('modal-quick-create'); openTikTokModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
-                    <div class="w-10 h-10 rounded-2xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-lg">
-                        <i class="fa-brands fa-tiktok"></i>
-                    </div>
-                    <span class="text-xs font-bold text-white">Idea TikTok</span>
                 </button>
             </div>
         </div>
@@ -914,6 +920,32 @@
                 </div>
                 <button onclick="saveTask()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl transition shadow-lg shadow-indigo-600/25">
                     Salva Task
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXERCISE BOTTOM SHEET (ADD / EDIT EXERCISE) -->
+    <div id="modal-exercise" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md bottom-sheet-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="glass-card bottom-sheet-panel max-w-sm w-full rounded-b-none sm:rounded-3xl border-t sm:border border-white/10 p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 id="ex-modal-title" class="font-bold text-sm text-white flex items-center gap-2">
+                    <i class="fa-solid fa-dumbbell text-emerald-400"></i> Aggiungi Esercizio
+                </h3>
+                <button onclick="closeModal('modal-exercise')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <input type="hidden" id="ex-editing-id" value="">
+            <div class="space-y-3.5 text-xs">
+                <div>
+                    <label class="text-slate-400 font-semibold">Nome Esercizio:</label>
+                    <input type="text" id="ex-name" placeholder="Es. Box Squat, Camminata veloce..." required class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Descrizione / Serie / Ripetizioni:</label>
+                    <input type="text" id="ex-desc" placeholder="Es. 3 serie x 12 rip, 25 min..." class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+                <button onclick="saveExercise()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl transition shadow-lg shadow-emerald-600/25">
+                    Salva Esercizio
                 </button>
             </div>
         </div>
@@ -1016,19 +1048,26 @@
         </div>
     </div>
 
-    <!-- WEIGHT UPDATE BOTTOM SHEET -->
+    <!-- WEIGHT & TARGET UPDATE BOTTOM SHEET -->
     <div id="modal-weight" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md bottom-sheet-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="glass-card bottom-sheet-panel max-w-xs w-full rounded-b-none sm:rounded-3xl border-t sm:border border-white/10 p-5 space-y-4">
             <div class="flex justify-between items-center border-b border-white/10 pb-3">
                 <h3 class="font-bold text-sm text-white flex items-center gap-2">
-                    <i class="fa-solid fa-weight-scale text-emerald-400"></i> Aggiorna Peso Attuale
+                    <i class="fa-solid fa-weight-scale text-emerald-400"></i> Aggiorna Peso & Target
                 </h3>
                 <button onclick="closeModal('modal-weight')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="space-y-4">
-                <input type="number" step="0.1" id="input-weight-val" placeholder="Es. 117.5" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-white text-xl font-black text-center focus:outline-none focus:border-emerald-500">
+            <div class="space-y-3.5 text-xs">
+                <div>
+                    <label class="text-slate-400 font-semibold">Peso Attuale (kg):</label>
+                    <input type="number" step="0.1" id="input-weight-val" placeholder="Es. 117.5" class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white text-lg font-black text-center focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Peso Target Desiderato (kg):</label>
+                    <input type="number" step="0.1" id="input-target-weight-val" placeholder="Es. 95.0" class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white text-lg font-black text-center focus:outline-none focus:border-emerald-500">
+                </div>
                 <button onclick="saveNewWeight()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl transition shadow-lg shadow-emerald-600/25">
-                    Salva Misurazione Peso
+                    Salva Dati Peso
                 </button>
             </div>
         </div>
@@ -1219,6 +1258,7 @@
                 password: pass,
                 waterGoal: 3500,
                 weight: isLord ? 118.0 : 60.0,
+                targetWeight: 95.0,
                 selectedUniDay: 'Lunedì',
                 defaultWorkouts: defaultWorkouts,
                 recurringTasks: defaultRecurringTasks,
@@ -1262,6 +1302,7 @@
             if (!appData) return;
             if (!appData.dailyLogs) appData.dailyLogs = {};
             if (!appData.recurringTasks) appData.recurringTasks = [];
+            if (appData.targetWeight === undefined) appData.targetWeight = 95.0;
             
             if (!appData.dailyLogs[dateStr]) {
                 const baseWorkouts = appData.defaultWorkouts || [
@@ -1825,6 +1866,73 @@
             return 'bg-purple-500/15 text-purple-400 border border-purple-500/30';
         }
 
+        // EXERCISE MANAGEMENT FUNCTIONS
+        function openExerciseModal(exId = null) {
+            const nameInput = document.getElementById('ex-name');
+            const descInput = document.getElementById('ex-desc');
+            const editingIdInput = document.getElementById('ex-editing-id');
+            const modalTitle = document.getElementById('ex-modal-title');
+
+            const log = getCurrentDayLog();
+            if (exId) {
+                const ex = (log.workouts || []).find(w => w.id == exId);
+                if (ex) {
+                    editingIdInput.value = ex.id;
+                    nameInput.value = ex.name;
+                    descInput.value = ex.desc || '';
+                    modalTitle.innerHTML = '<i class="fa-solid fa-pen text-emerald-400"></i> Modifica Esercizio';
+                }
+            } else {
+                editingIdInput.value = '';
+                nameInput.value = '';
+                descInput.value = '';
+                modalTitle.innerHTML = '<i class="fa-solid fa-dumbbell text-emerald-400"></i> Aggiungi Esercizio';
+            }
+            openSheetModal('modal-exercise');
+        }
+
+        function saveExercise() {
+            const nameInput = document.getElementById('ex-name').value.trim();
+            const descInput = document.getElementById('ex-desc').value.trim();
+            const editingId = document.getElementById('ex-editing-id').value;
+
+            if (!nameInput) { showToast('Inserisci il nome dell\'esercizio!'); return; }
+
+            const log = getCurrentDayLog();
+            if (!log.workouts) log.workouts = [];
+
+            if (editingId) {
+                const ex = log.workouts.find(w => w.id == editingId);
+                if (ex) {
+                    ex.name = nameInput;
+                    ex.desc = descInput;
+                }
+            } else {
+                const newEx = {
+                    id: Date.now(),
+                    name: nameInput,
+                    desc: descInput || '',
+                    completed: false
+                };
+                log.workouts.push(newEx);
+            }
+
+            saveData();
+            renderAll();
+            closeModal('modal-exercise');
+            showToast('Esercizio salvato con successo!');
+        }
+
+        function deleteExercise(exId) {
+            const log = getCurrentDayLog();
+            if (log.workouts) {
+                log.workouts = log.workouts.filter(w => w.id != exId);
+                saveData();
+                renderAll();
+                showToast('Esercizio eliminato!');
+            }
+        }
+
         // TIKTOK FUNCTIONS
         function openTikTokModal(id = null) {
             const titleInput = document.getElementById('tt-title');
@@ -1905,15 +2013,20 @@
             return 'bg-pink-500/15 text-pink-400 border border-pink-500/30';
         }
 
-        // WEIGHT FUNCTIONS
+        // WEIGHT & TARGET FUNCTIONS
         function openWeightModal() {
             const input = document.getElementById('input-weight-val');
+            const targetInput = document.getElementById('input-target-weight-val');
             if (input) input.value = appData.weight;
+            if (targetInput) targetInput.value = appData.targetWeight || 95.0;
             openSheetModal('modal-weight');
         }
 
         function saveNewWeight() {
             const input = document.getElementById('input-weight-val');
+            const targetInput = document.getElementById('input-target-weight-val');
+            let isUpdated = false;
+
             if (input && input.value) {
                 const val = parseFloat(input.value);
                 if (!isNaN(val) && val > 0) {
@@ -1923,17 +2036,29 @@
                         date: selectedDateStr,
                         weight: val
                     });
-                    saveData();
-                    renderAll();
-                    closeModal('modal-weight');
-                    showToast(`Peso aggiornato a ${val.toFixed(1)} kg!`);
+                    isUpdated = true;
                 }
+            }
+
+            if (targetInput && targetInput.value) {
+                const targetVal = parseFloat(targetInput.value);
+                if (!isNaN(targetVal) && targetVal > 0) {
+                    appData.targetWeight = targetVal;
+                    isUpdated = true;
+                }
+            }
+
+            if (isUpdated) {
+                saveData();
+                renderAll();
+                closeModal('modal-weight');
+                showToast(`Dati peso aggiornati!`);
             }
         }
 
         function toggleWorkout(id) {
             const log = getCurrentDayLog();
-            const item = log.workouts.find(w => w.id === id);
+            const item = log.workouts.find(w => w.id == id);
             if (item) {
                 item.completed = !item.completed;
                 saveData();
@@ -2049,6 +2174,9 @@
             const weightEl = document.getElementById('top-weight-display');
             if (weightEl) weightEl.innerText = `${appData.weight.toFixed(1)} kg`;
 
+            const targetBadge = document.getElementById('top-target-weight-badge');
+            if (targetBadge) targetBadge.innerText = `Target: ${(appData.targetWeight || 95.0).toFixed(1)} kg`;
+
             const taskStats = getTaskCompletionStats(selectedDateStr);
             const tasksEl = document.getElementById('top-tasks-display');
             if (tasksEl) tasksEl.innerText = `${taskStats.completed} / ${taskStats.total} Completati`;
@@ -2094,7 +2222,7 @@
                                 </button>
                             </div>
 
-                            <!-- Opaque Surface Card (No edit/delete buttons on card face) -->
+                            <!-- Opaque Surface Card -->
                             <div id="dash-task-card-${t.id}" 
                                  class="swipe-card p-3.5 rounded-2xl border border-white/5 bg-[#0d121f] flex items-center justify-between cursor-grab active:cursor-grabbing hover:border-white/20 transition shadow-sm"
                                  ontouchstart="handleSwipeStart(event, 'dash-task-card-${t.id}')"
@@ -2144,7 +2272,7 @@
                             </div>
 
                             <div id="dash-tt-card-${item.id}" 
-                                 class="swipe-card p-3 rounded-2xl border border-white/10 bg-[#0d121f] space-y-1.5 cursor-grab active:cursor-grabbing hover:border-white/20 transition shadow-md"
+                                 class="swipe-card p-3 rounded-2xl border border-white/15 bg-[#0d121f] space-y-1.5 cursor-grab active:cursor-grabbing hover:border-pink-500/40 transition shadow-sm"
                                  ontouchstart="handleSwipeStart(event, 'dash-tt-card-${item.id}')"
                                  ontouchmove="handleSwipeMove(event, 'dash-tt-card-${item.id}')"
                                  ontouchend="handleSwipeEnd(event, 'dash-tt-card-${item.id}', 'tiktok', ${item.id})"
@@ -2223,7 +2351,7 @@
                 }
             }
 
-            // Timetable rendering (SWIPE ONLY FOR LEZIONI CARDS - NO EDIT/DELETE BUTTONS ON CARD FACE)
+            // Timetable rendering (SWIPE ONLY FOR LEZIONI CARDS)
             const days = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
             const tabsContainer = document.getElementById('uni-days-tabs');
             if (tabsContainer) {
@@ -2253,7 +2381,7 @@
                                 </button>
                             </div>
 
-                            <!-- Opaque Surface Card face with zero pencil/trash overlay buttons -->
+                            <!-- Opaque Surface Card face -->
                             <div id="sched-card-${idx}" 
                                  class="swipe-card p-3.5 rounded-2xl border border-white/5 bg-[#0d121f] space-y-1.5 cursor-grab active:cursor-grabbing hover:border-white/20 transition shadow-sm"
                                  ontouchstart="handleSwipeStart(event, 'sched-card-${idx}')"
@@ -2363,25 +2491,64 @@
             const weightValEl = document.getElementById('fitness-weight-val');
             if (weightValEl) weightValEl.innerHTML = `${appData.weight.toFixed(1)} <span class="text-xs text-slate-400">kg</span>`;
 
+            const targetValText = document.getElementById('fitness-target-weight-text');
+            if (targetValText) targetValText.innerText = `Obiettivo Dimagrimento | Target: ${(appData.targetWeight || 95.0).toFixed(1)} kg`;
+
             const log = getCurrentDayLog();
             const checklistContainer = document.getElementById('workout-checklist');
             const doneCount = log.workouts ? log.workouts.filter(w => w.completed).length : 0;
+            const totalWorkouts = log.workouts ? log.workouts.length : 0;
 
             const progressBadge = document.getElementById('workout-progress-badge');
-            if (progressBadge) progressBadge.innerText = `${doneCount}/${log.workouts ? log.workouts.length : 0} Completati`;
+            if (progressBadge) progressBadge.innerText = `${doneCount}/${totalWorkouts} Completati`;
 
             if (checklistContainer) {
-                checklistContainer.innerHTML = log.workouts.map(item => `
-                    <div onclick="toggleWorkout(${item.id})" class="p-3 rounded-2xl border transition cursor-pointer flex items-center justify-between ${item.completed ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-300' : 'bg-black/40 border-white/5 hover:border-white/15 text-slate-300'}">
-                        <div class="space-y-0.5 pr-2">
-                            <p class="font-bold text-xs ${item.completed ? 'line-through text-emerald-400' : 'text-white'}">${item.name}</p>
-                            <p class="text-[10px] text-slate-400">${item.desc}</p>
+                if (!log.workouts || log.workouts.length === 0) {
+                    checklistContainer.innerHTML = `<div class="col-span-1 sm:col-span-2 text-center py-6 text-slate-500 text-xs font-semibold">Nessun esercizio nella lista. Clicca "+ Aggiungi esercizi" per aggiungerne! 🏋️‍♂️</div>`;
+                } else {
+                    checklistContainer.innerHTML = log.workouts.map(item => `
+                        <div class="swipe-container group">
+                            <!-- Right Swipe Action Drawer (Left swipe reveals edit & delete) -->
+                            <div class="swipe-actions-right">
+                                <button onclick="openExerciseModal(${item.id})" title="Modifica" class="w-9 h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button onclick="deleteExercise(${item.id})" title="Elimina" class="w-9 h-9 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+
+                            <!-- Left Swipe Action (Positive Mark Done) -->
+                            <div class="swipe-actions-left">
+                                <span class="text-xs font-extrabold text-emerald-400 bg-emerald-500/20 px-2.5 py-1 rounded-xl flex items-center gap-1 border border-emerald-500/30">
+                                    <i class="fa-solid fa-circle-check"></i> Fatto
+                                </span>
+                            </div>
+
+                            <!-- Card surface -->
+                            <div id="workout-card-${item.id}" 
+                                 class="swipe-card p-3 rounded-2xl border ${item.completed ? 'bg-[#0d121f] border-emerald-500 shadow-[0_0_15px_rgba(34,197,94,0.35)]' : 'bg-[#0d121f] border-white/10'} flex items-center justify-between cursor-grab active:cursor-grabbing hover:border-white/20 transition shadow-sm"
+                                 ontouchstart="handleSwipeStart(event, 'workout-card-${item.id}')"
+                                 ontouchmove="handleSwipeMove(event, 'workout-card-${item.id}')"
+                                 ontouchend="handleSwipeEnd(event, 'workout-card-${item.id}', 'workout', ${item.id})"
+                                 onmousedown="handleSwipeStart(event, 'workout-card-${item.id}')"
+                                 onmousemove="handleSwipeMove(event, 'workout-card-${item.id}')"
+                                 onmouseup="handleSwipeEnd(event, 'workout-card-${item.id}', 'workout', ${item.id})"
+                                 onmouseleave="handleSwipeEnd(event, 'workout-card-${item.id}', 'workout', ${item.id})">
+                                
+                                <div class="flex items-center space-x-3 pr-2 overflow-hidden">
+                                    <button onclick="toggleWorkout(${item.id})" class="w-6 h-6 rounded-full check-circle-anim flex items-center justify-center shrink-0 transition ${item.completed ? 'bg-emerald-500 text-white shadow-[0_0_10px_rgba(34,197,94,0.5)]' : 'border border-slate-700 bg-black/40 hover:border-emerald-500'}">
+                                        ${item.completed ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+                                    </button>
+                                    <div class="space-y-0.5 truncate">
+                                        <p class="font-bold text-xs truncate ${item.completed ? 'line-through text-emerald-400' : 'text-white'}">${item.name}</p>
+                                        <p class="text-[10px] text-slate-400 truncate ${item.completed ? 'line-through opacity-60' : ''}">${item.desc || ''}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="w-6 h-6 rounded-full check-circle-anim flex items-center justify-center shrink-0 ${item.completed ? 'bg-emerald-500 text-white' : 'border border-slate-700 bg-black/40'}">
-                            ${item.completed ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
-                        </div>
-                    </div>
-                `).join('');
+                    `).join('');
+                }
             }
 
             const pct = Math.min(100, Math.round((log.water / appData.waterGoal) * 100));
@@ -2419,9 +2586,9 @@
                             </button>
                         </div>
 
-                        <!-- Opaque Card Face with pure text & status badge ONLY -->
+                        <!-- Opaque Card Face -->
                         <div id="tt-card-${item.id}" 
-                             class="swipe-card p-3.5 rounded-2xl border border-white/10 bg-[#0d121f] space-y-2 cursor-grab active:cursor-grabbing hover:border-white/20 transition shadow-md"
+                             class="swipe-card p-3.5 rounded-2xl border border-white/15 bg-[#0d121f] space-y-2 cursor-grab active:cursor-grabbing hover:border-pink-500/40 transition shadow-sm"
                              ontouchstart="handleSwipeStart(event, 'tt-card-${item.id}')"
                              ontouchmove="handleSwipeMove(event, 'tt-card-${item.id}')"
                              ontouchend="handleSwipeEnd(event, 'tt-card-${item.id}', 'tiktok', ${item.id})"
@@ -2444,7 +2611,7 @@
             }
         }
 
-        // DUAL-DIRECTION SWIPE GESTURE ENGINE (FLUID & SMOOTH SLIDE)
+        // DUAL-DIRECTION SWIPE GESTURE ENGINE WITH DYNAMIC COLOR GLOW
         let swipeState = { activeId: null, startX: 0, currentTranslate: 0, isDragging: false };
 
         function handleSwipeStart(e, cardId) {
@@ -2465,10 +2632,32 @@
             const deltaX = currentX - swipeState.startX;
             const card = document.getElementById(cardId);
             if (!card) return;
+
             let newTranslate = swipeState.currentTranslate + deltaX;
             if (newTranslate < -110) newTranslate = -110 + (newTranslate + 110) * 0.25;
             if (newTranslate > 120) newTranslate = 120 + (newTranslate - 120) * 0.25;
             card.style.transform = `translateX(${newTranslate}px)`;
+
+            // DYNAMIC COLOR GLOW HIGHLIGHT EFFECT BASED ON SECTION/CATEGORY
+            let rgb = '99, 102, 241'; // Default Indigo (Tasks)
+            if (cardId.includes('workout')) {
+                rgb = '34, 197, 94'; // Emerald Green (Fitness)
+            } else if (cardId.includes('tt')) {
+                rgb = '236, 72, 153'; // Pink (TikTok)
+            } else if (cardId.includes('sched')) {
+                rgb = '59, 130, 246'; // Blue (Orario Lezioni)
+            } else if (cardId.includes('task')) {
+                rgb = '99, 102, 241'; // Indigo (Task Planner)
+            }
+
+            const intensity = Math.min(Math.abs(newTranslate) / 70, 1);
+            if (intensity > 0.05) {
+                card.style.boxShadow = `0 4px 20px rgba(${rgb}, ${intensity * 0.45})`;
+                card.style.borderColor = `rgba(${rgb}, ${0.2 + intensity * 0.6})`;
+            } else {
+                card.style.boxShadow = '';
+                card.style.borderColor = '';
+            }
         }
 
         function handleSwipeEnd(e, cardId, type = null, targetId = null) {
@@ -2476,11 +2665,18 @@
             swipeState.isDragging = false;
             const card = document.getElementById(cardId);
             if (!card) return;
-            
-            card.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+
+            card.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
             const transform = card.style.transform;
             let currentX = (transform && transform.includes('translateX')) ? (parseInt(transform.replace(/[^\d.-]/g, '')) || 0) : 0;
-            
+
+            setTimeout(() => {
+                if (card) {
+                    card.style.boxShadow = '';
+                    card.style.borderColor = '';
+                }
+            }, 300);
+
             if (currentX > 45 && type && targetId) {
                 // POSITIVE RIGHT SWIPE TRIGGERED SMOOTHLY
                 card.style.transform = 'translateX(0px)';
@@ -2490,6 +2686,9 @@
                         showToast('Task completata! ✓');
                     } else if (type === 'tiktok') {
                         toggleTikTokStatus(targetId);
+                    } else if (type === 'workout') {
+                        toggleWorkout(targetId);
+                        showToast('Esercizio completato! 💪');
                     }
                 }, 150);
             } else if (currentX < -40) {
