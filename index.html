@@ -378,47 +378,7 @@
             </div>
         </div>
 
-        <!-- NEW SECTION: CALENDARIO APPLE & TASK PLANNER INTERATTIVO (ZOOM IN / ZOOM OUT) -->
-        <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
-            <button onclick="toggleSection('sec-calendar')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
-                        <i class="fa-regular fa-calendar-check text-sm"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Calendario & Planner Task (Stile Apple)</h2>
-                        <p class="text-[10px] sm:text-[11px] text-slate-400">Panoramica Lun-Dom con Zoom In / Zoom Out e swipe azioni</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <span id="calendar-summary-badge" class="text-[10px] font-semibold bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-500/20">Settimana</span>
-                    <i id="sec-calendar-icon" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
-                </div>
-            </button>
-
-            <div id="sec-calendar" class="p-4 space-y-3.5 border-t border-slate-800/80">
-                <!-- Controls & Zoom Switcher -->
-                <div class="flex justify-between items-center flex-wrap gap-2">
-                    <div class="flex items-center space-x-1.5 bg-dark-950 p-1 rounded-xl border border-slate-800 text-xs font-bold">
-                        <button id="btn-zoom-week" onclick="setCalendarZoom('week')" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-magnifying-glass-minus text-xs"></i> Zoom Out (Settimana)
-                        </button>
-                        <button id="btn-zoom-day" onclick="setCalendarZoom('day')" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-magnifying-glass-plus text-xs"></i> Zoom In (Giorno)
-                        </button>
-                    </div>
-
-                    <button onclick="openTaskModal()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-md shadow-indigo-600/20">
-                        <i class="fa-solid fa-plus text-xs"></i> Nuova Task / Impegno
-                    </button>
-                </div>
-
-                <!-- CONTENITORE VISTA VIRTULIZZATA CALENDARIO (WEEK VS DAY) -->
-                <div id="calendar-view-container"></div>
-            </div>
-        </section>
-
-        <!-- SECTION 1: ACCORDION - UNIVERSITÀ & SCUOLA LEZIONI -->
+        <!-- SECTION 1: ACCORDION - UNIVERSITÀ & SCUOLA LEZIONI (CON SWIPE GESTURE) -->
         <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
             <button onclick="toggleSection('sec-uni')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
                 <div class="flex items-center space-x-3">
@@ -596,43 +556,6 @@
     </main>
 
     <!-- MODALI -->
-    <!-- MODALE GESTIONE TASK / IMPEGNO -->
-    <div id="modal-task" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-4 space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 id="task-modal-title" class="font-bold text-sm text-white">Nuovo Impegno / Task</h3>
-                <button onclick="closeModal('modal-task')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <input type="hidden" id="task-editing-id" value="">
-            <div class="space-y-3 text-xs">
-                <div>
-                    <label class="text-slate-400 font-semibold">Data dell'Impegno:</label>
-                    <input type="date" id="task-date" class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="text-slate-400 font-semibold">Orario:</label>
-                    <input type="text" id="task-time" placeholder="Es. 15:00 - 16:30" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="text-slate-400 font-semibold">Titolo Task / Esercizio:</label>
-                    <input type="text" id="task-title" placeholder="Es. Ripasso Filosofia, Spesa, Corsa..." required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="text-slate-400 font-semibold">Categoria / Tipo:</label>
-                    <select id="task-category" class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-indigo-500">
-                        <option value="Impegno">📌 Impegno / Appuntamento</option>
-                        <option value="Studio">📚 Studio / Compiti</option>
-                        <option value="Sport">🏋️ Allenamento / Sport</option>
-                        <option value="Personale">✨ Personale</option>
-                    </select>
-                </div>
-                <button onclick="saveTaskItem()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition">
-                    Salva Task
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- MODALE GESTIONE ACCOUNT -->
     <div id="modal-account" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-4 sm:p-5 space-y-4">
@@ -797,7 +720,6 @@
 
         const getTodayStr = () => new Date().toISOString().split('T')[0];
         let selectedDateStr = getTodayStr();
-        let currentCalendarZoom = 'week'; // 'week' (Zoom Out) vs 'day' (Zoom In)
 
         // INDEXEDDB FALLBACK
         const IDB_NAME = 'LifeDashboardDB_v6';
@@ -862,7 +784,7 @@
                 weight: isLord ? 118.0 : 60.0,
                 selectedUniDay: 'Lunedì',
                 sectionsState: {
-                    'sec-calendar': true, 'sec-uni': true, 'sec-fit': true, 'sec-tiktok': true, 'sec-water': true
+                    'sec-uni': true, 'sec-fit': true, 'sec-tiktok': true, 'sec-water': true
                 },
                 defaultWorkouts: defaultWorkouts,
                 dailyLogs: initialLogs,
@@ -893,10 +815,6 @@
                     'Giovedì': [{ type: 'Lezione', time: '11:00 - 12:00', course: 'STORIA', room: 'Classe 5A' }],
                     'Venerdì': [{ type: 'Lezione', time: '08:00 - 10:00', course: 'FILOSOFIA', room: 'Classe 5A' }]
                 },
-                tasks: [
-                    { id: 1001, date: today, time: '15:00', title: 'Ripasso Esame / Studio', category: 'Studio', completed: false },
-                    { id: 1002, date: today, time: '18:30', title: 'Spesa & Allenamento Serale', category: 'Sport', completed: false }
-                ],
                 weightHistory: [{ date: today, weight: isLord ? 118.0 : 60.0 }],
                 tiktokIdeas: [
                     { id: 101, title: 'Cosa mangio e come mi alleno all\'Università / Scuola', hook: 'Lo studio non è una scusa!', status: 'Da Registrare' }
@@ -1331,268 +1249,6 @@
             }
         }
 
-        // GESTIONE NUOVO CALENDARIO (VISTA SETTIMANA ZOOM OUT VS VISTA GIORNO ZOOM IN)
-        function setCalendarZoom(zoom) {
-            currentCalendarZoom = zoom;
-            const weekBtn = document.getElementById('btn-zoom-week');
-            const dayBtn = document.getElementById('btn-zoom-day');
-
-            if (zoom === 'week') {
-                weekBtn.className = 'px-3 py-1.5 rounded-lg bg-indigo-600 text-white transition flex items-center gap-1.5';
-                dayBtn.className = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5';
-            } else {
-                dayBtn.className = 'px-3 py-1.5 rounded-lg bg-indigo-600 text-white transition flex items-center gap-1.5';
-                weekBtn.className = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5';
-            }
-            renderCalendarSection();
-        }
-
-        function renderCalendarSection() {
-            const container = document.getElementById('calendar-view-container');
-            if (!container) return;
-
-            if (currentCalendarZoom === 'week') {
-                // VISTA SETTIMANA (ZOOM OUT) — 7 GIORNI LUN-DOM
-                const currDate = new Date(selectedDateStr);
-                const dayOfWeek = currDate.getDay();
-                const distToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-                const monday = new Date(currDate);
-                monday.setDate(currDate.getDate() - distToMonday);
-
-                const dayFullNames = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato', 'Domenica'];
-                let gridHtml = '<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 gap-2">';
-
-                for (let i = 0; i < 7; i++) {
-                    const d = new Date(monday);
-                    d.setDate(monday.getDate() + i);
-                    const dStr = d.toISOString().split('T')[0];
-                    const isSelected = (dStr === selectedDateStr);
-                    const isToday = (dStr === getTodayStr());
-                    const dayName = dayFullNames[i];
-
-                    // Lezioni di questo giorno
-                    const lessons = appData.schedule && appData.schedule[dayName] ? appData.schedule[dayName] : [];
-                    // Task di questo giorno
-                    const tasks = appData.tasks ? appData.tasks.filter(t => t.date === dStr) : [];
-
-                    gridHtml += `
-                        <div onclick="selectDate('${dStr}'); setCalendarZoom('day');" class="bg-dark-950 p-2.5 rounded-xl border transition cursor-pointer flex flex-col justify-between space-y-2 hover:border-indigo-500/50 ${isSelected ? 'border-indigo-500 bg-indigo-950/20 shadow-md shadow-indigo-500/10' : 'border-slate-800'}">
-                            <div class="flex items-center justify-between border-b border-slate-800/80 pb-1.5">
-                                <span class="text-[11px] font-extrabold uppercase ${isSelected ? 'text-indigo-400' : 'text-slate-300'}">${dayName.substring(0,3)} ${d.getDate()}</span>
-                                ${isToday ? '<span class="text-[9px] bg-cyan-500/20 text-cyan-400 px-1.5 py-0.5 rounded font-bold">Oggi</span>' : ''}
-                            </div>
-                            
-                            <div class="space-y-1 flex-grow">
-                                ${lessons.length > 0 ? `
-                                    <div class="text-[9px] bg-blue-500/10 text-blue-300 p-1 rounded border border-blue-500/20 truncate font-semibold" title="${lessons.length} Lezioni">
-                                        🎓 ${lessons.length} Lezioni
-                                    </div>
-                                ` : ''}
-
-                                ${tasks.map(t => `
-                                    <div class="text-[9px] p-1 rounded border truncate font-medium ${t.completed ? 'bg-slate-900 text-slate-500 border-slate-800 line-through' : 'bg-indigo-500/10 text-indigo-300 border-indigo-500/20'}">
-                                        📍 ${t.time || ''} ${t.title}
-                                    </div>
-                                `).join('')}
-
-                                ${lessons.length === 0 && tasks.length === 0 ? `
-                                    <p class="text-[9px] text-slate-600 italic text-center py-2">Nessun impegno</p>
-                                ` : ''}
-                            </div>
-
-                            <div class="text-[9px] font-bold text-indigo-400 text-center border-t border-slate-800/60 pt-1">
-                                Clicca per zoom 🔍
-                            </div>
-                        </div>
-                    `;
-                }
-                gridHtml += '</div>';
-                container.innerHTML = gridHtml;
-            } else {
-                // VISTA GIORNO DETTAGLIATA (ZOOM IN)
-                const selDateObj = new Date(selectedDateStr);
-                const dayName = selDateObj.toLocaleDateString('it-IT', { weekday: 'long' });
-                const capitalizedDay = dayName.charAt(0).toUpperCase() + dayName.slice(1);
-
-                const tasks = appData.tasks ? appData.tasks.filter(t => t.date === selectedDateStr) : [];
-                const lessons = appData.schedule && appData.schedule[capitalizedDay] ? appData.schedule[capitalizedDay] : [];
-
-                let dayHtml = `
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center bg-dark-900 p-3 rounded-xl border border-slate-800">
-                            <div>
-                                <h3 class="text-xs font-black uppercase text-white flex items-center gap-1.5">
-                                    <i class="fa-solid fa-calendar-day text-indigo-400"></i> Dettaglio ${capitalizedDay} ${selDateObj.getDate()} ${selDateObj.toLocaleDateString('it-IT', { month: 'short' })}
-                                </h3>
-                                <p class="text-[10px] text-slate-400">${tasks.length} Impegni Personalizzati | ${lessons.length} Lezioni Programmate</p>
-                            </div>
-                            <button onclick="setCalendarZoom('week')" class="px-2.5 py-1 bg-dark-950 text-slate-300 border border-slate-800 hover:text-white text-xs font-bold rounded-lg transition">
-                                👈 Riduci (Zoom Out)
-                            </button>
-                        </div>
-                `;
-
-                if (tasks.length === 0 && lessons.length === 0) {
-                    dayHtml += `<div class="text-center py-6 text-slate-500 text-xs font-semibold">Nessun impegno o lezione salvata per questa data. Clicca "+ Nuova Task / Impegno" per aggiungerne uno! 📝</div>`;
-                } else {
-                    dayHtml += '<div class="grid grid-cols-1 md:grid-cols-2 gap-3">';
-                    // Render Tasks
-                    tasks.forEach(t => {
-                        dayHtml += `
-                            <div class="swipe-container group">
-                                <div class="swipe-actions">
-                                    <button onclick="openTaskModal(${t.id})" title="Modifica" class="w-9 h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                    <button onclick="deleteTaskItem(${t.id})" title="Elimina" class="w-9 h-9 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                                <div id="task-card-${t.id}" 
-                                     class="swipe-card p-3 rounded-xl border border-slate-800 space-y-1.5 cursor-grab active:cursor-grabbing"
-                                     ontouchstart="handleSwipeStart(event, 'task-card-${t.id}')"
-                                     ontouchmove="handleSwipeMove(event, 'task-card-${t.id}')"
-                                     ontouchend="handleSwipeEnd(event, 'task-card-${t.id}')"
-                                     onmousedown="handleSwipeStart(event, 'task-card-${t.id}')"
-                                     onmousemove="handleSwipeMove(event, 'task-card-${t.id}')"
-                                     onmouseup="handleSwipeEnd(event, 'task-card-${t.id}')"
-                                     onmouseleave="handleSwipeEnd(event, 'task-card-${t.id}')">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center space-x-2">
-                                            <button onclick="toggleTaskComplete(${t.id})" class="w-5 h-5 rounded-md flex items-center justify-center ${t.completed ? 'bg-emerald-500 text-white' : 'border border-slate-700 bg-dark-900'}">
-                                                ${t.completed ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
-                                            </button>
-                                            <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${getTaskCategoryBadge(t.category)}">${t.category || 'Impegno'}</span>
-                                        </div>
-                                        <div class="flex items-center space-x-1.5">
-                                            <span class="text-[10px] font-bold text-slate-400"><i class="fa-regular fa-clock mr-1"></i>${t.time || 'Tutto il giorno'}</span>
-                                            <span class="text-[10px] text-slate-500 font-bold ml-1">Swipe 🪶</span>
-                                        </div>
-                                    </div>
-                                    <h4 class="font-bold text-xs ${t.completed ? 'line-through text-slate-500' : 'text-white'}">${t.title}</h4>
-                                </div>
-                            </div>
-                        `;
-                    });
-
-                    // Render Lessons associated with this day
-                    lessons.forEach((l, idx) => {
-                        dayHtml += `
-                            <div class="bg-dark-950 p-3 rounded-xl border border-blue-500/20 space-y-1">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/20">🎓 Lezione Orario</span>
-                                    <span class="text-[10px] font-bold text-slate-400"><i class="fa-regular fa-clock mr-1"></i>${l.time}</span>
-                                </div>
-                                <h4 class="font-bold text-xs text-white">${l.course}</h4>
-                                <p class="text-[10px] text-slate-400"><i class="fa-solid fa-location-dot text-rose-400"></i> ${l.room || 'Aula'}</p>
-                            </div>
-                        `;
-                    });
-
-                    dayHtml += '</div>';
-                }
-                dayHtml += '</div>';
-                container.innerHTML = dayHtml;
-            }
-        }
-
-        function getTaskCategoryBadge(cat) {
-            if (cat === 'Studio') return 'bg-amber-500/10 text-amber-400 border border-amber-500/20';
-            if (cat === 'Sport') return 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
-            if (cat === 'Personale') return 'bg-purple-500/10 text-purple-400 border border-purple-500/20';
-            return 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20';
-        }
-
-        function openTaskModal(id = null) {
-            const modal = document.getElementById('modal-task');
-            const dateInput = document.getElementById('task-date');
-            const timeInput = document.getElementById('task-time');
-            const titleInput = document.getElementById('task-title');
-            const catSelect = document.getElementById('task-category');
-            const editingId = document.getElementById('task-editing-id');
-
-            dateInput.value = selectedDateStr;
-
-            if (id && appData.tasks) {
-                const item = appData.tasks.find(t => t.id === id);
-                if (item) {
-                    editingId.value = item.id;
-                    dateInput.value = item.date;
-                    timeInput.value = item.time || '15:00';
-                    titleInput.value = item.title;
-                    catSelect.value = item.category || 'Impegno';
-                    document.getElementById('task-modal-title').innerText = 'Modifica Task / Impegno';
-                }
-            } else {
-                editingId.value = '';
-                timeInput.value = '15:00';
-                titleInput.value = '';
-                catSelect.value = 'Impegno';
-                document.getElementById('task-modal-title').innerText = 'Nuovo Impegno / Task';
-            }
-
-            modal.classList.remove('hidden'); modal.classList.add('flex');
-        }
-
-        function saveTaskItem() {
-            const dateInput = document.getElementById('task-date').value;
-            const timeInput = document.getElementById('task-time').value.trim();
-            const titleInput = document.getElementById('task-title').value.trim();
-            const catSelect = document.getElementById('task-category').value;
-            const editingId = document.getElementById('task-editing-id').value;
-
-            if (!titleInput) {
-                showToast('Inserisci il titolo della task!');
-                return;
-            }
-
-            if (!appData.tasks) appData.tasks = [];
-
-            if (editingId) {
-                const item = appData.tasks.find(t => t.id === parseInt(editingId));
-                if (item) {
-                    item.date = dateInput || selectedDateStr;
-                    item.time = timeInput;
-                    item.title = titleInput;
-                    item.category = catSelect;
-                }
-            } else {
-                appData.tasks.push({
-                    id: Date.now(),
-                    date: dateInput || selectedDateStr,
-                    time: timeInput,
-                    title: titleInput,
-                    category: catSelect,
-                    completed: false
-                });
-            }
-
-            saveData();
-            renderCalendarSection();
-            closeModal('modal-task');
-            showToast('Task salvata nel Calendario!');
-        }
-
-        function toggleTaskComplete(id) {
-            if (appData.tasks) {
-                const item = appData.tasks.find(t => t.id === id);
-                if (item) {
-                    item.completed = !item.completed;
-                    saveData();
-                    renderCalendarSection();
-                }
-            }
-        }
-
-        function deleteTaskItem(id) {
-            if (appData.tasks) {
-                appData.tasks = appData.tasks.filter(t => t.id !== id);
-                saveData();
-                renderCalendarSection();
-                showToast('Task rimossa!');
-            }
-        }
-
         function renderAll() {
             if (!appData) return;
             renderHeaderDate();
@@ -1600,7 +1256,6 @@
             renderWeeklyRingsStrip();
             renderActivityRingsWidget();
             renderTopCards();
-            renderCalendarSection();
             renderUniSection();
             renderFitnessSection();
             renderTikTokSection();
@@ -1777,7 +1432,6 @@
             appData.selectedUniDay = daySelect;
             saveData();
             renderUniSection();
-            renderCalendarSection();
             renderTopCards();
             closeModal('modal-schedule');
             showToast('Orario aggiornato con successo!');
@@ -1788,7 +1442,6 @@
                 appData.schedule[day].splice(idx, 1);
                 saveData();
                 renderUniSection();
-                renderCalendarSection();
                 renderTopCards();
                 showToast('Materia rimossa dall\'orario.');
             }
@@ -1873,13 +1526,13 @@
                         </div>
                         <div id="tt-card-${item.id}" 
                              class="swipe-card p-3.5 rounded-xl border border-slate-800 space-y-2 cursor-grab active:cursor-grabbing"
-                             ontouchstart="handleSwipeStart(event, 'tt-card-${item.id}')"
-                             ontouchmove="handleSwipeMove(event, 'tt-card-${item.id}')"
-                             ontouchend="handleSwipeEnd(event, 'tt-card-${item.id}')"
-                             onmousedown="handleSwipeStart(event, 'tt-card-${item.id}')"
-                             onmousemove="handleSwipeMove(event, 'tt-card-${item.id}')"
-                             onmouseup="handleSwipeEnd(event, 'tt-card-${item.id}')"
-                             onmouseleave="handleSwipeEnd(event, 'tt-card-${item.id}')">
+                             ontouchstart="handleSwipeStart(event, ${item.id})"
+                             ontouchmove="handleSwipeMove(event, ${item.id})"
+                             ontouchend="handleSwipeEnd(event, ${item.id})"
+                             onmousedown="handleSwipeStart(event, ${item.id})"
+                             onmousemove="handleSwipeMove(event, ${item.id})"
+                             onmouseup="handleSwipeEnd(event, ${item.id})"
+                             onmouseleave="handleSwipeEnd(event, ${item.id})">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${getStatusBadgeClass(item.status)}">${item.status}</span>
                                 <span class="text-[10px] text-slate-500 font-bold">Swipe 🪶</span>
@@ -1900,11 +1553,11 @@
             return 'bg-pink-500/10 text-pink-400 border border-pink-500/20';
         }
 
-        // GESTIONE SWIPE GENERICA (PER TIKTOK, LEZIONI E TASK CALENDARIO)
+        // GESTIONE SWIPE GENERICA (VALIDA SIA PER TIKTOK CHE PER LEZIONI ORARIO)
         let swipeState = { activeId: null, startX: 0, currentTranslate: 0, isDragging: false };
 
         function getNormalizedCardId(elementId) {
-            if (typeof elementId === 'string' && (elementId.startsWith('sched-card-') || elementId.startsWith('tt-card-') || elementId.startsWith('task-card-'))) {
+            if (typeof elementId === 'string' && (elementId.startsWith('sched-card-') || elementId.startsWith('tt-card-'))) {
                 return elementId;
             }
             return `tt-card-${elementId}`;
@@ -2078,7 +1731,7 @@
         }
 
         function applySectionsState() {
-            ['sec-calendar', 'sec-uni', 'sec-fit', 'sec-tiktok', 'sec-water'].forEach(id => {
+            ['sec-uni', 'sec-fit', 'sec-tiktok', 'sec-water'].forEach(id => {
                 const sec = document.getElementById(id);
                 const icon = document.getElementById(`${id}-icon`);
                 const isVisible = appData.sectionsState ? (appData.sectionsState[id] !== false) : true;
