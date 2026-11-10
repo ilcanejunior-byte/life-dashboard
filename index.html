@@ -113,6 +113,12 @@
             border-color: rgba(59, 130, 246, 0.5);
             box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
         }
+        .calendar-cell {
+            transition: all 0.15s ease;
+        }
+        .calendar-cell:active {
+            transform: scale(0.92);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col pb-8">
@@ -124,7 +130,7 @@
                 <i class="fa-solid fa-user-lock"></i>
             </div>
             <div>
-                <h2 class="text-lg font-black text-white">LORD TRACKER</h2>
+                <h2 class="text-lg font-black text-white tracking-wider">LORD TRACKER</h2>
                 <p class="text-xs text-slate-400 mt-1">Accedi al tuo account o registrati per iniziare</p>
             </div>
 
@@ -211,17 +217,21 @@
     <!-- Main Container -->
     <main class="max-w-6xl w-full mx-auto px-3 sm:px-6 pt-3 space-y-3.5 flex-grow">
 
-        <!-- BARRA NAVIGAZIONE DATA & STRISCIA 7 GIORNI AD ANELLI (STILE APPLE FITNESS) -->
+        <!-- BARRA NAVIGAZIONE DATA CON POPUP CALENDARIO APPLE & STRISCIA 7 GIORNI AD ANELLI -->
         <section class="glass-card rounded-2xl p-3 border border-slate-800 space-y-2.5">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-1.5">
                     <button onclick="changeSelectedDate(-1)" title="Giorno Precedente" class="px-2.5 py-1 bg-dark-900 hover:bg-dark-800 text-white rounded-lg border border-slate-800 text-xs font-bold transition active:scale-95">
                         <i class="fa-solid fa-chevron-left text-cyan-400"></i>
                     </button>
-                    <div class="flex items-center space-x-2 bg-dark-950 px-3 py-1 rounded-xl border border-slate-800">
-                        <i class="fa-regular fa-calendar-days text-xs text-cyan-400"></i>
+                    
+                    <!-- Pulsante centrale per aprire il Calendario Popup Apple -->
+                    <button onclick="openCalendarModal()" title="Apri Calendario Apple" class="flex items-center space-x-2 bg-dark-950 hover:bg-dark-900 px-3 py-1 rounded-xl border border-slate-800 hover:border-cyan-500/40 transition group cursor-pointer shadow-sm">
+                        <i class="fa-regular fa-calendar-days text-xs text-cyan-400 group-hover:scale-110 transition-transform"></i>
                         <span id="selected-date-display" class="text-xs font-extrabold text-white">Caricamento...</span>
-                    </div>
+                        <i class="fa-solid fa-caret-down text-[10px] text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
+                    </button>
+
                     <button onclick="changeSelectedDate(1)" title="Giorno Successivo" class="px-2.5 py-1 bg-dark-900 hover:bg-dark-800 text-white rounded-lg border border-slate-800 text-xs font-bold transition active:scale-95">
                         <i class="fa-solid fa-chevron-right text-cyan-400"></i>
                     </button>
@@ -231,7 +241,9 @@
                     <button id="btn-go-today" onclick="goToToday()" class="hidden px-2.5 py-1 bg-cyan-600/20 text-cyan-400 border border-cyan-500/30 rounded-lg text-xs font-extrabold transition hover:bg-cyan-600/30">
                         Vai a Oggi
                     </button>
-                    <input type="date" id="date-picker-input" onchange="onDatePickerChange(this.value)" class="bg-dark-950 border border-slate-800 text-white text-xs font-bold rounded-lg px-2 py-1 focus:outline-none focus:border-cyan-500">
+                    <button onclick="openCalendarModal()" title="Seleziona Data" class="px-2.5 py-1 bg-dark-950 hover:bg-dark-900 text-slate-300 border border-slate-800 hover:border-cyan-500/40 rounded-lg text-xs font-bold transition flex items-center gap-1">
+                        <i class="fa-solid fa-calendar-alt text-cyan-400"></i> <span class="hidden sm:inline">Calendario</span>
+                    </button>
                 </div>
             </div>
 
@@ -359,11 +371,11 @@
 
             <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-center justify-between">
                 <div>
-                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Workout Data</p>
-                    <p id="top-workout-display" class="text-sm sm:text-base font-extrabold text-purple-400 mt-0.5">0 / 5</p>
+                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Task Completate</p>
+                    <p id="top-tasks-display" class="text-sm sm:text-base font-extrabold text-indigo-400 mt-0.5">0 / 0</p>
                 </div>
-                <div class="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center">
-                    <i class="fa-solid fa-dumbbell text-sm"></i>
+                <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+                    <i class="fa-solid fa-list-check text-sm"></i>
                 </div>
             </div>
 
@@ -378,7 +390,42 @@
             </div>
         </div>
 
-        <!-- SECTION 1: ACCORDION - UNIVERSITÀ & SCUOLA LEZIONI (CON SWIPE GESTURE) -->
+        <!-- NUOVA SEZIONE: TASK & CHECKLIST GIORNALIERE (RICORRENTI E SINGOLE) -->
+        <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
+            <button onclick="toggleSection('sec-tasks')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-list-check text-sm"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Task & Checklist Giornaliere</h2>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400">Attività da fare oggi | Ricorrenti ogni giorno o per data singola</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span id="tasks-summary-badge" class="text-[10px] font-semibold bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-500/20">0/0 Completate</span>
+                    <i id="sec-tasks-icon" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
+                </div>
+            </button>
+
+            <div id="sec-tasks" class="p-4 space-y-3 border-t border-slate-800/80">
+                <div class="flex justify-between items-center flex-wrap gap-2">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Avanzamento:</span>
+                        <div class="w-28 sm:w-40 bg-dark-950 h-2 rounded-full overflow-hidden border border-slate-800">
+                            <div id="tasks-progress-bar" class="bg-indigo-500 h-full transition-all duration-300" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <button onclick="openTaskModal()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-md shadow-indigo-600/20">
+                        <i class="fa-solid fa-plus text-xs"></i> Nuova Task
+                    </button>
+                </div>
+                <p class="text-[10px] text-slate-400 italic">👈 Swipa a sinistra sulla task per scoprire Modifica/Elimina. Swipa a destra 👉 per richiudere.</p>
+                <div id="tasks-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
+            </div>
+        </section>
+
+        <!-- SECTION: UNIVERSITÀ & SCUOLA LEZIONI -->
         <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
             <button onclick="toggleSection('sec-uni')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
                 <div class="flex items-center space-x-3">
@@ -408,7 +455,7 @@
             </div>
         </section>
 
-        <!-- SECTION 2: ACCORDION - FITNESS & PIANO DIMAGRIMENTO -->
+        <!-- SECTION: FITNESS & PIANO DIMAGRIMENTO -->
         <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
             <button onclick="toggleSection('sec-fit')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
                 <div class="flex items-center space-x-3">
@@ -468,7 +515,7 @@
             </div>
         </section>
 
-        <!-- SECTION 3: ACCORDION - TIKTOK PLANNER WITH SWIPE -->
+        <!-- SECTION: TIKTOK PLANNER WITH SWIPE -->
         <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
             <button onclick="toggleSection('sec-tiktok')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
                 <div class="flex items-center space-x-3">
@@ -498,7 +545,7 @@
             </div>
         </section>
 
-        <!-- SECTION 4: ACCORDION - IDRATAZIONE (3.5 LITRI) -->
+        <!-- SECTION: IDRATAZIONE (3.5 LITRI) -->
         <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
             <button onclick="toggleSection('sec-water')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition text-sm">
                 <div class="flex items-center space-x-3">
@@ -556,6 +603,95 @@
     </main>
 
     <!-- MODALI -->
+    <!-- MODALE TASK GIORNALIERA (NUOVA / MODIFICA) -->
+    <div id="modal-task" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-4 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 id="task-modal-title" class="font-bold text-sm text-white flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-indigo-400"></i> Nuova Task Giornaliera
+                </h3>
+                <button onclick="closeModal('modal-task')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <input type="hidden" id="task-editing-id" value="">
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="text-slate-400 font-semibold">Titolo Attività / Task:</label>
+                    <input type="text" id="task-title" placeholder="Es. Leggere 10 pagine, Studio Matematica..." required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Categoria:</label>
+                    <select id="task-category" class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-indigo-500">
+                        <option value="Studio">📚 Studio</option>
+                        <option value="Salute">💚 Salute & Fit</option>
+                        <option value="Personale">⭐ Personale</option>
+                        <option value="Lavoro">💼 Lavoro / Projet</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Frequenza Task:</label>
+                    <select id="task-recurrence" class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-indigo-500">
+                        <option value="recurring">🔄 Ricorrente (Ogni Giorno)</option>
+                        <option value="single">📅 Solo per la Data Selezionata</option>
+                    </select>
+                </div>
+                <button onclick="saveTask()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-indigo-600/20">
+                    Salva Task
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE CALENDARIO POPUP INTERATTIVO APPLE / iOS STYLE -->
+    <div id="modal-calendar" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 transition-all">
+        <div class="glass-card max-w-sm sm:max-w-md w-full rounded-3xl border border-slate-700/60 p-4 sm:p-6 space-y-4 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+            <!-- Header Modal Calendario -->
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center space-x-2">
+                    <button onclick="changeCalendarMonth(-1)" title="Mese Precedente" class="w-8 h-8 rounded-full bg-dark-900 hover:bg-dark-800 text-slate-300 hover:text-white flex items-center justify-center border border-slate-800 text-xs transition active:scale-95">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <h3 id="cal-month-year-title" class="font-extrabold text-sm sm:text-base text-white capitalize tracking-wide min-w-[130px] text-center">
+                        Caricamento...
+                    </h3>
+                    <button onclick="changeCalendarMonth(1)" title="Mese Successivo" class="w-8 h-8 rounded-full bg-dark-900 hover:bg-dark-800 text-slate-300 hover:text-white flex items-center justify-center border border-slate-800 text-xs transition active:scale-95">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <button onclick="jumpCalendarToToday()" class="px-2.5 py-1 bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 rounded-lg text-xs font-bold transition">
+                        Oggi
+                    </button>
+                    <button onclick="closeModal('modal-calendar')" class="w-8 h-8 rounded-full bg-dark-900 hover:bg-dark-800 text-slate-400 hover:text-white flex items-center justify-center transition">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Header Giorni della Settimana (L - D) -->
+            <div class="grid grid-cols-7 text-center">
+                <span class="text-[10px] font-black uppercase text-slate-400">Lun</span>
+                <span class="text-[10px] font-black uppercase text-slate-400">Mar</span>
+                <span class="text-[10px] font-black uppercase text-slate-400">Mer</span>
+                <span class="text-[10px] font-black uppercase text-slate-400">Gio</span>
+                <span class="text-[10px] font-black uppercase text-slate-400">Ven</span>
+                <span class="text-[10px] font-black uppercase text-slate-400">Sab</span>
+                <span class="text-[10px] font-black uppercase text-slate-400">Dom</span>
+            </div>
+
+            <!-- Griglia dei giorni del Mese dinamica -->
+            <div id="cal-days-grid" class="grid grid-cols-7 gap-1"></div>
+
+            <!-- Legenda Anelli Activity & Task -->
+            <div class="pt-2 border-t border-slate-800/80 flex items-center justify-around text-[10px] font-semibold text-slate-400">
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Fitness</span>
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-cyan-400"></span> Acqua</span>
+                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-pink-500"></span> TikTok</span>
+                <span class="flex items-center gap-1"><i class="fa-solid fa-check text-indigo-400"></i> Task</span>
+            </div>
+        </div>
+    </div>
+
     <!-- MODALE GESTIONE ACCOUNT -->
     <div id="modal-account" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-4 sm:p-5 space-y-4">
@@ -638,6 +774,7 @@
         </div>
     </div>
 
+    <!-- MODALE AGGIORNA PESO -->
     <div id="modal-weight" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="glass-card max-w-xs w-full rounded-2xl border border-slate-800 p-4 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-2">
@@ -653,6 +790,7 @@
         </div>
     </div>
 
+    <!-- MODALE IDEE TIKTOK -->
     <div id="modal-tiktok" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="glass-card max-w-md w-full rounded-2xl border border-slate-800 p-4 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -684,6 +822,7 @@
         </div>
     </div>
 
+    <!-- MODALE STORICO WEIGHT PROGRESS -->
     <div id="modal-history" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="glass-card max-w-md w-full rounded-2xl border border-slate-800 p-4 space-y-4 max-h-[85vh] flex flex-col">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
@@ -720,6 +859,9 @@
 
         const getTodayStr = () => new Date().toISOString().split('T')[0];
         let selectedDateStr = getTodayStr();
+
+        // Stato della data visualizzata nel Popup Calendario
+        let calendarViewDate = new Date();
 
         // INDEXEDDB FALLBACK
         const IDB_NAME = 'LifeDashboardDB_v6';
@@ -770,11 +912,19 @@
                 { id: 5, name: 'Plank frontale + Stretching', desc: '30-45s plank + allungamento', completed: false }
             ];
 
+            const defaultRecurringTasks = [
+                { id: 't1', title: 'Bere 3.5 Litri di acqua', category: 'Salute', isRecurring: true },
+                { id: 't2', title: 'Completare l\'allenamento del giorno', category: 'Salute', isRecurring: true },
+                { id: 't3', title: 'Revisione orario lezioni & studio', category: 'Studio', isRecurring: true }
+            ];
+
             const initialLogs = {};
             initialLogs[today] = {
                 water: 0,
                 lastWaterAdded: 200,
-                workouts: JSON.parse(JSON.stringify(defaultWorkouts))
+                workouts: JSON.parse(JSON.stringify(defaultWorkouts)),
+                singleTasks: [],
+                taskStates: {}
             };
 
             return {
@@ -784,9 +934,10 @@
                 weight: isLord ? 118.0 : 60.0,
                 selectedUniDay: 'Lunedì',
                 sectionsState: {
-                    'sec-uni': true, 'sec-fit': true, 'sec-tiktok': true, 'sec-water': true
+                    'sec-tasks': true, 'sec-uni': true, 'sec-fit': true, 'sec-tiktok': true, 'sec-water': true
                 },
                 defaultWorkouts: defaultWorkouts,
+                recurringTasks: defaultRecurringTasks,
                 dailyLogs: initialLogs,
                 schedule: isLord ? {
                     'Lunedì': [
@@ -825,6 +976,8 @@
         function ensureDailyLogExists(dateStr) {
             if (!appData) return;
             if (!appData.dailyLogs) appData.dailyLogs = {};
+            if (!appData.recurringTasks) appData.recurringTasks = [];
+            
             if (!appData.dailyLogs[dateStr]) {
                 const baseWorkouts = appData.defaultWorkouts || [
                     { id: 1, name: 'Camminata Veloce (25-30 min)', desc: 'Passo sostenuto quotidiano', completed: false },
@@ -836,9 +989,13 @@
                 appData.dailyLogs[dateStr] = {
                     water: 0,
                     lastWaterAdded: 200,
-                    workouts: JSON.parse(JSON.stringify(baseWorkouts))
+                    workouts: JSON.parse(JSON.stringify(baseWorkouts)),
+                    singleTasks: [],
+                    taskStates: {}
                 };
             }
+            if (!appData.dailyLogs[dateStr].singleTasks) appData.dailyLogs[dateStr].singleTasks = [];
+            if (!appData.dailyLogs[dateStr].taskStates) appData.dailyLogs[dateStr].taskStates = {};
         }
 
         function getCurrentDayLog() {
@@ -1104,7 +1261,7 @@
             showToast('Disconnesso con successo');
         }
 
-        // GESTIONE DATA E STRISCIA AD ANELLI SETTIMANALE
+        // GESTIONE DATA E POPUP CALENDARIO APPLE
         function changeSelectedDate(daysOffset) {
             const curr = new Date(selectedDateStr);
             curr.setDate(curr.getDate() + daysOffset);
@@ -1116,6 +1273,7 @@
         function selectDate(dateStr) {
             selectedDateStr = dateStr;
             ensureDailyLogExists(selectedDateStr);
+            closeModal('modal-calendar');
             renderAll();
         }
 
@@ -1125,12 +1283,331 @@
             renderAll();
         }
 
-        function onDatePickerChange(val) {
-            if (val) {
-                selectedDateStr = val;
-                ensureDailyLogExists(selectedDateStr);
-                renderAll();
+        // --- POPUP CALENDARIO APPLE LOGIC & RENDER ---
+        function openCalendarModal() {
+            calendarViewDate = new Date(selectedDateStr);
+            renderCalendarModal();
+            const modal = document.getElementById('modal-calendar');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function changeCalendarMonth(offset) {
+            calendarViewDate.setMonth(calendarViewDate.getMonth() + offset);
+            renderCalendarModal();
+        }
+
+        function jumpCalendarToToday() {
+            calendarViewDate = new Date();
+            selectedDateStr = getTodayStr();
+            ensureDailyLogExists(selectedDateStr);
+            renderCalendarModal();
+            renderAll();
+        }
+
+        function renderCalendarModal() {
+            const titleEl = document.getElementById('cal-month-year-title');
+            const gridContainer = document.getElementById('cal-days-grid');
+            if (!titleEl || !gridContainer) return;
+
+            const year = calendarViewDate.getFullYear();
+            const month = calendarViewDate.getMonth();
+
+            const monthFormatted = calendarViewDate.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' });
+            titleEl.innerText = monthFormatted;
+
+            const firstDay = new Date(year, month, 1);
+            let startDayIndex = (firstDay.getDay() + 6) % 7;
+
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+            const todayStr = getTodayStr();
+            let html = '';
+
+            for (let i = startDayIndex - 1; i >= 0; i--) {
+                const dayNum = daysInPrevMonth - i;
+                const prevDate = new Date(year, month - 1, dayNum);
+                const prevDateStr = prevDate.toISOString().split('T')[0];
+                html += renderCalendarCellHtml(prevDateStr, dayNum, false, false, false);
             }
+
+            for (let dayNum = 1; dayNum <= daysInMonth; dayNum++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+                const isToday = (dateStr === todayStr);
+                const isSelected = (dateStr === selectedDateStr);
+
+                html += renderCalendarCellHtml(dateStr, dayNum, true, isToday, isSelected);
+            }
+
+            const totalCells = startDayIndex + daysInMonth;
+            const remainingCells = (totalCells > 35 ? 42 : 35) - totalCells;
+            for (let dayNum = 1; dayNum <= remainingCells; dayNum++) {
+                const nextDate = new Date(year, month + 1, dayNum);
+                const nextDateStr = nextDate.toISOString().split('T')[0];
+                html += renderCalendarCellHtml(nextDateStr, dayNum, false, false, false);
+            }
+
+            gridContainer.innerHTML = html;
+        }
+
+        function renderCalendarCellHtml(dateStr, dayNum, isCurrentMonth, isToday, isSelected) {
+            const stats = getCalculatedDayPcts(dateStr);
+            const taskStats = getTaskCompletionStats(dateStr);
+
+            const cFit = 2 * Math.PI * 11;
+            const cWat = 2 * Math.PI * 8.5;
+            const cTT  = 2 * Math.PI * 6;
+
+            const oFit = cFit * (1 - stats.fitnessPct / 100);
+            const oWat = cWat * (1 - stats.waterPct / 100);
+            const oTT  = cTT * (1 - stats.tiktokPct / 100);
+
+            let opacityClass = isCurrentMonth ? 'opacity-100' : 'opacity-30 hover:opacity-70';
+            let bgClass = 'bg-dark-950/60 hover:bg-dark-900 border-slate-800/80';
+            let textClass = isCurrentMonth ? 'text-white font-bold' : 'text-slate-500 font-semibold';
+
+            if (isSelected) {
+                bgClass = 'bg-cyan-500/15 border-cyan-500/60 shadow-md shadow-cyan-500/20';
+                textClass = 'text-cyan-400 font-black';
+            }
+
+            let taskBadgeHtml = '';
+            if (taskStats.total > 0) {
+                const isAllDone = taskStats.completed === taskStats.total;
+                taskBadgeHtml = `
+                    <span class="text-[8px] px-1 py-0.2 rounded-full font-bold ${isAllDone ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-indigo-500/20 text-indigo-300'}">
+                        ✓ ${taskStats.completed}/${taskStats.total}
+                    </span>
+                `;
+            }
+
+            return `
+                <button onclick="selectDate('${dateStr}')" class="calendar-cell ${opacityClass} ${bgClass} p-1 rounded-2xl border flex flex-col items-center justify-between h-14 sm:h-16 relative">
+                    <div class="w-full flex justify-between items-center px-1">
+                        <span class="text-[10px] ${textClass}">${dayNum}</span>
+                        ${isToday ? '<span class="w-1.5 h-1.5 rounded-full bg-cyan-400 ring-2 ring-cyan-400/40"></span>' : ''}
+                    </div>
+
+                    <div class="w-6 h-6 sm:w-7 sm:h-7 relative flex items-center justify-center my-0.5">
+                        <svg class="w-full h-full" viewBox="0 0 28 28">
+                            <circle cx="14" cy="14" r="11" stroke="rgba(34,197,94,0.15)" stroke-width="2" fill="none" />
+                            <circle cx="14" cy="14" r="8.5" stroke="rgba(6,182,212,0.15)" stroke-width="2" fill="none" />
+                            <circle cx="14" cy="14" r="6" stroke="rgba(236,72,153,0.15)" stroke-width="2" fill="none" />
+
+                            <circle class="ring-circle" cx="14" cy="14" r="11" stroke="#22c55e" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="${cFit}" stroke-dashoffset="${oFit}" />
+                            <circle class="ring-circle" cx="14" cy="14" r="8.5" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="${cWat}" stroke-dashoffset="${oWat}" />
+                            <circle class="ring-circle" cx="14" cy="14" r="6" stroke="#ec4899" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="${cTT}" stroke-dashoffset="${oTT}" />
+                        </svg>
+                    </div>
+
+                    <div class="h-3 flex items-center">
+                        ${taskBadgeHtml}
+                    </div>
+                </button>
+            `;
+        }
+
+        // LOGICA TASK & CHECKLIST GIORNALIERE
+        function getTasksForDate(dateStr) {
+            ensureDailyLogExists(dateStr);
+            const log = appData.dailyLogs[dateStr];
+            const recurring = appData.recurringTasks || [];
+            const single = log.singleTasks || [];
+
+            const allTasks = [...recurring, ...single];
+            return allTasks.map(t => {
+                const isDone = Boolean(log.taskStates && log.taskStates[t.id]);
+                return { ...t, completed: isDone };
+            });
+        }
+
+        function getTaskCompletionStats(dateStr) {
+            const tasks = getTasksForDate(dateStr);
+            const completed = tasks.filter(t => t.completed).length;
+            const total = tasks.length;
+            const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+            return { completed, total, pct };
+        }
+
+        function renderTasksSection() {
+            const listContainer = document.getElementById('tasks-list-container');
+            const summaryBadge = document.getElementById('tasks-summary-badge');
+            const progressBar = document.getElementById('tasks-progress-bar');
+            const topTasksDisplay = document.getElementById('top-tasks-display');
+
+            const tasks = getTasksForDate(selectedDateStr);
+            const stats = getTaskCompletionStats(selectedDateStr);
+
+            if (summaryBadge) summaryBadge.innerText = `${stats.completed}/${stats.total} Completate`;
+            if (progressBar) progressBar.style.width = `${stats.pct}%`;
+            if (topTasksDisplay) topTasksDisplay.innerText = `${stats.completed} / ${stats.total}`;
+
+            if (!listContainer) return;
+
+            if (tasks.length === 0) {
+                listContainer.innerHTML = `<div class="col-span-2 text-center py-6 text-slate-500 text-xs font-semibold">Nessuna task in programma per oggi. Clicca "+ Nuova Task" per aggiungerne una! 📝</div>`;
+                return;
+            }
+
+            listContainer.innerHTML = tasks.map(t => {
+                const catClass = getTaskCategoryClass(t.category);
+                return `
+                    <div class="swipe-container group">
+                        <div class="swipe-actions">
+                            <button onclick="openTaskModal('${t.id}')" title="Modifica" class="w-9 h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button onclick="deleteTask('${t.id}')" title="Elimina" class="w-9 h-9 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                        <div id="task-card-${t.id}" 
+                             class="swipe-card p-3 rounded-xl border border-slate-800 flex items-center justify-between cursor-grab active:cursor-grabbing"
+                             ontouchstart="handleSwipeStart(event, 'task-card-${t.id}')"
+                             ontouchmove="handleSwipeMove(event, 'task-card-${t.id}')"
+                             ontouchend="handleSwipeEnd(event, 'task-card-${t.id}')"
+                             onmousedown="handleSwipeStart(event, 'task-card-${t.id}')"
+                             onmousemove="handleSwipeMove(event, 'task-card-${t.id}')"
+                             onmouseup="handleSwipeEnd(event, 'task-card-${t.id}')"
+                             onmouseleave="handleSwipeEnd(event, 'task-card-${t.id}')">
+                            <div class="flex items-center space-x-3 pr-2 overflow-hidden">
+                                <button onclick="toggleTask('${t.id}')" class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition ${t.completed ? 'bg-indigo-500 text-white' : 'border border-slate-700 bg-dark-900 hover:border-indigo-500'}">
+                                    ${t.completed ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+                                </button>
+                                <div class="space-y-0.5 truncate">
+                                    <div class="flex items-center space-x-1.5">
+                                        <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${catClass}">${t.category || 'Generale'}</span>
+                                        ${t.isRecurring ? '<span class="text-[9px] text-indigo-400 font-bold bg-indigo-500/10 px-1.5 py-0.5 rounded" title="Ricorrente Ogni Giorno"><i class="fa-solid fa-rotate text-[8px]"></i> Ogni giorno</span>' : '<span class="text-[9px] text-slate-400 font-medium">Solo data</span>'}
+                                    </div>
+                                    <p class="font-bold text-xs truncate ${t.completed ? 'line-through text-indigo-300/60' : 'text-white'}">${t.title}</p>
+                                </div>
+                            </div>
+                            <span class="text-[9px] text-slate-500 font-bold shrink-0 ml-1">Swipe 🪶</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getTaskCategoryClass(cat) {
+            if (cat === 'Salute') return 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
+            if (cat === 'Studio') return 'bg-blue-500/10 text-blue-400 border border-blue-500/20';
+            if (cat === 'Lavoro') return 'bg-amber-500/10 text-amber-400 border border-amber-500/20';
+            return 'bg-purple-500/10 text-purple-400 border border-purple-500/20';
+        }
+
+        function toggleTask(id) {
+            const log = getCurrentDayLog();
+            if (!log.taskStates) log.taskStates = {};
+            log.taskStates[id] = !log.taskStates[id];
+            saveData();
+            renderTasksSection();
+            if (document.getElementById('modal-calendar') && !document.getElementById('modal-calendar').classList.contains('hidden')) {
+                renderCalendarModal();
+            }
+        }
+
+        function openTaskModal(taskId = null) {
+            const modal = document.getElementById('modal-task');
+            const titleInput = document.getElementById('task-title');
+            const categorySelect = document.getElementById('task-category');
+            const recurrenceSelect = document.getElementById('task-recurrence');
+            const editingIdInput = document.getElementById('task-editing-id');
+            const modalTitle = document.getElementById('task-modal-title');
+
+            if (taskId) {
+                const tasks = getTasksForDate(selectedDateStr);
+                const task = tasks.find(t => t.id === taskId);
+                if (task) {
+                    editingIdInput.value = task.id;
+                    titleInput.value = task.title;
+                    categorySelect.value = task.category || 'Studio';
+                    recurrenceSelect.value = task.isRecurring ? 'recurring' : 'single';
+                    modalTitle.innerHTML = '<i class="fa-solid fa-pen text-indigo-400"></i> Modifica Task';
+                }
+            } else {
+                editingIdInput.value = '';
+                titleInput.value = '';
+                categorySelect.value = 'Studio';
+                recurrenceSelect.value = 'recurring';
+                modalTitle.innerHTML = '<i class="fa-solid fa-plus text-indigo-400"></i> Nuova Task Giornaliera';
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function saveTask() {
+            const titleInput = document.getElementById('task-title').value.trim();
+            const categorySelect = document.getElementById('task-category').value;
+            const recurrenceSelect = document.getElementById('task-recurrence').value;
+            const editingId = document.getElementById('task-editing-id').value;
+
+            if (!titleInput) { showToast('Inserisci il titolo della task!'); return; }
+
+            const isRec = (recurrenceSelect === 'recurring');
+
+            if (editingId) {
+                // Modifica task esistente
+                let recTask = (appData.recurringTasks || []).find(t => t.id === editingId);
+                if (recTask) {
+                    if (isRec) {
+                        recTask.title = titleInput;
+                        recTask.category = categorySelect;
+                    } else {
+                        // Sposta da ricorrente a singola data
+                        appData.recurringTasks = appData.recurringTasks.filter(t => t.id !== editingId);
+                        const log = getCurrentDayLog();
+                        log.singleTasks.push({ id: editingId, title: titleInput, category: categorySelect, isRecurring: false });
+                    }
+                } else {
+                    const log = getCurrentDayLog();
+                    let sTask = (log.singleTasks || []).find(t => t.id === editingId);
+                    if (sTask) {
+                        if (!isRec) {
+                            sTask.title = titleInput;
+                            sTask.category = categorySelect;
+                        } else {
+                            // Sposta da singola a ricorrente
+                            log.singleTasks = log.singleTasks.filter(t => t.id !== editingId);
+                            if (!appData.recurringTasks) appData.recurringTasks = [];
+                            appData.recurringTasks.push({ id: editingId, title: titleInput, category: categorySelect, isRecurring: true });
+                        }
+                    }
+                }
+            } else {
+                // Creazione nuova task
+                const newId = 'task_' + Date.now();
+                const newTaskObj = { id: newId, title: titleInput, category: categorySelect, isRecurring: isRec };
+                if (isRec) {
+                    if (!appData.recurringTasks) appData.recurringTasks = [];
+                    appData.recurringTasks.push(newTaskObj);
+                } else {
+                    const log = getCurrentDayLog();
+                    log.singleTasks.push(newTaskObj);
+                }
+            }
+
+            saveData();
+            renderTasksSection();
+            closeModal('modal-task');
+            showToast('Task salvata con successo!');
+        }
+
+        function deleteTask(taskId) {
+            if (appData.recurringTasks) {
+                appData.recurringTasks = appData.recurringTasks.filter(t => t.id !== taskId);
+            }
+            const log = getCurrentDayLog();
+            if (log.singleTasks) {
+                log.singleTasks = log.singleTasks.filter(t => t.id !== taskId);
+            }
+            if (log.taskStates) delete log.taskStates[taskId];
+
+            saveData();
+            renderTasksSection();
+            showToast('Task rimossa');
         }
 
         function getCalculatedDayPcts(dateStr) {
@@ -1256,6 +1733,7 @@
             renderWeeklyRingsStrip();
             renderActivityRingsWidget();
             renderTopCards();
+            renderTasksSection();
             renderUniSection();
             renderFitnessSection();
             renderTikTokSection();
@@ -1266,7 +1744,6 @@
         function renderHeaderDate() {
             const el = document.getElementById('today-date-text');
             const selDisp = document.getElementById('selected-date-display');
-            const dateInput = document.getElementById('date-picker-input');
             const goTodayBtn = document.getElementById('btn-go-today');
 
             const now = new Date();
@@ -1275,7 +1752,6 @@
 
             const selDateObj = new Date(selectedDateStr);
             if (selDisp) selDisp.innerText = selDateObj.toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'short' });
-            if (dateInput) dateInput.value = selectedDateStr;
 
             if (goTodayBtn) {
                 if (selectedDateStr === getTodayStr()) goTodayBtn.classList.add('hidden');
@@ -1295,10 +1771,6 @@
 
             const weightEl = document.getElementById('top-weight-display');
             if (weightEl) weightEl.innerText = `${appData.weight.toFixed(1)} kg`;
-
-            const workoutEl = document.getElementById('top-workout-display');
-            const doneCount = log.workouts ? log.workouts.filter(w => w.completed).length : 0;
-            if (workoutEl) workoutEl.innerText = `${doneCount} / ${log.workouts ? log.workouts.length : 0}`;
 
             const lessonsEl = document.getElementById('top-lessons-display');
             const selDateObj = new Date(selectedDateStr);
@@ -1553,11 +2025,11 @@
             return 'bg-pink-500/10 text-pink-400 border border-pink-500/20';
         }
 
-        // GESTIONE SWIPE GENERICA (VALIDA SIA PER TIKTOK CHE PER LEZIONI ORARIO)
+        // GESTIONE SWIPE GENERICA (PER TIKTOK, LEZIONI E TASK)
         let swipeState = { activeId: null, startX: 0, currentTranslate: 0, isDragging: false };
 
         function getNormalizedCardId(elementId) {
-            if (typeof elementId === 'string' && (elementId.startsWith('sched-card-') || elementId.startsWith('tt-card-'))) {
+            if (typeof elementId === 'string' && (elementId.startsWith('sched-card-') || elementId.startsWith('tt-card-') || elementId.startsWith('task-card-'))) {
                 return elementId;
             }
             return `tt-card-${elementId}`;
@@ -1731,7 +2203,7 @@
         }
 
         function applySectionsState() {
-            ['sec-uni', 'sec-fit', 'sec-tiktok', 'sec-water'].forEach(id => {
+            ['sec-tasks', 'sec-uni', 'sec-fit', 'sec-tiktok', 'sec-water'].forEach(id => {
                 const sec = document.getElementById(id);
                 const icon = document.getElementById(`${id}-icon`);
                 const isVisible = appData.sectionsState ? (appData.sectionsState[id] !== false) : true;
