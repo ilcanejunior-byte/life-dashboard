@@ -69,6 +69,17 @@
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
         }
         
+        /* Interactive Dashboard Card Hover Rules */
+        .dashboard-card {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .dashboard-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
         /* Hover Glow Effects */
         .glass-card-hover:hover {
             transform: translateY(-3px);
@@ -79,28 +90,46 @@
         .glow-emerald:hover { box-shadow: 0 8px 24px -4px rgba(34, 197, 94, 0.25); border-color: rgba(34, 197, 94, 0.4); }
         .glow-pink:hover { box-shadow: 0 8px 24px -4px rgba(236, 72, 153, 0.25); border-color: rgba(236, 72, 153, 0.4); }
         .glow-indigo:hover { box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.25); border-color: rgba(99, 102, 241, 0.4); }
+        .glow-amber:hover { box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.25); border-color: rgba(245, 158, 11, 0.4); }
         
         .glass-nav {
-            background: rgba(7, 10, 18, 0.90);
+            background: rgba(7, 10, 18, 0.92);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
-        .glass-bottom-nav {
-            background: rgba(7, 10, 18, 0.92);
+        
+        /* Bottom Navigation Bar with Safe Area Inset Support */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: calc(65px + env(safe-area-inset-bottom));
+            padding-bottom: env(safe-area-inset-bottom);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            background: rgba(7, 10, 18, 0.95);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 40;
         }
 
-        /* Animated SVG Activity Rings */
+        /* Main Content Safe Area Bottom Padding */
+        .main-content {
+            padding-bottom: calc(95px + env(safe-area-inset-bottom));
+        }
+
+        /* Animated SVG Activity Rings & Water Animation */
         .ring-circle {
             transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
             transform: rotate(-90deg);
             transform-origin: 50% 50%;
         }
         .water-wave {
-            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Dual-Direction Swipe Container System */
@@ -134,6 +163,23 @@
             border-radius: 16px;
         }
 
+        /* TikTok Card Layout Restyling */
+        .tiktok-card-body {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .tiktok-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .tiktok-card-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
         /* Bottom Sheet Slide Overlay */
         .bottom-sheet-backdrop {
             opacity: 0;
@@ -163,27 +209,10 @@
             }
         }
 
-        /* Custom Micro-Interactions */
-        .check-circle-anim {
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .check-circle-anim:active {
-            transform: scale(0.82);
-        }
-
         /* Custom Scrollbars */
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 9999px; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col bg-dark-950 text-slate-100 antialiased selection:bg-cyan-500/30">
@@ -296,31 +325,32 @@
         </aside>
 
         <!-- CONTENT CONTAINER AREA -->
-        <div class="flex-1 flex flex-col min-w-0 pb-24 lg:pb-8">
+        <div class="flex-1 flex flex-col min-w-0 main-content">
 
-            <!-- CLEAN HEADER NAVIGATION BAR -->
-            <header class="sticky top-0 z-30 glass-nav px-4 py-3 flex items-center justify-between shadow-lg">
-                <!-- Left Header: Greeting & Profile Avatar -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xs shadow-md shadow-cyan-500/20">
+            <!-- CLEAN HEADER NAVIGATION BAR (Fix: Responsive Header Mobile & Profile Trigger) -->
+            <header class="sticky top-0 z-30 glass-nav px-3 sm:px-5 py-2.5 sm:py-3 flex items-center justify-between gap-2 shadow-lg">
+                <!-- Left Header: Profile Popover Trigger & Greeting -->
+                <button onclick="openAccountModal()" class="flex items-center space-x-2.5 text-left group cursor-pointer focus:outline-none">
+                    <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xs shadow-md shadow-cyan-500/20 group-hover:scale-105 transition-transform">
                         <i class="fa-solid fa-user-astronaut"></i>
                     </div>
                     <div>
-                        <h2 id="header-greeting-text" class="text-xs sm:text-sm font-black text-white tracking-tight flex items-center gap-1.5">
-                            Dashboard — Ciao <span id="header-user-name" class="text-cyan-400">lord arts</span> 👋
+                        <h2 class="text-xs sm:text-sm font-black text-white tracking-tight flex items-center gap-1.5">
+                            <span id="header-user-name" class="text-cyan-400">lord arts</span> 👋
+                            <i class="fa-solid fa-chevron-down text-[10px] text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
                         </h2>
-                        <p id="today-date-text" class="text-[10px] text-slate-400 font-medium">Caricamento data...</p>
+                        <p id="today-date-text" class="text-[9px] text-slate-400 font-medium">mar 10 nov</p>
                     </div>
-                </div>
+                </button>
 
-                <!-- Right Header Cluster: Apple Date Picker, Cloud Sync & Settings -->
-                <div class="flex items-center space-x-1.5 sm:space-x-2">
+                <!-- Right Header Cluster: Apple Date Picker & History -->
+                <div class="flex items-center space-x-1 sm:space-x-2">
                     <button onclick="changeSelectedDate(-1)" title="Giorno Precedente" class="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/10 text-white flex items-center justify-center text-xs transition active:scale-95 border border-white/5">
                         <i class="fa-solid fa-chevron-left text-cyan-400"></i>
                     </button>
 
                     <!-- Date Picker Badge Trigger Opening Apple Calendar Popup -->
-                    <button onclick="openCalendarModal()" title="Apri Calendario Apple" class="flex items-center space-x-2 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-2xl border border-white/10 transition group cursor-pointer shadow-sm">
+                    <button onclick="openCalendarModal()" title="Apri Calendario Apple" class="flex items-center space-x-1.5 bg-white/5 hover:bg-white/10 px-2.5 py-1.5 rounded-2xl border border-white/10 transition group cursor-pointer shadow-sm">
                         <i class="fa-regular fa-calendar-days text-xs text-cyan-400 group-hover:scale-110 transition-transform"></i>
                         <span id="selected-date-display" class="text-xs font-extrabold text-white">Oggi</span>
                         <i class="fa-solid fa-caret-down text-[10px] text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
@@ -330,16 +360,12 @@
                         <i class="fa-solid fa-chevron-right text-cyan-400"></i>
                     </button>
 
-                    <button id="btn-go-today" onclick="goToToday()" class="hidden px-2.5 py-1.5 bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 rounded-2xl text-xs font-extrabold transition hover:bg-cyan-500/30">
+                    <button id="btn-go-today" onclick="goToToday()" class="hidden px-2 py-1.5 bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 rounded-2xl text-[11px] font-extrabold transition hover:bg-cyan-500/30">
                         Oggi
                     </button>
 
                     <button onclick="openHistoryModal()" title="Storico Progressi" class="w-8 h-8 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-300 flex items-center justify-center text-xs transition border border-white/5">
                         <i class="fa-solid fa-clock-rotate-left"></i>
-                    </button>
-                    
-                    <button onclick="logoutAccount()" title="Disconnetti" class="w-8 h-8 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 flex items-center justify-center text-xs transition">
-                        <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
                 </div>
             </header>
@@ -452,7 +478,7 @@
                                 </div>
                             </section>
 
-                            <!-- Priority Tasks Preview Card with Dual Swipe & Mouse Hover Buttons -->
+                            <!-- Priority Tasks Preview Card -->
                             <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
                                 <div class="flex justify-between items-center">
                                     <h3 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
@@ -508,7 +534,7 @@
                                 </div>
                                 <div class="flex justify-between items-center pt-0.5">
                                     <button onclick="undoWater()" class="text-[10px] text-amber-400 hover:underline flex items-center gap-1 font-semibold">
-                                        <i class="fa-solid fa-rotate-left"></i> Annulla ultimo (+200ml)
+                                        <i class="fa-solid fa-rotate-left"></i> Annulla ultimo
                                     </button>
                                     <button onclick="openWaterSheet()" class="text-[10px] text-slate-400 hover:text-white underline">Dettagli &rarr;</button>
                                 </div>
@@ -540,8 +566,8 @@
                                 </div>
                             </div>
 
-                            <!-- UPCOMING LESSONS SUMMARY CARD -->
-                            <div onclick="switchTab('planner')" class="glass-card p-4 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover">
+                            <!-- UPCOMING LESSONS SUMMARY CARD (With Amber Glow & Hover Elevation) -->
+                            <div onclick="switchTab('planner')" class="glass-card dashboard-card p-4 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover glow-amber">
                                 <div>
                                     <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Lezioni Orario del Giorno</p>
                                     <p id="top-lessons-display" class="text-lg font-black text-amber-400 mt-0.5">0 Lezioni</p>
@@ -566,50 +592,49 @@
                                 <h2 class="font-bold text-sm sm:text-base text-white flex items-center gap-2">
                                     <i class="fa-solid fa-list-check text-indigo-400"></i> Checklist Task Giornaliere
                                 </h2>
-                                <p class="text-[10px] text-slate-400">Swipa a destra per completare, a sinistra per gestire, o usa i tasti hover su PC</p>
+                                <p class="text-[10px] text-slate-400">Swipa a destra per completare (✓), a sinistra per Modifica/Elimina</p>
                             </div>
                             <button onclick="openTaskModal()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-indigo-600/20">
                                 <i class="fa-solid fa-plus text-xs"></i> Nuova Task
                             </button>
                         </div>
-                        
-                        <!-- Progress Bar -->
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs font-bold text-slate-400">Completamento:</span>
-                            <div class="flex-1 bg-black/40 h-2 rounded-full overflow-hidden border border-white/10">
-                                <div id="tasks-progress-bar" class="bg-indigo-500 h-full transition-all duration-300" style="width: 0%;"></div>
+
+                        <!-- Progress Bar Task -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[11px] font-bold text-slate-400">
+                                <span>Avanzamento Completato</span>
+                                <span id="planner-tasks-pct" class="text-indigo-400">0%</span>
                             </div>
-                            <span id="planner-tasks-pct" class="text-xs font-extrabold text-indigo-400">0%</span>
+                            <div class="w-full h-2 bg-black/40 rounded-full overflow-hidden border border-white/5">
+                                <div id="tasks-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 to-cyan-400 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                            </div>
                         </div>
 
-                        <!-- Task Items Container -->
-                        <div id="planner-tasks-list" class="grid grid-cols-1 md:grid-cols-2 gap-2.5 pt-1"></div>
+                        <!-- Tasks List Container -->
+                        <div id="planner-tasks-list" class="space-y-2 pt-2"></div>
                     </div>
 
-                    <!-- School / Uni Timetable Section -->
+                    <!-- Timetable & Lessons Section -->
                     <div class="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3">
                         <div class="flex justify-between items-center flex-wrap gap-2 border-b border-white/10 pb-3">
                             <div>
                                 <h2 class="font-bold text-sm sm:text-base text-white flex items-center gap-2">
                                     <i class="fa-solid fa-graduation-cap text-blue-400"></i> Orario Lezioni & Materie
                                 </h2>
-                                <p class="text-[10px] text-slate-400">Pianificazione lezioni e corsi per giorno della settimana</p>
+                                <p class="text-[10px] text-slate-400">Orario scolastico / universitario personalizzabile per giorno</p>
                             </div>
                             <button onclick="openScheduleModal()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-blue-600/20">
                                 <i class="fa-solid fa-plus text-xs"></i> Nuova Lezione
                             </button>
                         </div>
 
-                        <!-- Weekday Switcher Tabs -->
                         <div class="flex space-x-1.5 overflow-x-auto pb-1" id="uni-days-tabs"></div>
-
-                        <!-- Lessons List Container -->
-                        <div id="uni-lessons-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1"></div>
+                        <div id="uni-lessons-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2"></div>
                     </div>
 
                 </div>
 
-                <!-- 3. TAB FITNESS (PESO & ESERCIZI "TIC FATTO") -->
+                <!-- 3. TAB FITNESS (PESO & ESERCIZI "TIC FATTO" + RESTORED WATER CYLINDER) -->
                 <div id="tab-fitness" class="space-y-4 hidden">
                     
                     <!-- Weight & Target Card -->
@@ -662,9 +687,56 @@
                         <div id="workout-checklist" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
                     </div>
 
+                    <!-- RESTORED WATER CYLINDER ANIMATION WIDGET AT BOTTOM OF FITNESS SECTION -->
+                    <div class="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 space-y-4 glow-cyan">
+                        <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                            <h2 class="font-bold text-sm sm:text-base text-white flex items-center gap-2">
+                                <i class="fa-solid fa-glass-water text-cyan-400"></i> Animazione Cilindro Acqua Giornaliera (3.5L Target)
+                            </h2>
+                            <span id="fitness-water-badge" class="text-[10px] font-extrabold text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full border border-cyan-500/20">0% Raggiunto</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+                            <!-- Cylinder Graphic -->
+                            <div class="bg-black/40 p-4 rounded-2xl border border-white/5 flex flex-col items-center justify-center space-y-2 relative overflow-hidden">
+                                <div class="w-20 h-36 bg-black/60 border-2 border-cyan-500/40 rounded-3xl relative overflow-hidden flex flex-col justify-end">
+                                    <div id="fitness-water-fill-level" class="water-wave bg-gradient-to-t from-cyan-600 to-cyan-400 w-full rounded-b-2xl" style="height: 0%;"></div>
+                                </div>
+                                <p id="fitness-water-pct-text" class="text-xs font-extrabold text-cyan-400">0% Raggiunto</p>
+                            </div>
+
+                            <!-- Controls and Stats -->
+                            <div class="sm:col-span-2 space-y-3">
+                                <div class="flex flex-wrap items-center justify-between gap-2 bg-black/40 p-4 rounded-2xl border border-white/5">
+                                    <div>
+                                        <p class="text-[11px] text-slate-400 flex items-center gap-1"><i class="fa-solid fa-droplet text-cyan-400"></i> Acqua Bevuta nella Data</p>
+                                        <p id="fitness-water-text-amount" class="text-xl sm:text-2xl font-black text-white">0 <span class="text-xs text-slate-400">/ 3500 ml</span></p>
+                                    </div>
+                                    <div class="flex gap-1.5 flex-wrap">
+                                        <button onclick="addWater(200)" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-indigo-600/20 active:scale-95 flex items-center gap-1">
+                                            <i class="fa-solid fa-glass-water"></i> +200 ml
+                                        </button>
+                                        <button onclick="addWater(250)" class="px-3 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-cyan-600/20 active:scale-95">
+                                            +250 ml
+                                        </button>
+                                        <button onclick="addWater(500)" class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-blue-600/20 active:scale-95">
+                                            +500 ml
+                                        </button>
+                                        <button onclick="undoWater()" class="px-2.5 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs rounded-xl border border-amber-500/30 transition flex items-center gap-1 font-semibold active:scale-95" title="Annulla">
+                                            <i class="fa-solid fa-rotate-left"></i> Annulla
+                                        </button>
+                                        <button onclick="resetWater()" class="px-2.5 py-2 bg-white/5 hover:bg-white/10 text-slate-400 text-xs rounded-xl border border-white/10 transition active:scale-95" title="Azzera">
+                                            <i class="fa-solid fa-rotate-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
-                <!-- 4. TAB CONTENT (TIKTOK PLANNER) -->
+                <!-- 4. TAB CONTENT (TIKTOK PLANNER WITH FIXED OVERLAY & NON-OVERLAPPING CARDS) -->
                 <div id="tab-content" class="space-y-4 hidden">
                     
                     <div class="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 space-y-3">
@@ -673,7 +745,7 @@
                                 <h2 class="font-bold text-sm sm:text-base text-white flex items-center gap-2">
                                     <i class="fa-brands fa-tiktok text-pink-400"></i> TikTok Live & Content Planner
                                 </h2>
-                                <p class="text-[10px] text-slate-400">Swipa a destra per contrassegnare come "Registrato/Pubblicato", a sinistra per opzioni</p>
+                                <p class="text-[10px] text-slate-400">Swipa a destra per "Registrato", a sinistra per Modifica/Elimina</p>
                             </div>
                             <button onclick="openTikTokModal()" class="px-3 py-1.5 bg-pink-600 hover:bg-pink-500 text-white rounded-2xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-pink-600/20">
                                 <i class="fa-solid fa-plus text-xs"></i> Nuova Idea
@@ -690,8 +762,8 @@
         </div>
     </div>
 
-    <!-- MOBILE BOTTOM NAVIGATION BAR (FIXED AT BOTTOM) -->
-    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-bottom-nav px-3 py-2 flex items-center justify-around">
+    <!-- MOBILE BOTTOM NAVIGATION BAR WITH SAFE AREA SUPPORT -->
+    <nav class="bottom-nav lg:hidden px-3">
         <button onclick="switchTab('dashboard')" id="mob-nav-dashboard" class="flex flex-col items-center gap-1 text-cyan-400 font-bold transition">
             <i class="fa-solid fa-house text-base"></i>
             <span class="text-[9px]">Home</span>
@@ -823,7 +895,7 @@
                         <option value="Studio">📚 Studio</option>
                         <option value="Salute">💚 Salute & Fit</option>
                         <option value="Personale">⭐ Personale</option>
-                        <option value="Lavoro">💼 Lavoro / Projet</option>
+                        <option value="Lavoro">💼 Lavoro / Project</option>
                     </select>
                 </div>
                 <div>
@@ -987,7 +1059,7 @@
         </div>
     </div>
 
-    <!-- ACCOUNT SETTINGS SHEET -->
+    <!-- ACCOUNT SETTINGS & PROFILE POPOVER SHEET -->
     <div id="modal-account" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md bottom-sheet-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="glass-card bottom-sheet-panel max-w-sm w-full rounded-b-none sm:rounded-3xl border-t sm:border border-white/10 p-5 space-y-4">
             <div class="flex justify-between items-center border-b border-white/10 pb-3">
@@ -1015,7 +1087,10 @@
                 </button>
             </form>
 
-            <div class="border-t border-white/10 pt-3">
+            <div class="border-t border-white/10 pt-3 space-y-2">
+                <button onclick="logoutAccount()" class="w-full py-2.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/20 font-bold text-xs rounded-2xl transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-right-from-bracket"></i> Disconnetti Account
+                </button>
                 <button onclick="deleteCurrentAccount()" class="w-full py-2.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 font-bold text-xs rounded-2xl transition flex items-center justify-center gap-1.5">
                     <i class="fa-solid fa-trash-can"></i> Elimina Account Definitivamente
                 </button>
@@ -1037,7 +1112,7 @@
     </div>
 
     <!-- Toast Banner -->
-    <div id="toast-container" class="fixed bottom-20 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+    <div id="toast-container" class="fixed bottom-24 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
     <!-- JAVASCRIPT LOGIC & FIREBASE SYNC -->
     <script>
@@ -1422,6 +1497,15 @@
             openSheetModal('modal-water-sheet');
         }
 
+        function renderWaterSheetData() {
+            const log = getCurrentDayLog();
+            const pct = Math.min(100, Math.round((log.water / appData.waterGoal) * 100));
+            const fillEl = document.getElementById('sheet-water-fill-level');
+            if (fillEl) fillEl.style.height = `${pct}%`;
+            const amountText = document.getElementById('sheet-water-amount');
+            if (amountText) amountText.innerHTML = `${log.water} <span class="text-xs text-slate-400">/ 3500 ml</span>`;
+        }
+
         function openSheetModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
@@ -1434,6 +1518,37 @@
             if (modal) {
                 modal.classList.remove('active');
             }
+        }
+
+        // WATER FUNCTIONS (UPDATES BOTH FIT CYLINDER, SHEET, & DASHBOARD WIDGET)
+        function addWater(amount) {
+            const log = getCurrentDayLog();
+            log.lastWaterAdded = amount;
+            log.water = Math.min(6000, log.water + amount);
+            saveData();
+            renderAll();
+            renderWaterSheetData();
+            showToast(`+${amount} ml d'acqua registrati! 🥤`);
+        }
+
+        function undoWater() {
+            const log = getCurrentDayLog();
+            if (log.water > 0) {
+                log.water = Math.max(0, log.water - (log.lastWaterAdded || 200));
+                saveData();
+                renderAll();
+                renderWaterSheetData();
+                showToast(`Annullati -${log.lastWaterAdded || 200} ml`);
+            }
+        }
+
+        function resetWater() {
+            const log = getCurrentDayLog();
+            log.water = 0;
+            saveData();
+            renderAll();
+            renderWaterSheetData();
+            showToast('Contatore acqua azzerato');
         }
 
         // DATE NAVIGATION & APPLE CALENDAR POPUP
@@ -1713,6 +1828,122 @@
             return 'bg-purple-500/15 text-purple-400 border border-purple-500/30';
         }
 
+        // TIKTOK FUNCTIONS
+        function openTikTokModal(id = null) {
+            const titleInput = document.getElementById('tt-title');
+            const hookInput = document.getElementById('tt-hook');
+            const statusSelect = document.getElementById('tt-status');
+            const editingIdInput = document.getElementById('tt-editing-id');
+
+            if (id) {
+                const item = appData.tiktokIdeas.find(t => t.id === id);
+                if (item) {
+                    editingIdInput.value = item.id;
+                    titleInput.value = item.title;
+                    hookInput.value = item.hook;
+                    statusSelect.value = item.status;
+                    document.getElementById('tt-modal-title').innerText = 'Modifica Video TikTok';
+                }
+            } else {
+                editingIdInput.value = ''; titleInput.value = ''; hookInput.value = ''; statusSelect.value = 'Da Registrare';
+                document.getElementById('tt-modal-title').innerText = 'Nuova Idea Video TikTok';
+            }
+            openSheetModal('modal-tiktok');
+        }
+
+        function saveTikTokIdea() {
+            const titleInput = document.getElementById('tt-title').value.trim();
+            const hookInput = document.getElementById('tt-hook').value.trim();
+            const statusSelect = document.getElementById('tt-status').value;
+            const editingId = document.getElementById('tt-editing-id').value;
+
+            if (!titleInput) { showToast('Inserisci un titolo per il video!'); return; }
+
+            if (!appData.tiktokIdeas) appData.tiktokIdeas = [];
+
+            if (editingId) {
+                const item = appData.tiktokIdeas.find(t => t.id === parseInt(editingId));
+                if (item) {
+                    item.title = titleInput;
+                    item.hook = hookInput;
+                    item.status = statusSelect;
+                }
+            } else {
+                appData.tiktokIdeas.push({
+                    id: Date.now(),
+                    title: titleInput,
+                    hook: hookInput || 'Gancio non inserito',
+                    status: statusSelect
+                });
+            }
+            saveData();
+            renderAll();
+            closeModal('modal-tiktok');
+            showToast('Idea TikTok salvata!');
+        }
+
+        function deleteTikTokIdea(id) {
+            appData.tiktokIdeas = appData.tiktokIdeas.filter(t => t.id !== id);
+            saveData();
+            renderAll();
+            showToast('Video rimosso');
+        }
+
+        function toggleTikTokStatus(id) {
+            const item = (appData.tiktokIdeas || []).find(t => t.id === id);
+            if (item) {
+                if (item.status === 'Da Registrare') item.status = 'Registrato';
+                else if (item.status === 'Registrato') item.status = 'Pubblicato';
+                else item.status = 'Da Registrare';
+
+                saveData();
+                renderAll();
+                showToast(`Stato aggiornato a "${item.status}"`);
+            }
+        }
+
+        function getStatusBadgeClass(status) {
+            if (status === 'Pubblicato') return 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30';
+            if (status === 'Registrato') return 'bg-blue-500/15 text-blue-400 border border-blue-500/30';
+            return 'bg-pink-500/15 text-pink-400 border border-pink-500/30';
+        }
+
+        // WEIGHT FUNCTIONS
+        function openWeightModal() {
+            const input = document.getElementById('input-weight-val');
+            if (input) input.value = appData.weight;
+            openSheetModal('modal-weight');
+        }
+
+        function saveNewWeight() {
+            const input = document.getElementById('input-weight-val');
+            if (input && input.value) {
+                const val = parseFloat(input.value);
+                if (!isNaN(val) && val > 0) {
+                    appData.weight = val;
+                    if (!appData.weightHistory) appData.weightHistory = [];
+                    appData.weightHistory.push({
+                        date: selectedDateStr,
+                        weight: val
+                    });
+                    saveData();
+                    renderAll();
+                    closeModal('modal-weight');
+                    showToast(`Peso aggiornato a ${val.toFixed(1)} kg!`);
+                }
+            }
+        }
+
+        function toggleWorkout(id) {
+            const log = getCurrentDayLog();
+            const item = log.workouts.find(w => w.id === id);
+            if (item) {
+                item.completed = !item.completed;
+                saveData();
+                renderAll();
+            }
+        }
+
         // STATS & PERCENTAGES CALCULATOR FOR RINGS
         function getCalculatedDayPcts(dateStr) {
             ensureDailyLogExists(dateStr);
@@ -1755,7 +1986,7 @@
             const goTodayBtn = document.getElementById('btn-go-today');
 
             const now = new Date();
-            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+            const options = { weekday: 'short', day: 'numeric', month: 'short' };
             if (el) el.innerText = now.toLocaleDateString('it-IT', options);
 
             const selDateObj = new Date(selectedDateStr);
@@ -1935,7 +2166,7 @@
                             </div>
 
                             <div id="dash-tt-card-${item.id}" 
-                                 class="swipe-card p-3 rounded-2xl border border-white/5 space-y-1.5 cursor-grab active:cursor-grabbing hover:bg-white/5 transition"
+                                 class="swipe-card p-3 rounded-2xl border border-white/10 bg-[#0d121f] space-y-1.5 cursor-grab active:cursor-grabbing hover:border-white/20 transition shadow-md"
                                  ontouchstart="handleSwipeStart(event, 'dash-tt-card-${item.id}')"
                                  ontouchmove="handleSwipeMove(event, 'dash-tt-card-${item.id}')"
                                  ontouchend="handleSwipeEnd(event, 'dash-tt-card-${item.id}', 'tiktok', ${item.id})"
@@ -1943,11 +2174,12 @@
                                  onmousemove="handleSwipeMove(event, 'dash-tt-card-${item.id}')"
                                  onmouseup="handleSwipeEnd(event, 'dash-tt-card-${item.id}', 'tiktok', ${item.id})"
                                  onmouseleave="handleSwipeEnd(event, 'dash-tt-card-${item.id}', 'tiktok', ${item.id})">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${getStatusBadgeClass(item.status)}">${item.status}</span>
+                                
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full shrink-0 ${getStatusBadgeClass(item.status)}">${item.status}</span>
                                     
                                     <!-- Desktop PC Hover Buttons -->
-                                    <div class="hidden sm:flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div class="hidden sm:flex items-center space-x-1 shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">
                                         <button onclick="toggleTikTokStatus(${item.id})" title="Avanza Stato" class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white flex items-center justify-center text-[10px] transition">
                                             <i class="fa-solid fa-check"></i>
                                         </button>
@@ -1956,7 +2188,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <h4 class="font-bold text-xs text-white truncate">${item.title}</h4>
+                                <h4 class="font-bold text-xs text-white truncate mt-1">${item.title}</h4>
                             </div>
                         </div>
                     `).join('');
@@ -2194,41 +2426,17 @@
                     </div>
                 `).join('');
             }
-        }
 
-        function toggleWorkout(id) {
-            const log = getCurrentDayLog();
-            const item = log.workouts.find(w => w.id === id);
-            if (item) {
-                item.completed = !item.completed;
-                saveData();
-                renderAll();
-            }
-        }
-
-        function openWeightModal() {
-            const input = document.getElementById('input-weight-val');
-            if (input) input.value = appData.weight;
-            openSheetModal('modal-weight');
-        }
-
-        function saveNewWeight() {
-            const input = document.getElementById('input-weight-val');
-            if (input && input.value) {
-                const val = parseFloat(input.value);
-                if (!isNaN(val) && val > 0) {
-                    appData.weight = val;
-                    if (!appData.weightHistory) appData.weightHistory = [];
-                    appData.weightHistory.push({
-                        date: selectedDateStr,
-                        weight: val
-                    });
-                    saveData();
-                    renderAll();
-                    closeModal('modal-weight');
-                    showToast(`Peso aggiornato a ${val.toFixed(1)} kg!`);
-                }
-            }
+            // Render Fitness Water Cylinder Animation Widget
+            const pct = Math.min(100, Math.round((log.water / appData.waterGoal) * 100));
+            const fillEl = document.getElementById('fitness-water-fill-level');
+            if (fillEl) fillEl.style.height = `${pct}%`;
+            const pctText = document.getElementById('fitness-water-pct-text');
+            if (pctText) pctText.innerText = `${pct}% Raggiunto`;
+            const fitnessBadge = document.getElementById('fitness-water-badge');
+            if (fitnessBadge) fitnessBadge.innerText = `${pct}% Raggiunto`;
+            const textAmount = document.getElementById('fitness-water-text-amount');
+            if (textAmount) textAmount.innerHTML = `${log.water} <span class="text-xs text-slate-400">/ 3500 ml</span>`;
         }
 
         function renderContentPage() {
@@ -2256,7 +2464,7 @@
                         </div>
 
                         <div id="tt-card-${item.id}" 
-                             class="swipe-card p-3.5 rounded-2xl border border-white/5 space-y-2 cursor-grab active:cursor-grabbing hover:bg-white/5 transition"
+                             class="swipe-card p-3.5 rounded-2xl border border-white/10 bg-[#0d121f] space-y-2 cursor-grab active:cursor-grabbing hover:border-white/20 transition shadow-md"
                              ontouchstart="handleSwipeStart(event, 'tt-card-${item.id}')"
                              ontouchmove="handleSwipeMove(event, 'tt-card-${item.id}')"
                              ontouchend="handleSwipeEnd(event, 'tt-card-${item.id}', 'tiktok', ${item.id})"
@@ -2264,11 +2472,12 @@
                              onmousemove="handleSwipeMove(event, 'tt-card-${item.id}')"
                              onmouseup="handleSwipeEnd(event, 'tt-card-${item.id}', 'tiktok', ${item.id})"
                              onmouseleave="handleSwipeEnd(event, 'tt-card-${item.id}', 'tiktok', ${item.id})">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${getStatusBadgeClass(item.status)}">${item.status}</span>
+                            
+                            <!-- TikTok Card Header: Single Badge Left, Action Buttons Right -->
+                            <div class="flex items-center justify-between gap-2 border-b border-white/5 pb-2">
+                                <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full shrink-0 ${getStatusBadgeClass(item.status)}">${item.status}</span>
                                 
-                                <!-- Desktop Mouse Hover Action Buttons -->
-                                <div class="hidden sm:flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div class="flex items-center gap-1 shrink-0">
                                     <button onclick="toggleTikTokStatus(${item.id})" title="Cambia Stato" class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white flex items-center justify-center text-[10px] transition">
                                         <i class="fa-solid fa-check"></i>
                                     </button>
@@ -2280,130 +2489,16 @@
                                     </button>
                                 </div>
                             </div>
-                            <h4 class="font-extrabold text-xs text-white leading-snug">${item.title}</h4>
-                            <p class="text-[11px] text-slate-400 italic">" Hook: ${item.hook} "</p>
+
+                            <!-- TikTok Card Content Block -->
+                            <div class="space-y-1 pt-1">
+                                <h4 class="font-extrabold text-xs text-white leading-snug break-words">${item.title}</h4>
+                                <p class="text-[11px] text-slate-400 italic truncate">" Hook: ${item.hook} "</p>
+                            </div>
                         </div>
                     </div>
                 `).join('');
             }
-        }
-
-        function toggleTikTokStatus(id) {
-            const item = appData.tiktokIdeas.find(t => t.id === id);
-            if (item) {
-                if (item.status === 'Da Registrare') item.status = 'Registrato';
-                else if (item.status === 'Registrato') item.status = 'Pubblicato';
-                else item.status = 'Da Registrare';
-                saveData();
-                renderAll();
-                showToast(`Stato TikTok aggiornato a "${item.status}"`);
-            }
-        }
-
-        function getStatusBadgeClass(status) {
-            if (status === 'Pubblicato') return 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30';
-            if (status === 'Registrato') return 'bg-blue-500/15 text-blue-400 border border-blue-500/30';
-            return 'bg-pink-500/15 text-pink-400 border border-pink-500/30';
-        }
-
-        function openTikTokModal(id = null) {
-            const titleInput = document.getElementById('tt-title');
-            const hookInput = document.getElementById('tt-hook');
-            const statusSelect = document.getElementById('tt-status');
-            const editingIdInput = document.getElementById('tt-editing-id');
-
-            if (id) {
-                const item = appData.tiktokIdeas.find(t => t.id === id);
-                if (item) {
-                    editingIdInput.value = item.id;
-                    titleInput.value = item.title;
-                    hookInput.value = item.hook;
-                    statusSelect.value = item.status;
-                    document.getElementById('tt-modal-title').innerText = 'Modifica Video TikTok';
-                }
-            } else {
-                editingIdInput.value = ''; titleInput.value = ''; hookInput.value = ''; statusSelect.value = 'Da Registrare';
-                document.getElementById('tt-modal-title').innerText = 'Nuova Idea Video TikTok';
-            }
-            openSheetModal('modal-tiktok');
-        }
-
-        function saveTikTokIdea() {
-            const titleInput = document.getElementById('tt-title');
-            const hookInput = document.getElementById('tt-hook');
-            const statusSelect = document.getElementById('tt-status');
-            const editingId = document.getElementById('tt-editing-id').value;
-
-            if (!titleInput.value.trim()) { showToast('Inserisci un titolo per il video!'); return; }
-
-            if (!appData.tiktokIdeas) appData.tiktokIdeas = [];
-
-            if (editingId) {
-                const item = appData.tiktokIdeas.find(t => t.id === parseInt(editingId));
-                if (item) {
-                    item.title = titleInput.value.trim();
-                    item.hook = hookInput.value.trim();
-                    item.status = statusSelect.value;
-                }
-            } else {
-                appData.tiktokIdeas.push({
-                    id: Date.now(),
-                    title: titleInput.value.trim(),
-                    hook: hookInput.value.trim() || 'Gancio non inserito',
-                    status: statusSelect.value
-                });
-            }
-            saveData();
-            renderAll();
-            closeModal('modal-tiktok');
-            showToast('Idea TikTok salvata!');
-        }
-
-        function deleteTikTokIdea(id) {
-            appData.tiktokIdeas = appData.tiktokIdeas.filter(t => t.id !== id);
-            saveData();
-            renderAll();
-            showToast('Video rimosso');
-        }
-
-        // HYDRATION FUNCTIONS
-        function renderWaterSheetData() {
-            const log = getCurrentDayLog();
-            const pct = Math.min(100, Math.round((log.water / appData.waterGoal) * 100));
-            const fillEl = document.getElementById('sheet-water-fill-level');
-            if (fillEl) fillEl.style.height = `${pct}%`;
-            const textAmount = document.getElementById('sheet-water-amount');
-            if (textAmount) textAmount.innerHTML = `${log.water} <span class="text-xs text-slate-400">/ 3500 ml</span>`;
-        }
-
-        function addWater(amount) {
-            const log = getCurrentDayLog();
-            log.lastWaterAdded = amount;
-            log.water = Math.min(6000, log.water + amount);
-            saveData();
-            renderAll();
-            renderWaterSheetData();
-            showToast(`+${amount} ml d'acqua registrati! 🥤`);
-        }
-
-        function undoWater() {
-            const log = getCurrentDayLog();
-            if (log.water > 0) {
-                log.water = Math.max(0, log.water - (log.lastWaterAdded || 200));
-                saveData();
-                renderAll();
-                renderWaterSheetData();
-                showToast(`Annullati -${log.lastWaterAdded || 200} ml`);
-            }
-        }
-
-        function resetWater() {
-            const log = getCurrentDayLog();
-            log.water = 0;
-            saveData();
-            renderAll();
-            renderWaterSheetData();
-            showToast('Contatore acqua azzerato');
         }
 
         // DUAL-DIRECTION SWIPE GESTURE ENGINE
