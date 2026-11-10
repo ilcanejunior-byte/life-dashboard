@@ -12,10 +12,9 @@
     
     <title>LORD TRACKER • Activity & Life Hub</title>
     
-    <!-- FAVICON CON LA "L" E GLI ANELLI DI ATTIVITÀ -->
+    <!-- FAVICON -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322c55e'/%3E%3Cstop offset='50%25' stop-color='%2306b6d4'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%230b0f19'/%3E%3Ccircle cx='50' cy='50' r='38' stroke='%2322c55e' stroke-width='4' fill='none' stroke-dasharray='5 2' opacity='0.5'/%3E%3Ccircle cx='50' cy='50' r='30' stroke='%2306b6d4' stroke-width='4' fill='none' opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='22' stroke='%23ec4899' stroke-width='4' fill='none' opacity='0.8'/%3E%3Cpath d='M42 32 V62 H58' stroke='url(%23g)' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M42 32 V62 H58' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.9'/%3E%3C/svg%3E">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2322c55e'/%3E%3Cstop offset='50%25' stop-color='%2306b6d4'/%3E%3Cstop offset='100%25' stop-color='%23ec4899'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='%230b0f19'/%3E%3Ccircle cx='50' cy='50' r='38' stroke='%2322c55e' stroke-width='4' fill='none' stroke-dasharray='5 2' opacity='0.5'/%3E%3Ccircle cx='50' cy='50' r='30' stroke='%2306b6d4' stroke-width='4' fill='none' opacity='0.7'/%3E%3Ccircle cx='50' cy='50' r='22' stroke='%23ec4899' stroke-width='4' fill='none' opacity='0.8'/%3E%3Cpath d='M42 32 V62 H58' stroke='url(%23g)' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M42 32 V62 H58' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' fill='none' opacity='0.9'/%3E%3C/svg%3E">
-
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -25,11 +24,15 @@
                 extend: {
                     colors: {
                         dark: {
-                            950: '#0b0f19',
-                            900: '#111827',
-                            850: '#1e293b',
-                            800: '#334155'
+                            950: '#070a12',
+                            900: '#0b0f19',
+                            850: '#111827',
+                            800: '#1e293b'
                         }
+                    },
+                    borderRadius: {
+                        '2xl': '16px',
+                        '3xl': '24px'
                     }
                 }
             }
@@ -47,35 +50,39 @@
     <style>
         html, body {
             font-family: 'Inter', sans-serif;
-            background-color: #0b0f19;
+            background-color: #070a12;
             color: #f1f5f9;
             touch-action: pan-y;
             user-select: none;
             overflow-x: hidden;
             width: 100%;
-            position: relative;
+            height: 100%;
         }
+        
+        /* Clean Glass Card Component Styling */
         .glass-card {
-            background: rgba(17, 24, 39, 0.75);
-            backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .glass-nav {
-            background: rgba(11, 15, 25, 0.94);
+            background: rgba(255, 255, 255, 0.035);
             backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
         }
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+        .glass-card-hover {
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        ::-webkit-scrollbar-track {
-            background: #0b0f19;
+        .glass-card-hover:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 9999px;
+        
+        .glass-nav {
+            background: rgba(7, 10, 18, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
+
+        /* Animated SVG Rings */
         .ring-circle {
             transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             transform: rotate(-90deg);
@@ -84,10 +91,12 @@
         .water-wave {
             transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        /* Swipe Card Actions */
         .swipe-container {
             position: relative;
             overflow: hidden;
-            border-radius: 0.75rem;
+            border-radius: 16px;
             width: 100%;
             touch-action: pan-y;
         }
@@ -102,55 +111,90 @@
             position: relative;
             z-index: 10;
             transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-            background: #090d16;
+            background: #0d121f;
             width: 100%;
+            border-radius: 16px;
         }
-        .day-ring-btn {
-            transition: all 0.2s ease;
+
+        /* Bottom Sheet Slide Overlay */
+        .bottom-sheet-backdrop {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .day-ring-btn.active {
-            background: rgba(59, 130, 246, 0.15);
-            border-color: rgba(59, 130, 246, 0.5);
-            box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+        .bottom-sheet-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
         }
-        .calendar-cell {
-            transition: all 0.15s ease;
+        .bottom-sheet-panel {
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .calendar-cell:active {
-            transform: scale(0.92);
+        .bottom-sheet-backdrop.active .bottom-sheet-panel {
+            transform: translateY(0);
+        }
+        @media (min-width: 640px) {
+            .bottom-sheet-panel {
+                transform: scale(0.95) translateY(20px);
+                opacity: 0;
+                transition: transform 0.25s ease, opacity 0.25s ease;
+            }
+            .bottom-sheet-backdrop.active .bottom-sheet-panel {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Custom Checkbox Micro-Interactions */
+        .check-circle-anim {
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .check-circle-anim:active {
+            transform: scale(0.85);
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 9999px;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col pb-8">
+<body class="min-h-screen flex flex-col bg-dark-950 text-slate-100 antialiased selection:bg-cyan-500/30">
 
     <!-- FULLSCREEN AUTHENTICATION OVERLAY -->
-    <div id="auth-screen" class="fixed inset-0 z-50 bg-[#0b0f19] flex items-center justify-center p-4">
-        <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-6 space-y-5 text-center shadow-2xl">
+    <div id="auth-screen" class="fixed inset-0 z-50 bg-dark-950 flex items-center justify-center p-4">
+        <div class="glass-card max-w-sm w-full p-6 space-y-6 text-center shadow-2xl border border-white/10">
             <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 mx-auto flex items-center justify-center text-white text-2xl shadow-lg shadow-cyan-500/30">
                 <i class="fa-solid fa-user-lock"></i>
             </div>
             <div>
-                <h2 class="text-lg font-black text-white tracking-wider">LORD TRACKER</h2>
-                <p class="text-xs text-slate-400 mt-1">Accedi al tuo account o registrati per iniziare</p>
+                <h2 class="text-xl font-black text-white tracking-wider">LORD TRACKER</h2>
+                <p class="text-xs text-slate-400 mt-1">Accedi al tuo account cloud o registrati</p>
             </div>
 
             <!-- Tab Switcher -->
-            <div class="grid grid-cols-2 p-1 bg-dark-950 rounded-xl border border-slate-800 text-xs font-bold">
-                <button id="tab-btn-login" onclick="switchAuthTab('login')" class="py-2 rounded-lg bg-cyan-600 text-white transition">Accedi</button>
-                <button id="tab-btn-register" onclick="switchAuthTab('register')" class="py-2 rounded-lg text-slate-400 hover:text-white transition">Registrati</button>
+            <div class="grid grid-cols-2 p-1 bg-black/40 rounded-2xl border border-white/10 text-xs font-bold">
+                <button id="tab-btn-login" onclick="switchAuthTab('login')" class="py-2.5 rounded-xl bg-cyan-600 text-white transition">Accedi</button>
+                <button id="tab-btn-register" onclick="switchAuthTab('register')" class="py-2.5 rounded-xl text-slate-400 hover:text-white transition">Registrati</button>
             </div>
 
             <!-- FORM ACCEDI -->
             <form id="form-login" onsubmit="handleLogin(event)" class="space-y-3.5 text-left">
                 <div>
                     <label class="text-[11px] font-bold text-slate-300">Nickname:</label>
-                    <input type="text" id="login-username" placeholder="Es. lord arts" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-3 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
+                    <input type="text" id="login-username" placeholder="Es. lord arts" required class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
                 </div>
                 <div>
                     <label class="text-[11px] font-bold text-slate-300">Password:</label>
-                    <input type="password" id="login-password" placeholder="••••••••" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-3 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
+                    <input type="password" id="login-password" placeholder="••••••••" required class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
                 </div>
-                <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl transition shadow-lg shadow-cyan-500/25 active:scale-95">
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl transition shadow-lg shadow-cyan-500/25 active:scale-95">
                     Entra nel tuo Account
                 </button>
             </form>
@@ -159,468 +203,580 @@
             <form id="form-register" onsubmit="handleRegister(event)" class="space-y-3 text-left hidden">
                 <div>
                     <label class="text-[11px] font-bold text-slate-300">Nuovo Nickname:</label>
-                    <input type="text" id="reg-username" placeholder="Es. giulia_fit" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
+                    <input type="text" id="reg-username" placeholder="Es. giulia_fit" required class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-2.5 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
                 </div>
                 <div>
                     <label class="text-[11px] font-bold text-slate-300">Password:</label>
-                    <input type="password" id="reg-password" placeholder="••••••••" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
+                    <input type="password" id="reg-password" placeholder="••••••••" required class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-2.5 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
                 </div>
                 <div>
                     <label class="text-[11px] font-bold text-slate-300">Conferma Password:</label>
-                    <input type="password" id="reg-password-confirm" placeholder="••••••••" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
+                    <input type="password" id="reg-password-confirm" placeholder="••••••••" required class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-2.5 text-white text-sm font-semibold focus:outline-none focus:border-cyan-500">
                 </div>
-                <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl transition shadow-lg shadow-emerald-500/25 active:scale-95">
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl transition shadow-lg shadow-emerald-500/25 active:scale-95">
                     Crea Nuovo Account
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Header Navigation -->
-    <header class="sticky top-0 z-40 glass-nav px-3 py-2 flex items-center justify-between shadow-lg">
-        <div class="flex items-center space-x-2">
-            <button onclick="openAccountModal()" title="Impostazioni Account" class="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-md shadow-cyan-500/20 hover:scale-105 transition">
-                <i class="fa-solid fa-user-gear text-sm"></i>
-            </button>
-            <div>
-                <h1 class="text-xs sm:text-sm font-extrabold text-white tracking-tight flex items-center gap-1.5">
-                    LORD TRACKER <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-semibold">ACTIVITY RINGS</span>
-                </h1>
-                <p id="today-date-text" class="text-[10px] text-slate-400 font-medium">Caricamento...</p>
-            </div>
-        </div>
+    <!-- MAIN APP LAYOUT (SIDEBAR DESKTOP + BOTTOM NAV MOBILE) -->
+    <div class="flex flex-1 min-h-screen relative overflow-x-hidden">
 
-        <div class="flex items-center space-x-1.5 sm:space-x-2">
-            <button onclick="openAccountModal()" class="px-2.5 py-1 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 rounded-lg text-[11px] font-bold transition flex items-center gap-1.5 shadow-sm">
-                <i class="fa-solid fa-user-circle text-indigo-400"></i>
-                <span id="header-user-name" class="max-w-[80px] sm:max-w-[110px] truncate">lord arts</span>
-            </button>
-
-            <button onclick="logoutAccount()" title="Disconnetti" class="px-2 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 rounded-lg text-[11px] font-bold transition flex items-center gap-1">
-                <i class="fa-solid fa-right-from-bracket"></i>
-            </button>
-
-            <div id="storage-status-badge" class="px-2 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-lg text-[10px] font-bold flex items-center gap-1">
-                <i id="storage-status-icon" class="fa-solid fa-cloud-arrow-up text-xs"></i>
-                <span id="storage-status-text" class="hidden sm:inline">Cloud Attivo</span>
+        <!-- DESKTOP SIDEBAR NAVIGATION (lg:flex) -->
+        <aside class="hidden lg:flex flex-col w-64 glass-card rounded-none border-r border-white/10 p-5 space-y-6 sticky top-0 h-screen z-30 shrink-0">
+            <!-- App Brand Logo -->
+            <div class="flex items-center space-x-3 px-2">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-lg shadow-md shadow-cyan-500/30">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-sm text-white tracking-wider">LORD TRACKER</h1>
+                    <p class="text-[10px] text-cyan-400 font-bold uppercase tracking-widest">Activity & Life Hub</p>
+                </div>
             </div>
 
-            <button onclick="openHistoryModal()" class="px-2.5 py-1 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-lg text-[11px] font-bold border border-cyan-500/30 transition flex items-center gap-1 shadow-md shadow-cyan-500/20">
-                <i class="fa-solid fa-clock-rotate-left"></i> <span class="hidden sm:inline">Storico</span>
+            <!-- Desktop Nav Items -->
+            <nav class="space-y-1.5 flex-1 pt-2">
+                <button onclick="switchTab('dashboard')" id="desk-nav-dashboard" class="w-full px-3.5 py-3 rounded-2xl font-bold text-xs flex items-center gap-3 transition bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 shadow-sm">
+                    <i class="fa-solid fa-house text-sm w-5 text-center"></i> Dashboard
+                </button>
+                <button onclick="switchTab('planner')" id="desk-nav-planner" class="w-full px-3.5 py-3 rounded-2xl font-bold text-xs flex items-center gap-3 transition text-slate-400 hover:text-white hover:bg-white/5">
+                    <i class="fa-solid fa-calendar-check text-sm w-5 text-center"></i> Planner & Lezioni
+                </button>
+                <button onclick="switchTab('fitness')" id="desk-nav-fitness" class="w-full px-3.5 py-3 rounded-2xl font-bold text-xs flex items-center gap-3 transition text-slate-400 hover:text-white hover:bg-white/5">
+                    <i class="fa-solid fa-heart-pulse text-sm w-5 text-center"></i> Fitness & Corpo
+                </button>
+                <button onclick="switchTab('content')" id="desk-nav-content" class="w-full px-3.5 py-3 rounded-2xl font-bold text-xs flex items-center gap-3 transition text-slate-400 hover:text-white hover:bg-white/5">
+                    <i class="fa-brands fa-tiktok text-sm w-5 text-center"></i> TikTok & Content
+                </button>
+            </nav>
+
+            <!-- Quick FAB Trigger Desktop -->
+            <button onclick="openQuickCreateSheet()" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-extrabold text-xs rounded-2xl transition shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 active:scale-95">
+                <i class="fa-solid fa-plus text-sm"></i> Nuova Attività
             </button>
-        </div>
-    </header>
 
-    <!-- Toast Banner -->
-    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+            <!-- User Profile Quick Bar -->
+            <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                <div class="flex items-center space-x-2.5 overflow-hidden">
+                    <div class="w-8 h-8 rounded-2xl bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 flex items-center justify-center font-bold text-xs">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="truncate">
+                        <p id="desk-user-name" class="text-xs font-extrabold text-white truncate">lord arts</p>
+                        <p class="text-[9px] text-emerald-400 font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Cloud Attivo</p>
+                    </div>
+                </div>
+                <button onclick="openAccountModal()" title="Impostazioni Account" class="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center text-xs transition">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+            </div>
+        </aside>
 
-    <!-- Main Container -->
-    <main class="max-w-6xl w-full mx-auto px-3 sm:px-6 pt-3 space-y-3.5 flex-grow">
+        <!-- CONTENT CONTAINER AREA -->
+        <div class="flex-1 flex flex-col min-w-0 pb-24 lg:pb-8">
 
-        <!-- BARRA NAVIGAZIONE DATA CON POPUP CALENDARIO APPLE & STRISCIA 7 GIORNI AD ANELLI -->
-        <section class="glass-card rounded-2xl p-3 border border-slate-800 space-y-2.5">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-1.5">
-                    <button onclick="changeSelectedDate(-1)" title="Giorno Precedente" class="px-2.5 py-1 bg-dark-900 hover:bg-dark-800 text-white rounded-lg border border-slate-800 text-xs font-bold transition active:scale-95">
+            <!-- HEADER NAVIGATION BAR -->
+            <header class="sticky top-0 z-30 glass-nav px-4 py-3 flex items-center justify-between shadow-lg">
+                <div class="flex items-center space-x-3">
+                    <!-- Mobile Account Quick Icon -->
+                    <button onclick="openAccountModal()" class="lg:hidden w-8 h-8 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xs shadow-md">
+                        <i class="fa-solid fa-user"></i>
+                    </button>
+                    <div>
+                        <span id="header-user-name" class="lg:hidden text-xs font-black text-white block">lord arts</span>
+                        <p id="today-date-text" class="text-[11px] text-slate-400 font-medium">Caricamento...</p>
+                    </div>
+                </div>
+
+                <!-- Date Navigation Trigger & Calendar Button -->
+                <div class="flex items-center space-x-1.5 sm:space-x-2">
+                    <button onclick="changeSelectedDate(-1)" class="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/10 text-white flex items-center justify-center text-xs transition active:scale-95">
                         <i class="fa-solid fa-chevron-left text-cyan-400"></i>
                     </button>
-                    
-                    <!-- Pulsante centrale per aprire il Calendario Popup Apple -->
-                    <button onclick="openCalendarModal()" title="Apri Calendario Apple" class="flex items-center space-x-2 bg-dark-950 hover:bg-dark-900 px-3 py-1 rounded-xl border border-slate-800 hover:border-cyan-500/40 transition group cursor-pointer shadow-sm">
+
+                    <!-- Date Picker Badge Trigger Opening Apple Calendar Popup -->
+                    <button onclick="openCalendarModal()" title="Apri Calendario Apple" class="flex items-center space-x-2 bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-2xl border border-white/10 transition group cursor-pointer shadow-sm">
                         <i class="fa-regular fa-calendar-days text-xs text-cyan-400 group-hover:scale-110 transition-transform"></i>
-                        <span id="selected-date-display" class="text-xs font-extrabold text-white">Caricamento...</span>
+                        <span id="selected-date-display" class="text-xs font-extrabold text-white">Oggi</span>
                         <i class="fa-solid fa-caret-down text-[10px] text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
                     </button>
 
-                    <button onclick="changeSelectedDate(1)" title="Giorno Successivo" class="px-2.5 py-1 bg-dark-900 hover:bg-dark-800 text-white rounded-lg border border-slate-800 text-xs font-bold transition active:scale-95">
+                    <button onclick="changeSelectedDate(1)" class="w-7 h-7 rounded-xl bg-white/5 hover:bg-white/10 text-white flex items-center justify-center text-xs transition active:scale-95">
                         <i class="fa-solid fa-chevron-right text-cyan-400"></i>
                     </button>
-                </div>
 
-                <div class="flex items-center space-x-2">
-                    <button id="btn-go-today" onclick="goToToday()" class="hidden px-2.5 py-1 bg-cyan-600/20 text-cyan-400 border border-cyan-500/30 rounded-lg text-xs font-extrabold transition hover:bg-cyan-600/30">
-                        Vai a Oggi
+                    <button id="btn-go-today" onclick="goToToday()" class="hidden px-2.5 py-1.5 bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 rounded-2xl text-xs font-extrabold transition hover:bg-cyan-500/30">
+                        Oggi
                     </button>
-                    <button onclick="openCalendarModal()" title="Seleziona Data" class="px-2.5 py-1 bg-dark-950 hover:bg-dark-900 text-slate-300 border border-slate-800 hover:border-cyan-500/40 rounded-lg text-xs font-bold transition flex items-center gap-1">
-                        <i class="fa-solid fa-calendar-alt text-cyan-400"></i> <span class="hidden sm:inline">Calendario</span>
+
+                    <button onclick="openHistoryModal()" title="Storico Progressi" class="w-8 h-8 rounded-2xl bg-white/5 hover:bg-white/10 text-slate-300 flex items-center justify-center text-xs transition ml-1">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </button>
+                    
+                    <button onclick="logoutAccount()" title="Disconnetti" class="w-8 h-8 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 flex items-center justify-center text-xs transition">
+                        <i class="fa-solid fa-right-from-bracket"></i>
                     </button>
                 </div>
-            </div>
+            </header>
 
-            <!-- Striscia dei 7 giorni della settimana con Mini Anelli SVG -->
-            <div id="weekly-rings-strip" class="grid grid-cols-7 gap-1 sm:gap-2"></div>
-        </section>
+            <!-- MAIN TAB VIEW PAGES -->
+            <main class="max-w-5xl w-full mx-auto px-4 pt-4 space-y-4 flex-grow">
 
-        <!-- MAIN WIDGET: ANELLI DI ATTIVITÀ CONCENTRICI (APPLE FITNESS STYLE) -->
-        <section class="glass-card rounded-2xl p-4 sm:p-5 border border-slate-800 relative overflow-hidden">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
-                
-                <!-- SVG Activity Rings Graphic -->
-                <div class="md:col-span-5 flex flex-col items-center justify-center relative">
-                    <div class="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center">
-                        <svg class="w-full h-full" viewBox="0 0 180 180">
-                            <defs>
-                                <linearGradient id="grad-fitness" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#22c55e" />
-                                    <stop offset="100%" stop-color="#4ade80" />
-                                </linearGradient>
-                                <linearGradient id="grad-water" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#06b6d4" />
-                                    <stop offset="100%" stop-color="#38bdf8" />
-                                </linearGradient>
-                                <linearGradient id="grad-tiktok" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#ec4899" />
-                                    <stop offset="100%" stop-color="#f43f5e" />
-                                </linearGradient>
-                            </defs>
+                <!-- 1. TAB DASHBOARD (HOME / COMMAND HUB) -->
+                <div id="tab-dashboard" class="space-y-4">
+                    
+                    <!-- Activity Rings Concentric Command Hub Card -->
+                    <section class="glass-card p-5 border border-white/10 relative overflow-hidden">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+                            
+                            <!-- SVG Activity Rings Graphic -->
+                            <div class="md:col-span-5 flex flex-col items-center justify-center relative">
+                                <div class="relative w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center">
+                                    <svg class="w-full h-full" viewBox="0 0 180 180">
+                                        <defs>
+                                            <linearGradient id="grad-fitness" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#22c55e" />
+                                                <stop offset="100%" stop-color="#4ade80" />
+                                            </linearGradient>
+                                            <linearGradient id="grad-water" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#06b6d4" />
+                                                <stop offset="100%" stop-color="#38bdf8" />
+                                            </linearGradient>
+                                            <linearGradient id="grad-tiktok" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#ec4899" />
+                                                <stop offset="100%" stop-color="#f43f5e" />
+                                            </linearGradient>
+                                        </defs>
 
-                            <!-- Background Track Rings -->
-                            <circle cx="90" cy="90" r="70" stroke="rgba(34, 197, 94, 0.15)" stroke-width="13" fill="none" />
-                            <circle cx="90" cy="90" r="52" stroke="rgba(6, 182, 212, 0.15)" stroke-width="13" fill="none" />
-                            <circle cx="90" cy="90" r="34" stroke="rgba(236, 72, 153, 0.15)" stroke-width="13" fill="none" />
+                                        <!-- Track Background Rings -->
+                                        <circle cx="90" cy="90" r="70" stroke="rgba(34, 197, 94, 0.15)" stroke-width="13" fill="none" />
+                                        <circle cx="90" cy="90" r="52" stroke="rgba(6, 182, 212, 0.15)" stroke-width="13" fill="none" />
+                                        <circle cx="90" cy="90" r="34" stroke="rgba(236, 72, 153, 0.15)" stroke-width="13" fill="none" />
 
-                            <!-- Dynamic Animated Rings -->
-                            <circle id="ring-fitness" class="ring-circle" cx="90" cy="90" r="70" stroke="url(#grad-fitness)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="439.82" stroke-dashoffset="439.82" />
-                            <circle id="ring-water" class="ring-circle" cx="90" cy="90" r="52" stroke="url(#grad-water)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="326.72" stroke-dashoffset="326.72" />
-                            <circle id="ring-tiktok" class="ring-circle" cx="90" cy="90" r="34" stroke="url(#grad-tiktok)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="213.63" stroke-dashoffset="213.63" />
-                        </svg>
+                                        <!-- Dynamic Animated Rings -->
+                                        <circle id="ring-fitness" class="ring-circle" cx="90" cy="90" r="70" stroke="url(#grad-fitness)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="439.82" stroke-dashoffset="439.82" />
+                                        <circle id="ring-water" class="ring-circle" cx="90" cy="90" r="52" stroke="url(#grad-water)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="326.72" stroke-dashoffset="326.72" />
+                                        <circle id="ring-tiktok" class="ring-circle" cx="90" cy="90" r="34" stroke="url(#grad-tiktok)" stroke-width="13" stroke-linecap="round" fill="none" stroke-dasharray="213.63" stroke-dashoffset="213.63" />
+                                    </svg>
 
-                        <!-- Central Stats Percentage -->
-                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                            <span id="center-total-pct" class="text-2xl sm:text-3xl font-black text-white tracking-tighter">0%</span>
-                            <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Chiusura Anelli</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Ring Progress Breakdown List -->
-                <div class="md:col-span-7 space-y-3">
-                    <div class="flex items-center justify-between border-b border-slate-800/80 pb-2">
-                        <h2 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie text-cyan-400"></i> Command Hub Attività
-                        </h2>
-                        <span id="active-day-label" class="text-[11px] font-extrabold text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full border border-cyan-500/20">Oggi</span>
-                    </div>
-
-                    <!-- Ring 1: Fitness -->
-                    <div class="bg-dark-950 p-3 rounded-xl border border-slate-800/90 flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-sm">
-                                🟢
+                                    <!-- Central Stats Percentage -->
+                                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                        <span id="center-total-pct" class="text-3xl font-black text-white tracking-tighter">0%</span>
+                                        <span class="text-[9px] uppercase font-bold text-slate-400 tracking-wider">Chiusura Anelli</span>
+                                    </div>
+                                </div>
                             </div>
+
+                            <!-- Activity Breakdown List -->
+                            <div class="md:col-span-7 space-y-3">
+                                <div class="flex items-center justify-between border-b border-white/10 pb-2">
+                                    <h2 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
+                                        <i class="fa-solid fa-chart-pie text-cyan-400"></i> Activity Rings Hub
+                                    </h2>
+                                    <span id="active-day-label" class="text-[10px] font-extrabold text-cyan-400 bg-cyan-500/10 px-2.5 py-0.5 rounded-full border border-cyan-500/20">Oggi</span>
+                                </div>
+
+                                <!-- Ring 1: Fitness -->
+                                <div onclick="switchTab('fitness')" class="glass-card p-3 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer hover:bg-white/5 transition">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold text-sm">
+                                            🟢
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-bold text-white">Fitness & Allenamento</p>
+                                            <p id="ring-desc-fitness" class="text-[10px] text-slate-400">0 di 5 Esercizi Completati</p>
+                                        </div>
+                                    </div>
+                                    <span id="ring-val-fitness" class="text-sm font-extrabold text-emerald-400">0%</span>
+                                </div>
+
+                                <!-- Ring 2: Idratazione -->
+                                <div onclick="openWaterSheet()" class="glass-card p-3 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer hover:bg-white/5 transition">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center font-bold text-sm">
+                                            🔵
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-bold text-white">Idratazione (Target 3.5 L)</p>
+                                            <p id="ring-desc-water" class="text-[10px] text-slate-400">0 / 3500 ml</p>
+                                        </div>
+                                    </div>
+                                    <span id="ring-val-water" class="text-sm font-extrabold text-cyan-400">0%</span>
+                                </div>
+
+                                <!-- Ring 3: TikTok / Content -->
+                                <div onclick="switchTab('content')" class="glass-card p-3 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer hover:bg-white/5 transition">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-8 h-8 rounded-xl bg-pink-500/15 text-pink-400 flex items-center justify-center font-bold text-sm">
+                                            💗
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-bold text-white">TikTok & Content Planner</p>
+                                            <p id="ring-desc-tiktok" class="text-[10px] text-slate-400">0 Video registrati/pubblicati</p>
+                                        </div>
+                                    </div>
+                                    <span id="ring-val-tiktok" class="text-sm font-extrabold text-pink-400">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Quick Summary Row Cards -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <!-- Water Stat Card -->
+                        <div onclick="openWaterSheet()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover">
                             <div>
-                                <p class="text-xs font-bold text-white">Fitness & Allenamento</p>
-                                <p id="ring-desc-fitness" class="text-[10px] text-slate-400">0 di 5 Esercizi Tic Fatto</p>
+                                <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Acqua Data</p>
+                                <p id="top-water-display" class="text-sm sm:text-base font-extrabold text-cyan-400 mt-0.5">0 / 3.5 L</p>
+                            </div>
+                            <div class="w-9 h-9 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center text-sm">
+                                <i class="fa-solid fa-glass-water"></i>
                             </div>
                         </div>
-                        <span id="ring-val-fitness" class="text-xs sm:text-sm font-extrabold text-emerald-400">0%</span>
-                    </div>
 
-                    <!-- Ring 2: Idratazione -->
-                    <div class="bg-dark-950 p-3 rounded-xl border border-slate-800/90 flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold text-sm">
-                                🔵
-                            </div>
+                        <!-- Weight Stat Card -->
+                        <div onclick="openWeightModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover">
                             <div>
-                                <p class="text-xs font-bold text-white">Idratazione 3.5 L</p>
-                                <p id="ring-desc-water" class="text-[10px] text-slate-400">0 / 3500 ml</p>
+                                <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Peso Attuale</p>
+                                <p id="top-weight-display" class="text-sm sm:text-base font-extrabold text-emerald-400 mt-0.5">118.0 kg</p>
+                            </div>
+                            <div class="w-9 h-9 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-sm">
+                                <i class="fa-solid fa-weight-scale"></i>
                             </div>
                         </div>
-                        <span id="ring-val-water" class="text-xs sm:text-sm font-extrabold text-cyan-400">0%</span>
-                    </div>
 
-                    <!-- Ring 3: TikTok / Content -->
-                    <div class="bg-dark-950 p-3 rounded-xl border border-slate-800/90 flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-8 h-8 rounded-lg bg-pink-500/10 text-pink-400 flex items-center justify-center font-bold text-sm">
-                                💗
-                            </div>
+                        <!-- Tasks Stat Card -->
+                        <div onclick="switchTab('planner')" class="glass-card p-3.5 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover">
                             <div>
-                                <p class="text-xs font-bold text-white">TikTok & Produttività</p>
-                                <p id="ring-desc-tiktok" class="text-[10px] text-slate-400">0 Video registrati/pubblicati</p>
+                                <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Task Data</p>
+                                <p id="top-tasks-display" class="text-sm sm:text-base font-extrabold text-indigo-400 mt-0.5">0 / 0</p>
+                            </div>
+                            <div class="w-9 h-9 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center text-sm">
+                                <i class="fa-solid fa-list-check"></i>
                             </div>
                         </div>
-                        <span id="ring-val-tiktok" class="text-xs sm:text-sm font-extrabold text-pink-400">0%</span>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- TOP SUMMARY WIDGETS -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-            <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-center justify-between">
-                <div>
-                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Acqua Data</p>
-                    <p id="top-water-display" class="text-sm sm:text-base font-extrabold text-cyan-400 mt-0.5">0 / 3.5 L</p>
-                </div>
-                <div class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
-                    <i class="fa-solid fa-glass-water text-sm"></i>
-                </div>
-            </div>
-
-            <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-center justify-between">
-                <div>
-                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Peso Attuale</p>
-                    <p id="top-weight-display" class="text-sm sm:text-base font-extrabold text-emerald-400 mt-0.5">118.0 kg</p>
-                </div>
-                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-                    <i class="fa-solid fa-weight-scale text-sm"></i>
-                </div>
-            </div>
-
-            <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-center justify-between">
-                <div>
-                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Task Completate</p>
-                    <p id="top-tasks-display" class="text-sm sm:text-base font-extrabold text-indigo-400 mt-0.5">0 / 0</p>
-                </div>
-                <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
-                    <i class="fa-solid fa-list-check text-sm"></i>
-                </div>
-            </div>
-
-            <div class="glass-card p-3 rounded-xl border border-slate-800 flex items-center justify-between">
-                <div>
-                    <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Lezioni Data</p>
-                    <p id="top-lessons-display" class="text-sm sm:text-base font-extrabold text-amber-400 mt-0.5">0 Lezioni</p>
-                </div>
-                <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
-                    <i class="fa-solid fa-graduation-cap text-sm"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- NUOVA SEZIONE: TASK & CHECKLIST GIORNALIERE (RICORRENTI E SINGOLE) -->
-        <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
-            <button onclick="toggleSection('sec-tasks')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-list-check text-sm"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Task & Checklist Giornaliere</h2>
-                        <p class="text-[10px] sm:text-[11px] text-slate-400">Attività da fare oggi | Ricorrenti ogni giorno o per data singola</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <span id="tasks-summary-badge" class="text-[10px] font-semibold bg-indigo-500/10 text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-500/20">0/0 Completate</span>
-                    <i id="sec-tasks-icon" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
-                </div>
-            </button>
-
-            <div id="sec-tasks" class="p-4 space-y-3 border-t border-slate-800/80">
-                <div class="flex justify-between items-center flex-wrap gap-2">
-                    <div class="flex items-center space-x-2">
-                        <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Avanzamento:</span>
-                        <div class="w-28 sm:w-40 bg-dark-950 h-2 rounded-full overflow-hidden border border-slate-800">
-                            <div id="tasks-progress-bar" class="bg-indigo-500 h-full transition-all duration-300" style="width: 0%;"></div>
+                        <!-- Lessons Stat Card -->
+                        <div onclick="switchTab('planner')" class="glass-card p-3.5 rounded-2xl border border-white/10 flex items-center justify-between cursor-pointer glass-card-hover">
+                            <div>
+                                <p class="text-[10px] font-bold uppercase text-slate-400 tracking-wider">Lezioni Data</p>
+                                <p id="top-lessons-display" class="text-sm sm:text-base font-extrabold text-amber-400 mt-0.5">0 Lezioni</p>
+                            </div>
+                            <div class="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-sm">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
                         </div>
                     </div>
-                    <button onclick="openTaskModal()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-md shadow-indigo-600/20">
-                        <i class="fa-solid fa-plus text-xs"></i> Nuova Task
-                    </button>
-                </div>
-                <p class="text-[10px] text-slate-400 italic">👈 Swipa a sinistra sulla task per scoprire Modifica/Elimina. Swipa a destra 👉 per richiudere.</p>
-                <div id="tasks-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
-            </div>
-        </section>
 
-        <!-- SECTION: UNIVERSITÀ & SCUOLA LEZIONI -->
-        <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
-            <button onclick="toggleSection('sec-uni')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-graduation-cap text-sm"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Orario Lezioni & Materie</h2>
-                        <p class="text-[10px] sm:text-[11px] text-slate-400">Orario scolastico / universitario personalizzabile</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <span id="uni-summary-badge" class="text-[10px] font-semibold bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/20">5 Giorni</span>
-                    <i id="sec-uni-icon" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
-                </div>
-            </button>
-
-            <div id="sec-uni" class="p-4 space-y-3 border-t border-slate-800/80">
-                <div class="flex justify-between items-center flex-wrap gap-2">
-                    <div class="flex space-x-1.5 overflow-x-auto pb-1" id="uni-days-tabs"></div>
-                    <button onclick="openScheduleModal()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-md shadow-blue-600/20">
-                        <i class="fa-solid fa-plus text-xs"></i> Nuova Lezione / Materia
-                    </button>
-                </div>
-                <p class="text-[10px] text-slate-400 italic">👈 Swipa a sinistra sulla lezione per scoprire Modifica/Elimina. Swipa a destra 👉 per richiudere.</p>
-                <div id="uni-lessons-container" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
-            </div>
-        </section>
-
-        <!-- SECTION: FITNESS & PIANO DIMAGRIMENTO -->
-        <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
-            <button onclick="toggleSection('sec-fit')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-person-running text-sm"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Fitness, Peso & Allenamento Data</h2>
-                        <p class="text-[10px] sm:text-[11px] text-slate-400">Obiettivo Dimagrimento | Check Esercizi "Tic Fatto"</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <span id="fit-summary-badge" class="text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">Peso: 118.0 kg</span>
-                    <i id="sec-fit-icon" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
-                </div>
-            </button>
-
-            <div id="sec-fit" class="p-4 space-y-4 border-t border-slate-800/80">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    <div class="bg-dark-900/80 p-3.5 rounded-xl border border-slate-800 space-y-3">
+                    <!-- Hydration Fast Action Widget -->
+                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
                         <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-xs uppercase text-slate-400 tracking-wider">Tracker Peso</h3>
-                            <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full font-bold">Target: 95 kg</span>
-                        </div>
-                        <div class="flex items-center justify-between bg-dark-950 p-3 rounded-xl border border-slate-800">
-                            <div>
-                                <p class="text-[11px] text-slate-400">Peso Registrato</p>
-                                <p id="current-weight-val" class="text-xl sm:text-2xl font-extrabold text-white">118.0 <span class="text-xs text-slate-400">kg</span></p>
-                            </div>
-                            <button onclick="openWeightModal()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-md shadow-emerald-600/20">
-                                <i class="fa-solid fa-plus text-xs"></i> Aggiorna
-                            </button>
-                        </div>
-                        <div class="p-3 rounded-xl bg-gradient-to-r from-amber-500/10 to-purple-500/10 border border-amber-500/20 space-y-1">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-bold text-amber-300 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-bell text-amber-400"></i> Reminder Pesata
-                                </span>
-                                <span class="text-[10px] bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded-md border border-amber-500/30">Venerdì Mattina</span>
-                            </div>
-                            <p class="text-[11px] text-slate-300 leading-snug">
-                                💡 Pesati il <span class="text-amber-400 font-bold">Venerdì mattina a digiuno</span> per misurare il progresso reale della settimana!
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="lg:col-span-2 bg-dark-900/80 p-3.5 rounded-xl border border-slate-800 space-y-3">
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-xs uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
-                                <i class="fa-solid fa-list-check text-emerald-400"></i> Esercizi della Data ("Tic Fatto")
+                            <h3 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-droplet text-cyan-400"></i> Idratazione Rapida (3.5L Target)
                             </h3>
-                            <span id="workout-progress-badge" class="text-[10px] font-bold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full">0/5 Completati</span>
+                            <span id="dash-water-pct-badge" class="text-[10px] font-extrabold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20">0%</span>
                         </div>
-                        <div id="workout-checklist" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION: TIKTOK PLANNER WITH SWIPE -->
-        <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
-            <button onclick="toggleSection('sec-tiktok')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center shrink-0">
-                        <i class="fa-brands fa-tiktok text-sm"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">TikTok Live & Content Planner</h2>
-                        <p class="text-[10px] sm:text-[11px] text-slate-400">Idee video con swipe gesture (Sinistra per azioni ✏️🗑️, Destra per chiudere)</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <span id="tiktok-summary-badge" class="text-[10px] font-semibold bg-pink-500/10 text-pink-400 px-2 py-0.5 rounded-full border border-pink-500/20">0 Video</span>
-                    <i id="sec-tiktok-icon" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
-                </div>
-            </button>
-
-            <div id="sec-tiktok" class="p-4 space-y-3 border-t border-slate-800/80">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-xs font-bold uppercase text-slate-400 tracking-wider">Idee Video TikTok</h3>
-                    <button onclick="openTikTokModal()" class="px-3 py-1.5 bg-pink-600 hover:bg-pink-500 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-md shadow-pink-600/20">
-                        <i class="fa-solid fa-plus text-xs"></i> Nuova Idea
-                    </button>
-                </div>
-                <p class="text-[10px] text-slate-400 italic">👈 Swipa a sinistra sulla scheda per scoprire Modifica/Elimina. Swipa a destra 👉 per richiudere.</p>
-                <div id="tiktok-ideas-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
-            </div>
-        </section>
-
-        <!-- SECTION: IDRATAZIONE (3.5 LITRI) -->
-        <section class="glass-card rounded-2xl overflow-hidden border border-slate-800 transition-all">
-            <button onclick="toggleSection('sec-water')" class="w-full px-4 py-3 flex items-center justify-between bg-dark-900/60 hover:bg-dark-900 text-left transition text-sm">
-                <div class="flex items-center space-x-3">
-                    <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-glass-water text-sm"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-bold text-xs sm:text-sm text-white tracking-wide">Idratazione Personalizzata (3.5 Litri / Giorno)</h2>
-                        <p class="text-[10px] sm:text-[11px] text-slate-400">Target calcolato 3500 ml al giorno</p>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <span id="water-summary-badge" class="text-[10px] font-semibold bg-cyan-500/10 text-cyan-400 px-2 py-0.5 rounded-full border border-cyan-500/20">0 / 3500 ml</span>
-                    <i id="sec-water-icon" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
-                </div>
-            </button>
-
-            <div id="sec-water" class="p-4 space-y-4 border-t border-slate-800/80">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
-                    <div class="bg-dark-950 p-4 rounded-xl border border-slate-800 flex flex-col items-center justify-center space-y-2 relative overflow-hidden">
-                        <div class="w-20 h-36 bg-dark-900 border-2 border-cyan-500/40 rounded-3xl relative overflow-hidden flex flex-col justify-end">
-                            <div id="water-fill-level" class="water-wave bg-gradient-to-t from-cyan-600 to-cyan-400 w-full rounded-b-2xl" style="height: 0%;"></div>
-                        </div>
-                        <p id="water-percentage" class="text-xs sm:text-sm font-extrabold text-cyan-400">0% Raggiunto</p>
-                    </div>
-
-                    <div class="sm:col-span-2 space-y-3">
-                        <div class="flex flex-wrap items-center justify-between gap-2 bg-dark-900 p-3 rounded-xl border border-slate-800">
+                        <div class="flex items-center justify-between flex-wrap gap-2 bg-black/40 p-3 rounded-2xl border border-white/5">
                             <div>
-                                <p class="text-[11px] text-slate-400 flex items-center gap-1"><i class="fa-solid fa-glass-water text-cyan-400"></i> Acqua Bevuta Nella Data</p>
-                                <p id="water-text-amount" class="text-xl sm:text-2xl font-extrabold text-white">0 <span class="text-xs text-slate-400">/ 3500 ml</span></p>
+                                <p class="text-[11px] text-slate-400">Acqua Bevuta Oggi</p>
+                                <p id="dash-water-text" class="text-xl font-extrabold text-white">0 <span class="text-xs text-slate-400">/ 3500 ml</span></p>
                             </div>
-                            <div class="flex gap-1.5 flex-wrap">
+                            <div class="flex gap-2 flex-wrap">
                                 <button onclick="addWater(200)" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-indigo-600/20 active:scale-95 flex items-center gap-1">
-                                    <i class="fa-solid fa-glass-water"></i> 1 Bicchiere (200 ml)
+                                    +200 ml
                                 </button>
                                 <button onclick="addWater(250)" class="px-3 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-cyan-600/20 active:scale-95">
-                                    + 250 ml
+                                    +250 ml
                                 </button>
                                 <button onclick="addWater(500)" class="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-blue-600/20 active:scale-95">
-                                    + 500 ml
+                                    +500 ml
                                 </button>
-                                <button onclick="undoWater()" class="px-2.5 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs rounded-xl border border-amber-500/30 transition flex items-center gap-1 font-semibold active:scale-95" title="Annulla">
-                                    <i class="fa-solid fa-rotate-left"></i> Annulla
-                                </button>
-                                <button onclick="resetWater()" class="px-2.5 py-2 bg-dark-800 hover:bg-dark-700 text-slate-400 hover:text-slate-200 text-xs rounded-xl border border-slate-700 transition active:scale-95" title="Azzera">
-                                    <i class="fa-solid fa-rotate-right"></i>
+                                <button onclick="undoWater()" class="px-2.5 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs rounded-xl border border-amber-500/30 transition flex items-center gap-1 font-semibold active:scale-95">
+                                    <i class="fa-solid fa-rotate-left"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-    </main>
 
-    <!-- MODALI -->
-    <!-- MODALE TASK GIORNALIERA (NUOVA / MODIFICA) -->
-    <div id="modal-task" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-4 space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                    <!-- Priority Tasks Preview Card -->
+                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xs font-black uppercase text-white tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-list-check text-indigo-400"></i> Task Prioritarie della Giornata
+                            </h3>
+                            <button onclick="switchTab('planner')" class="text-[10px] text-indigo-400 font-bold hover:underline">Vedi Tutte &rarr;</button>
+                        </div>
+                        <div id="dash-priority-tasks-list" class="space-y-2"></div>
+                    </div>
+
+                </div>
+
+                <!-- 2. TAB PLANNER (ORARIO LEZIONI & TASK GIORNALIERI) -->
+                <div id="tab-planner" class="space-y-4 hidden">
+                    
+                    <!-- Task & Checklist Section -->
+                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
+                        <div class="flex justify-between items-center flex-wrap gap-2 border-b border-white/10 pb-3">
+                            <div>
+                                <h2 class="font-bold text-sm text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-list-check text-indigo-400"></i> Checklist Task Giornaliere
+                                </h2>
+                                <p class="text-[10px] text-slate-400">Attività ricorrenti o specifiche della data</p>
+                            </div>
+                            <button onclick="openTaskModal()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-indigo-600/20">
+                                <i class="fa-solid fa-plus text-xs"></i> Nuova Task
+                            </button>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs font-bold text-slate-400">Completamento:</span>
+                            <div class="flex-1 bg-black/40 h-2 rounded-full overflow-hidden border border-white/10">
+                                <div id="tasks-progress-bar" class="bg-indigo-500 h-full transition-all duration-300" style="width: 0%;"></div>
+                            </div>
+                            <span id="planner-tasks-pct" class="text-xs font-extrabold text-indigo-400">0%</span>
+                        </div>
+
+                        <!-- Task Items Container -->
+                        <div id="planner-tasks-list" class="grid grid-cols-1 md:grid-cols-2 gap-2.5 pt-1"></div>
+                    </div>
+
+                    <!-- School / Uni Timetable Section -->
+                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
+                        <div class="flex justify-between items-center flex-wrap gap-2 border-b border-white/10 pb-3">
+                            <div>
+                                <h2 class="font-bold text-sm text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-graduation-cap text-blue-400"></i> Orario Lezioni & Materie
+                                </h2>
+                                <p class="text-[10px] text-slate-400">Pianificazione per giorno della settimana</p>
+                            </div>
+                            <button onclick="openScheduleModal()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-blue-600/20">
+                                <i class="fa-solid fa-plus text-xs"></i> Nuova Lezione
+                            </button>
+                        </div>
+
+                        <!-- Weekday Switcher Tabs -->
+                        <div class="flex space-x-1.5 overflow-x-auto pb-1" id="uni-days-tabs"></div>
+
+                        <!-- Lessons List Container -->
+                        <div id="uni-lessons-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1"></div>
+                    </div>
+
+                </div>
+
+                <!-- 3. TAB FITNESS (PESO & ESERCIZI "TIC FATTO") -->
+                <div id="tab-fitness" class="space-y-4 hidden">
+                    
+                    <!-- Weight & Target Card -->
+                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h2 class="font-bold text-sm text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-weight-scale text-emerald-400"></i> Tracker Peso & Forma
+                                </h2>
+                                <p class="text-[10px] text-slate-400">Obiettivo Dimagrimento | Target: 95.0 kg</p>
+                            </div>
+                            <button onclick="openWeightModal()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-emerald-600/20">
+                                <i class="fa-solid fa-plus text-xs"></i> Aggiorna Peso
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="bg-black/40 p-4 rounded-2xl border border-white/5 flex items-center justify-between">
+                                <div>
+                                    <p class="text-[11px] text-slate-400">Peso Registrato</p>
+                                    <p id="fitness-weight-val" class="text-2xl font-black text-white">118.0 <span class="text-xs text-slate-400">kg</span></p>
+                                </div>
+                                <div class="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-lg">
+                                    🏋️‍♂️
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/10 to-emerald-500/10 border border-amber-500/20 space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-bell text-amber-400"></i> Reminder Pesata
+                                    </span>
+                                    <span class="text-[9px] bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded-md">Venerdì Mattina</span>
+                                </div>
+                                <p class="text-[11px] text-slate-300 leading-snug">
+                                    💡 Pesati ogni <span class="text-amber-400 font-bold">Venerdì mattina a digiuno</span> per misurare i progressi reali!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daily Exercises Checklist -->
+                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h2 class="font-bold text-sm text-white flex items-center gap-2">
+                                <i class="fa-solid fa-dumbbell text-emerald-400"></i> Esercizi della Data ("Tic Fatto")
+                            </h2>
+                            <span id="workout-progress-badge" class="text-[10px] font-extrabold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">0/5 Completati</span>
+                        </div>
+                        <div id="workout-checklist" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+                    </div>
+
+                </div>
+
+                <!-- 4. TAB CONTENT (TIKTOK PLANNER) -->
+                <div id="tab-content" class="space-y-4 hidden">
+                    
+                    <div class="glass-card p-4 rounded-2xl border border-white/10 space-y-3">
+                        <div class="flex justify-between items-center flex-wrap gap-2 border-b border-white/10 pb-3">
+                            <div>
+                                <h2 class="font-bold text-sm text-white flex items-center gap-2">
+                                    <i class="fa-brands fa-tiktok text-pink-400"></i> TikTok Live & Content Planner
+                                </h2>
+                                <p class="text-[10px] text-slate-400">Idee video, ganci (hook) e stato di pubblicazione</p>
+                            </div>
+                            <button onclick="openTikTokModal()" class="px-3 py-1.5 bg-pink-600 hover:bg-pink-500 text-white rounded-2xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-pink-600/20">
+                                <i class="fa-solid fa-plus text-xs"></i> Nuova Idea
+                            </button>
+                        </div>
+
+                        <!-- TikTok Video Ideas Grid -->
+                        <div id="tiktok-ideas-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+                    </div>
+
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- MOBILE BOTTOM NAVIGATION BAR (FIXED AT BOTTOM) -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-nav px-3 py-2 flex items-center justify-around">
+        <button onclick="switchTab('dashboard')" id="mob-nav-dashboard" class="flex flex-col items-center gap-1 text-cyan-400 font-bold transition">
+            <i class="fa-solid fa-house text-base"></i>
+            <span class="text-[9px]">Home</span>
+        </button>
+
+        <button onclick="switchTab('planner')" id="mob-nav-planner" class="flex flex-col items-center gap-1 text-slate-400 font-medium hover:text-white transition">
+            <i class="fa-solid fa-calendar-check text-base"></i>
+            <span class="text-[9px]">Planner</span>
+        </button>
+
+        <!-- Central Elevated Floating Action Button (FAB) -->
+        <button onclick="openQuickCreateSheet()" title="Crea Attività" class="w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 text-white flex items-center justify-center text-xl shadow-lg shadow-cyan-500/40 -translate-y-3 transition-transform active:scale-90 border-2 border-dark-950">
+            <i class="fa-solid fa-plus"></i>
+        </button>
+
+        <button onclick="switchTab('fitness')" id="mob-nav-fitness" class="flex flex-col items-center gap-1 text-slate-400 font-medium hover:text-white transition">
+            <i class="fa-solid fa-heart-pulse text-base"></i>
+            <span class="text-[9px]">Fitness</span>
+        </button>
+
+        <button onclick="switchTab('content')" id="mob-nav-content" class="flex flex-col items-center gap-1 text-slate-400 font-medium hover:text-white transition">
+            <i class="fa-brands fa-tiktok text-base"></i>
+            <span class="text-[9px]">Content</span>
+        </button>
+    </nav>
+
+    <!-- BOTTOM SHEETS & OVERLAYS -->
+
+    <!-- QUICK CREATE ACTION SHEET (FAB MENU) -->
+    <div id="modal-quick-create" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md bottom-sheet-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="glass-card bottom-sheet-panel max-w-sm w-full rounded-b-none sm:rounded-3xl border-t sm:border border-white/10 p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="font-extrabold text-sm text-white flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-cyan-400"></i> Crea Nuova Attività
+                </h3>
+                <button onclick="closeModal('modal-quick-create')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-2.5">
+                <button onclick="closeModal('modal-quick-create'); openTaskModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <span class="text-xs font-bold text-white">Nuova Task</span>
+                </button>
+
+                <button onclick="closeModal('modal-quick-create'); openScheduleModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
+                    <div class="w-10 h-10 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <span class="text-xs font-bold text-white">Nuova Lezione</span>
+                </button>
+
+                <button onclick="closeModal('modal-quick-create'); openWeightModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-weight-scale"></i>
+                    </div>
+                    <span class="text-xs font-bold text-white">Registra Peso</span>
+                </button>
+
+                <button onclick="closeModal('modal-quick-create'); openTikTokModal()" class="glass-card p-3.5 rounded-2xl border border-white/10 flex flex-col items-center text-center space-y-2 hover:bg-white/5 transition">
+                    <div class="w-10 h-10 rounded-2xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-lg">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </div>
+                    <span class="text-xs font-bold text-white">Idea TikTok</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WATER HYDRATION BOTTOM SHEET -->
+    <div id="modal-water-sheet" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md bottom-sheet-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="glass-card bottom-sheet-panel max-w-sm w-full rounded-b-none sm:rounded-3xl border-t sm:border border-white/10 p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="font-extrabold text-sm text-white flex items-center gap-2">
+                    <i class="fa-solid fa-droplet text-cyan-400"></i> Registro Idratazione (3.5L Target)
+                </h3>
+                <button onclick="closeModal('modal-water-sheet')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="flex flex-col items-center justify-center space-y-3 py-2">
+                <div class="w-24 h-40 bg-black/40 border-2 border-cyan-500/40 rounded-3xl relative overflow-hidden flex flex-col justify-end">
+                    <div id="sheet-water-fill-level" class="water-wave bg-gradient-to-t from-cyan-600 to-cyan-400 w-full rounded-b-2xl" style="height: 0%;"></div>
+                </div>
+                <p id="sheet-water-amount" class="text-2xl font-black text-white">0 <span class="text-xs text-slate-400">/ 3500 ml</span></p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+                <button onclick="addWater(200)" class="py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-2xl transition shadow-md shadow-indigo-600/20">
+                    +200 ml
+                </button>
+                <button onclick="addWater(250)" class="py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs rounded-2xl transition shadow-md shadow-cyan-600/20">
+                    +250 ml
+                </button>
+                <button onclick="addWater(500)" class="py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-2xl transition shadow-md shadow-blue-600/20">
+                    +500 ml
+                </button>
+            </div>
+
+            <div class="flex space-x-2 pt-1 border-t border-white/10">
+                <button onclick="undoWater()" class="flex-1 py-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs rounded-2xl border border-amber-500/30 transition font-bold flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-rotate-left"></i> Annulla ultimo
+                </button>
+                <button onclick="resetWater()" class="py-2 px-3 bg-white/5 hover:bg-white/10 text-slate-400 text-xs rounded-2xl border border-white/10 transition">
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TASK BOTTOM SHEET (MODAL) -->
+    <div id="modal-task" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md bottom-sheet-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="glass-card bottom-sheet-panel max-w-sm w-full rounded-b-none sm:rounded-3xl border-t sm:border border-white/10 p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
                 <h3 id="task-modal-title" class="font-bold text-sm text-white flex items-center gap-2">
                     <i class="fa-solid fa-list-check text-indigo-400"></i> Nuova Task Giornaliera
                 </h3>
                 <button onclick="closeModal('modal-task')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <input type="hidden" id="task-editing-id" value="">
-            <div class="space-y-3 text-xs">
+            <div class="space-y-3.5 text-xs">
                 <div>
                     <label class="text-slate-400 font-semibold">Titolo Attività / Task:</label>
-                    <input type="text" id="task-title" placeholder="Es. Leggere 10 pagine, Studio Matematica..." required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-indigo-500">
+                    <input type="text" id="task-title" placeholder="Es. Leggere 10 pagine, Studio Matematica..." required class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-indigo-500">
                 </div>
                 <div>
                     <label class="text-slate-400 font-semibold">Categoria:</label>
-                    <select id="task-category" class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-indigo-500">
+                    <select id="task-category" class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-indigo-500">
                         <option value="Studio">📚 Studio</option>
                         <option value="Salute">💚 Salute & Fit</option>
                         <option value="Personale">⭐ Personale</option>
@@ -629,46 +785,46 @@
                 </div>
                 <div>
                     <label class="text-slate-400 font-semibold">Frequenza Task:</label>
-                    <select id="task-recurrence" class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-indigo-500">
+                    <select id="task-recurrence" class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-indigo-500">
                         <option value="recurring">🔄 Ricorrente (Ogni Giorno)</option>
                         <option value="single">📅 Solo per la Data Selezionata</option>
                     </select>
                 </div>
-                <button onclick="saveTask()" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition shadow-md shadow-indigo-600/20">
+                <button onclick="saveTask()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl transition shadow-lg shadow-indigo-600/25">
                     Salva Task
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODALE CALENDARIO POPUP INTERATTIVO APPLE / iOS STYLE -->
-    <div id="modal-calendar" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md hidden items-center justify-center p-3 sm:p-4 transition-all">
-        <div class="glass-card max-w-sm sm:max-w-md w-full rounded-3xl border border-slate-700/60 p-4 sm:p-6 space-y-4 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+    <!-- APPLE CALENDAR INTERACTIVE POPUP SHEET -->
+    <div id="modal-calendar" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md bottom-sheet-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="glass-card bottom-sheet-panel max-w-sm sm:max-w-md w-full rounded-b-none sm:rounded-3xl border-t sm:border border-white/10 p-5 space-y-4 shadow-2xl">
             <!-- Header Modal Calendario -->
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
                 <div class="flex items-center space-x-2">
-                    <button onclick="changeCalendarMonth(-1)" title="Mese Precedente" class="w-8 h-8 rounded-full bg-dark-900 hover:bg-dark-800 text-slate-300 hover:text-white flex items-center justify-center border border-slate-800 text-xs transition active:scale-95">
+                    <button onclick="changeCalendarMonth(-1)" title="Mese Precedente" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white flex items-center justify-center border border-white/10 text-xs transition active:scale-95">
                         <i class="fa-solid fa-chevron-left"></i>
                     </button>
                     <h3 id="cal-month-year-title" class="font-extrabold text-sm sm:text-base text-white capitalize tracking-wide min-w-[130px] text-center">
                         Caricamento...
                     </h3>
-                    <button onclick="changeCalendarMonth(1)" title="Mese Successivo" class="w-8 h-8 rounded-full bg-dark-900 hover:bg-dark-800 text-slate-300 hover:text-white flex items-center justify-center border border-slate-800 text-xs transition active:scale-95">
+                    <button onclick="changeCalendarMonth(1)" title="Mese Successivo" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white flex items-center justify-center border border-white/10 text-xs transition active:scale-95">
                         <i class="fa-solid fa-chevron-right"></i>
                     </button>
                 </div>
 
                 <div class="flex items-center space-x-2">
-                    <button onclick="jumpCalendarToToday()" class="px-2.5 py-1 bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 rounded-lg text-xs font-bold transition">
+                    <button onclick="jumpCalendarToToday()" class="px-3 py-1 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 border border-cyan-500/30 rounded-xl text-xs font-bold transition">
                         Oggi
                     </button>
-                    <button onclick="closeModal('modal-calendar')" class="w-8 h-8 rounded-full bg-dark-900 hover:bg-dark-800 text-slate-400 hover:text-white flex items-center justify-center transition">
+                    <button onclick="closeModal('modal-calendar')" class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition">
                         <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Header Giorni della Settimana (L - D) -->
+            <!-- Header Weekdays (Lun - Dom) -->
             <div class="grid grid-cols-7 text-center">
                 <span class="text-[10px] font-black uppercase text-slate-400">Lun</span>
                 <span class="text-[10px] font-black uppercase text-slate-400">Mar</span>
@@ -679,11 +835,11 @@
                 <span class="text-[10px] font-black uppercase text-slate-400">Dom</span>
             </div>
 
-            <!-- Griglia dei giorni del Mese dinamica -->
+            <!-- Month Days Grid -->
             <div id="cal-days-grid" class="grid grid-cols-7 gap-1"></div>
 
-            <!-- Legenda Anelli Activity & Task -->
-            <div class="pt-2 border-t border-slate-800/80 flex items-center justify-around text-[10px] font-semibold text-slate-400">
+            <!-- Legend Activity Rings & Task Status -->
+            <div class="pt-2 border-t border-white/10 flex items-center justify-around text-[10px] font-semibold text-slate-400">
                 <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Fitness</span>
                 <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-cyan-400"></span> Acqua</span>
                 <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-pink-500"></span> TikTok</span>
@@ -692,54 +848,18 @@
         </div>
     </div>
 
-    <!-- MODALE GESTIONE ACCOUNT -->
-    <div id="modal-account" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-4 sm:p-5 space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="font-extrabold text-sm text-white flex items-center gap-2">
-                    <i class="fa-solid fa-user-gear text-indigo-400"></i> Gestione Profilo & Account
-                </h3>
-                <button onclick="closeModal('modal-account')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            
-            <form onsubmit="updateAccountSettings(event)" class="space-y-3 text-xs">
-                <div>
-                    <label class="text-slate-400 font-semibold">Modifica Nickname:</label>
-                    <input type="text" id="setting-new-nick" placeholder="Nuovo Nickname" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white font-bold focus:outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="text-slate-400 font-semibold">Nuova Password:</label>
-                    <input type="password" id="setting-new-pass" placeholder="Nuova Password" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white font-bold focus:outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="text-slate-400 font-semibold">Conferma Nuova Password:</label>
-                    <input type="password" id="setting-confirm-pass" placeholder="Ripeti Nuova Password" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white font-bold focus:outline-none focus:border-indigo-500">
-                </div>
-                <button type="submit" class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition shadow-md shadow-indigo-600/20">
-                    Salva Nuove Credenziali
-                </button>
-            </form>
-
-            <div class="border-t border-slate-800/80 pt-3">
-                <button onclick="deleteCurrentAccount()" class="w-full py-2 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-trash-can"></i> Elimina Account Definitivamente
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODALE AGGIUNGI/MODIFICA LEZIONE O MATERIA -->
-    <div id="modal-schedule" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="glass-card max-w-sm w-full rounded-2xl border border-slate-800 p-4 space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+    <!-- SCHEDULE LESSON BOTTOM SHEET -->
+    <div id="modal-schedule" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md bottom-sheet-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="glass-card bottom-sheet-panel max-w-sm w-full rounded-b-none sm:rounded-3xl border-t sm:border border-white/10 p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
                 <h3 id="sched-modal-title" class="font-bold text-sm text-white">Aggiungi Lezione / Materia</h3>
                 <button onclick="closeModal('modal-schedule')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <input type="hidden" id="sched-editing-index" value="-1">
-            <div class="space-y-3 text-xs">
+            <div class="space-y-3.5 text-xs">
                 <div>
                     <label class="text-slate-400 font-semibold">Giorno della Settimana:</label>
-                    <select id="sched-day" class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-blue-500">
+                    <select id="sched-day" class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-blue-500">
                         <option value="Lunedì">Lunedì</option>
                         <option value="Martedì">Martedì</option>
                         <option value="Mercoledì">Mercoledì</option>
@@ -749,15 +869,15 @@
                 </div>
                 <div>
                     <label class="text-slate-400 font-semibold">Materia / Corso:</label>
-                    <input type="text" id="sched-course" placeholder="Es. Italiano, Matematica, Programmazione..." required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-blue-500">
+                    <input type="text" id="sched-course" placeholder="Es. Italiano, Matematica, Programmazione..." required class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-blue-500">
                 </div>
                 <div>
                     <label class="text-slate-400 font-semibold">Orario:</label>
-                    <input type="text" id="sched-time" placeholder="Es. 08:30 - 10:30" required class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-blue-500">
+                    <input type="text" id="sched-time" placeholder="Es. 08:30 - 10:30" required class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-blue-500">
                 </div>
                 <div>
                     <label class="text-slate-400 font-semibold">Tipologia:</label>
-                    <select id="sched-type" class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-blue-500">
+                    <select id="sched-type" class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-blue-500">
                         <option value="Lezione">Lezione / Materia</option>
                         <option value="Laboratorio">Laboratorio / Esercitazione</option>
                         <option value="Studio">Studio / Ripasso</option>
@@ -765,76 +885,118 @@
                 </div>
                 <div>
                     <label class="text-slate-400 font-semibold">Aula / Classe / Note:</label>
-                    <input type="text" id="sched-room" placeholder="Es. Classe 5A, Aula G13, Online..." class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-blue-500">
+                    <input type="text" id="sched-room" placeholder="Es. Classe 5A, Aula G13, Online..." class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-blue-500">
                 </div>
-                <button onclick="saveScheduleItem()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition">
-                    Salva Orario
+                <button onclick="saveScheduleItem()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl transition shadow-lg shadow-blue-600/25">
+                    Salva Orario Lezione
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODALE AGGIORNA PESO -->
-    <div id="modal-weight" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="glass-card max-w-xs w-full rounded-2xl border border-slate-800 p-4 space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                <h3 class="font-bold text-sm text-white">Aggiorna Peso Attuale</h3>
+    <!-- WEIGHT UPDATE BOTTOM SHEET -->
+    <div id="modal-weight" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md bottom-sheet-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="glass-card bottom-sheet-panel max-w-xs w-full rounded-b-none sm:rounded-3xl border-t sm:border border-white/10 p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                    <i class="fa-solid fa-weight-scale text-emerald-400"></i> Aggiorna Peso Attuale
+                </h3>
                 <button onclick="closeModal('modal-weight')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="space-y-3">
-                <input type="number" step="0.1" id="input-weight-val" placeholder="Es. 117.5" class="w-full bg-dark-950 border border-slate-800 rounded-xl p-3 text-white text-lg font-bold text-center focus:outline-none focus:border-emerald-500">
-                <button onclick="saveNewWeight()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition">
-                    Salva Peso
+            <div class="space-y-4">
+                <input type="number" step="0.1" id="input-weight-val" placeholder="Es. 117.5" class="w-full bg-black/40 border border-white/10 rounded-2xl p-3.5 text-white text-xl font-black text-center focus:outline-none focus:border-emerald-500">
+                <button onclick="saveNewWeight()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl transition shadow-lg shadow-emerald-600/25">
+                    Salva Misurazione Peso
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODALE IDEE TIKTOK -->
-    <div id="modal-tiktok" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="glass-card max-w-md w-full rounded-2xl border border-slate-800 p-4 space-y-4">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+    <!-- TIKTOK IDEA BOTTOM SHEET -->
+    <div id="modal-tiktok" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md bottom-sheet-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="glass-card bottom-sheet-panel max-w-md w-full rounded-b-none sm:rounded-3xl border-t sm:border border-white/10 p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
                 <h3 id="tt-modal-title" class="font-bold text-sm text-white">Nuova Idea Video TikTok</h3>
                 <button onclick="closeModal('modal-tiktok')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <input type="hidden" id="tt-editing-id" value="">
-            <div class="space-y-3 text-xs">
+            <div class="space-y-3.5 text-xs">
                 <div>
                     <label class="text-slate-400 font-semibold">Titolo / Argomento Video:</label>
-                    <input type="text" id="tt-title" placeholder="Es. Cosa mangio all'Università..." class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-pink-500">
+                    <input type="text" id="tt-title" placeholder="Es. Cosa mangio all'Università..." class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
                     <label class="text-slate-400 font-semibold">Hook (Gancio primi 3 sec):</label>
-                    <input type="text" id="tt-hook" placeholder="Es. Non fare questo errore..." class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-pink-500">
+                    <input type="text" id="tt-hook" placeholder="Es. Non fare questo errore..." class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-pink-500">
                 </div>
                 <div>
                     <label class="text-slate-400 font-semibold">Stato Video:</label>
-                    <select id="tt-status" class="w-full mt-1 bg-dark-950 border border-slate-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-pink-500">
+                    <select id="tt-status" class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white focus:outline-none focus:border-pink-500">
                         <option value="Da Registrare">🔴 Da Registrare</option>
                         <option value="Registrato">🎥 Registrato</option>
                         <option value="Pubblicato">✅ Pubblicato</option>
                     </select>
                 </div>
-                <button onclick="saveTikTokIdea()" class="w-full py-2.5 bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs rounded-xl transition">
-                    Salva Video TikTok
+                <button onclick="saveTikTokIdea()" class="w-full py-3 bg-pink-600 hover:bg-pink-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl transition shadow-lg shadow-pink-600/25">
+                    Salva Idea TikTok
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODALE STORICO WEIGHT PROGRESS -->
-    <div id="modal-history" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="glass-card max-w-md w-full rounded-2xl border border-slate-800 p-4 space-y-4 max-h-[85vh] flex flex-col">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+    <!-- ACCOUNT SETTINGS SHEET -->
+    <div id="modal-account" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md bottom-sheet-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="glass-card bottom-sheet-panel max-w-sm w-full rounded-b-none sm:rounded-3xl border-t sm:border border-white/10 p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="font-extrabold text-sm text-white flex items-center gap-2">
+                    <i class="fa-solid fa-user-gear text-indigo-400"></i> Gestione Profilo Account
+                </h3>
+                <button onclick="closeModal('modal-account')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <form onsubmit="updateAccountSettings(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="text-slate-400 font-semibold">Modifica Nickname:</label>
+                    <input type="text" id="setting-new-nick" placeholder="Nuovo Nickname" required class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white font-bold focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Nuova Password:</label>
+                    <input type="password" id="setting-new-pass" placeholder="Nuova Password" required class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white font-bold focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="text-slate-400 font-semibold">Conferma Nuova Password:</label>
+                    <input type="password" id="setting-confirm-pass" placeholder="Ripeti Nuova Password" required class="w-full mt-1 bg-black/40 border border-white/10 rounded-2xl p-3 text-white font-bold focus:outline-none focus:border-indigo-500">
+                </div>
+                <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl transition shadow-lg shadow-indigo-600/25">
+                    Salva Credenziali
+                </button>
+            </form>
+
+            <div class="border-t border-white/10 pt-3">
+                <button onclick="deleteCurrentAccount()" class="w-full py-2.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 font-bold text-xs rounded-2xl transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-trash-can"></i> Elimina Account Definitivamente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WEIGHT HISTORY SHEET -->
+    <div id="modal-history" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md bottom-sheet-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="glass-card bottom-sheet-panel max-w-md w-full rounded-b-none sm:rounded-3xl border-t sm:border border-white/10 p-5 space-y-4 max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
                 <h3 class="font-bold text-sm text-white flex items-center gap-2">
                     <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i> Storico Progressi Account
                 </h3>
                 <button onclick="closeModal('modal-history')" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div id="history-content-list" class="space-y-2 overflow-y-auto text-xs flex-grow pr-1"></div>
+            <div id="history-content-list" class="space-y-2.5 overflow-y-auto text-xs flex-grow pr-1"></div>
         </div>
     </div>
 
+    <!-- Toast Banner -->
+    <div id="toast-container" class="fixed bottom-20 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- JAVASCRIPT LOGIC & FIREBASE SYNC -->
     <script>
         // CONFIGURAZIONE FIREBASE UFFICIALE
         const firebaseConfig = {
@@ -860,7 +1022,10 @@
         const getTodayStr = () => new Date().toISOString().split('T')[0];
         let selectedDateStr = getTodayStr();
 
-        // Stato della data visualizzata nel Popup Calendario
+        // Active Navigation Tab State ('dashboard', 'planner', 'fitness', 'content')
+        let currentTab = 'dashboard';
+
+        // Calendar Popup View Date State
         let calendarViewDate = new Date();
 
         // INDEXEDDB FALLBACK
@@ -933,9 +1098,6 @@
                 waterGoal: 3500,
                 weight: isLord ? 118.0 : 60.0,
                 selectedUniDay: 'Lunedì',
-                sectionsState: {
-                    'sec-tasks': true, 'sec-uni': true, 'sec-fit': true, 'sec-tiktok': true, 'sec-water': true
-                },
                 defaultWorkouts: defaultWorkouts,
                 recurringTasks: defaultRecurringTasks,
                 dailyLogs: initialLogs,
@@ -1008,13 +1170,6 @@
             allProfiles[activeProfileName] = appData;
             try { localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles)); } catch (e) {}
             await saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
-
-            const statusIcon = document.getElementById('storage-status-icon');
-            const statusText = document.getElementById('storage-status-text');
-            if (statusIcon && statusText) {
-                statusIcon.className = 'fa-solid fa-cloud-arrow-up text-xs text-emerald-400';
-                statusText.innerText = 'Sincronizzato';
-            }
 
             if (db && activeProfileName) {
                 try {
@@ -1095,13 +1250,13 @@
             if (tab === 'login') {
                 loginForm.classList.remove('hidden');
                 regForm.classList.add('hidden');
-                loginBtn.className = 'py-2 rounded-lg bg-cyan-600 text-white transition';
-                regBtn.className = 'py-2 rounded-lg text-slate-400 hover:text-white transition';
+                loginBtn.className = 'py-2.5 rounded-xl bg-cyan-600 text-white transition';
+                regBtn.className = 'py-2.5 rounded-xl text-slate-400 hover:text-white transition';
             } else {
                 loginForm.classList.add('hidden');
                 regForm.classList.remove('hidden');
-                regBtn.className = 'py-2 rounded-lg bg-emerald-600 text-white transition';
-                loginBtn.className = 'py-2 rounded-lg text-slate-400 hover:text-white transition';
+                regBtn.className = 'py-2.5 rounded-xl bg-emerald-600 text-white transition';
+                loginBtn.className = 'py-2.5 rounded-xl text-slate-400 hover:text-white transition';
             }
         }
 
@@ -1126,7 +1281,7 @@
                         localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
                         saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
                     }
-                    showToast('Account non trovato su Cloud! Registrati prima di accedere.');
+                    showToast('Account non trovato! Registrati prima di accedere.');
                     return;
                 }
 
@@ -1183,85 +1338,61 @@
             }
         }
 
-        function updateAccountSettings(e) {
-            e.preventDefault();
-            const newNick = document.getElementById('setting-new-nick').value.trim();
-            const newPass = document.getElementById('setting-new-pass').value.trim();
-            const confirmPass = document.getElementById('setting-confirm-pass').value.trim();
+        // TAB NAVIGATION SYSTEM (DESKTOP & MOBILE BOTTOM BAR)
+        function switchTab(tabName) {
+            currentTab = tabName;
+            const tabs = ['dashboard', 'planner', 'fitness', 'content'];
 
-            if (!newNick || !newPass || !confirmPass) return;
-
-            if (newPass !== confirmPass) {
-                showToast('Le password non coincidono! Riprova.');
-                return;
-            }
-
-            const oldName = activeProfileName;
-            if (newNick !== oldName) {
-                delete allProfiles[oldName];
-                if (db) {
-                    db.collection('users').doc(oldName.toLowerCase()).delete();
-                }
-                activeProfileName = newNick;
-                appData.accountName = newNick;
-            }
-
-            appData.password = newPass;
-            localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
-            saveData();
-            renderAccountHeader();
-            closeModal('modal-account');
-            showToast('Credenziali aggiornate con successo!');
-        }
-
-        async function deleteCurrentAccount() {
-            if (!activeProfileName) return;
-            if (!confirm(`Sei sicuro di voler eliminare definitivamente l'account "${activeProfileName}"? Tutti i dati andranno persi.`)) return;
-
-            const targetName = activeProfileName;
-            try {
-                if (db) {
-                    await db.collection('users').doc(targetName.toLowerCase()).delete();
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if (el) {
+                    if (t === tabName) el.classList.remove('hidden');
+                    else el.classList.add('hidden');
                 }
 
-                delete allProfiles[targetName];
-                localStorage.removeItem(LOGGED_USER_KEY);
-                localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
-                await saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
+                // Desktop Nav highlights
+                const deskBtn = document.getElementById(`desk-nav-${t}`);
+                if (deskBtn) {
+                    if (t === tabName) deskBtn.className = 'w-full px-3.5 py-3 rounded-2xl font-bold text-xs flex items-center gap-3 transition bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 shadow-sm';
+                    else deskBtn.className = 'w-full px-3.5 py-3 rounded-2xl font-bold text-xs flex items-center gap-3 transition text-slate-400 hover:text-white hover:bg-white/5';
+                }
 
-                closeModal('modal-account');
-                logoutAccount();
-                showToast(`Account "${targetName}" eliminato con successo.`);
-            } catch(err) {
-                console.error(err);
-                showToast('Errore durante la cancellazione dell\'account.');
+                // Mobile Bottom Nav highlights
+                const mobBtn = document.getElementById(`mob-nav-${t}`);
+                if (mobBtn) {
+                    if (t === tabName) mobBtn.className = 'flex flex-col items-center gap-1 text-cyan-400 font-bold transition';
+                    else mobBtn.className = 'flex flex-col items-center gap-1 text-slate-400 font-medium hover:text-white transition';
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // BOTTOM SHEETS OPEN/CLOSE CONTROLLERS
+        function openQuickCreateSheet() {
+            openSheetModal('modal-quick-create');
+        }
+
+        function openWaterSheet() {
+            renderWaterSheetData();
+            openSheetModal('modal-water-sheet');
+        }
+
+        function openSheetModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
             }
         }
 
-        function openAccountModal() {
-            const modal = document.getElementById('modal-account');
-            const nickInput = document.getElementById('setting-new-nick');
-            const passInput = document.getElementById('setting-new-pass');
-            const passConfirmInput = document.getElementById('setting-confirm-pass');
-
-            if (nickInput) nickInput.value = activeProfileName;
-            if (passInput) passInput.value = appData.password || '';
-            if (passConfirmInput) passConfirmInput.value = appData.password || '';
-
-            modal.classList.remove('hidden'); modal.classList.add('flex');
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+            }
         }
 
-        function logoutAccount() {
-            localStorage.removeItem(LOGGED_USER_KEY);
-            activeProfileName = '';
-            appData = null;
-            if (unsubscribeCloudListener) unsubscribeCloudListener();
-            const authScreen = document.getElementById('auth-screen');
-            if (authScreen) authScreen.classList.remove('hidden');
-            showToast('Disconnesso con successo');
-        }
-
-        // GESTIONE DATA E POPUP CALENDARIO APPLE
+        // DATE NAVIGATION & APPLE CALENDAR POPUP
         function changeSelectedDate(daysOffset) {
             const curr = new Date(selectedDateStr);
             curr.setDate(curr.getDate() + daysOffset);
@@ -1283,13 +1414,10 @@
             renderAll();
         }
 
-        // --- POPUP CALENDARIO APPLE LOGIC & RENDER ---
         function openCalendarModal() {
             calendarViewDate = new Date(selectedDateStr);
             renderCalendarModal();
-            const modal = document.getElementById('modal-calendar');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            openSheetModal('modal-calendar');
         }
 
         function changeCalendarMonth(offset) {
@@ -1364,11 +1492,11 @@
             const oTT  = cTT * (1 - stats.tiktokPct / 100);
 
             let opacityClass = isCurrentMonth ? 'opacity-100' : 'opacity-30 hover:opacity-70';
-            let bgClass = 'bg-dark-950/60 hover:bg-dark-900 border-slate-800/80';
+            let bgClass = 'bg-black/30 hover:bg-white/5 border-white/5';
             let textClass = isCurrentMonth ? 'text-white font-bold' : 'text-slate-500 font-semibold';
 
             if (isSelected) {
-                bgClass = 'bg-cyan-500/15 border-cyan-500/60 shadow-md shadow-cyan-500/20';
+                bgClass = 'bg-cyan-500/20 border-cyan-500/60 shadow-md shadow-cyan-500/20';
                 textClass = 'text-cyan-400 font-black';
             }
 
@@ -1383,7 +1511,7 @@
             }
 
             return `
-                <button onclick="selectDate('${dateStr}')" class="calendar-cell ${opacityClass} ${bgClass} p-1 rounded-2xl border flex flex-col items-center justify-between h-14 sm:h-16 relative">
+                <button onclick="selectDate('${dateStr}')" class="calendar-cell ${opacityClass} ${bgClass} p-1 rounded-2xl border flex flex-col items-center justify-between h-14 sm:h-16 relative transition active:scale-90">
                     <div class="w-full flex justify-between items-center px-1">
                         <span class="text-[10px] ${textClass}">${dayNum}</span>
                         ${isToday ? '<span class="w-1.5 h-1.5 rounded-full bg-cyan-400 ring-2 ring-cyan-400/40"></span>' : ''}
@@ -1408,7 +1536,7 @@
             `;
         }
 
-        // LOGICA TASK & CHECKLIST GIORNALIERE
+        // TASK SYSTEM & COMPUTATIONS
         function getTasksForDate(dateStr) {
             ensureDailyLogExists(dateStr);
             const log = appData.dailyLogs[dateStr];
@@ -1430,86 +1558,15 @@
             return { completed, total, pct };
         }
 
-        function renderTasksSection() {
-            const listContainer = document.getElementById('tasks-list-container');
-            const summaryBadge = document.getElementById('tasks-summary-badge');
-            const progressBar = document.getElementById('tasks-progress-bar');
-            const topTasksDisplay = document.getElementById('top-tasks-display');
-
-            const tasks = getTasksForDate(selectedDateStr);
-            const stats = getTaskCompletionStats(selectedDateStr);
-
-            if (summaryBadge) summaryBadge.innerText = `${stats.completed}/${stats.total} Completate`;
-            if (progressBar) progressBar.style.width = `${stats.pct}%`;
-            if (topTasksDisplay) topTasksDisplay.innerText = `${stats.completed} / ${stats.total}`;
-
-            if (!listContainer) return;
-
-            if (tasks.length === 0) {
-                listContainer.innerHTML = `<div class="col-span-2 text-center py-6 text-slate-500 text-xs font-semibold">Nessuna task in programma per oggi. Clicca "+ Nuova Task" per aggiungerne una! 📝</div>`;
-                return;
-            }
-
-            listContainer.innerHTML = tasks.map(t => {
-                const catClass = getTaskCategoryClass(t.category);
-                return `
-                    <div class="swipe-container group">
-                        <div class="swipe-actions">
-                            <button onclick="openTaskModal('${t.id}')" title="Modifica" class="w-9 h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
-                                <i class="fa-solid fa-pen"></i>
-                            </button>
-                            <button onclick="deleteTask('${t.id}')" title="Elimina" class="w-9 h-9 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                        <div id="task-card-${t.id}" 
-                             class="swipe-card p-3 rounded-xl border border-slate-800 flex items-center justify-between cursor-grab active:cursor-grabbing"
-                             ontouchstart="handleSwipeStart(event, 'task-card-${t.id}')"
-                             ontouchmove="handleSwipeMove(event, 'task-card-${t.id}')"
-                             ontouchend="handleSwipeEnd(event, 'task-card-${t.id}')"
-                             onmousedown="handleSwipeStart(event, 'task-card-${t.id}')"
-                             onmousemove="handleSwipeMove(event, 'task-card-${t.id}')"
-                             onmouseup="handleSwipeEnd(event, 'task-card-${t.id}')"
-                             onmouseleave="handleSwipeEnd(event, 'task-card-${t.id}')">
-                            <div class="flex items-center space-x-3 pr-2 overflow-hidden">
-                                <button onclick="toggleTask('${t.id}')" class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition ${t.completed ? 'bg-indigo-500 text-white' : 'border border-slate-700 bg-dark-900 hover:border-indigo-500'}">
-                                    ${t.completed ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
-                                </button>
-                                <div class="space-y-0.5 truncate">
-                                    <div class="flex items-center space-x-1.5">
-                                        <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${catClass}">${t.category || 'Generale'}</span>
-                                        ${t.isRecurring ? '<span class="text-[9px] text-indigo-400 font-bold bg-indigo-500/10 px-1.5 py-0.5 rounded" title="Ricorrente Ogni Giorno"><i class="fa-solid fa-rotate text-[8px]"></i> Ogni giorno</span>' : '<span class="text-[9px] text-slate-400 font-medium">Solo data</span>'}
-                                    </div>
-                                    <p class="font-bold text-xs truncate ${t.completed ? 'line-through text-indigo-300/60' : 'text-white'}">${t.title}</p>
-                                </div>
-                            </div>
-                            <span class="text-[9px] text-slate-500 font-bold shrink-0 ml-1">Swipe 🪶</span>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function getTaskCategoryClass(cat) {
-            if (cat === 'Salute') return 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
-            if (cat === 'Studio') return 'bg-blue-500/10 text-blue-400 border border-blue-500/20';
-            if (cat === 'Lavoro') return 'bg-amber-500/10 text-amber-400 border border-amber-500/20';
-            return 'bg-purple-500/10 text-purple-400 border border-purple-500/20';
-        }
-
         function toggleTask(id) {
             const log = getCurrentDayLog();
             if (!log.taskStates) log.taskStates = {};
             log.taskStates[id] = !log.taskStates[id];
             saveData();
-            renderTasksSection();
-            if (document.getElementById('modal-calendar') && !document.getElementById('modal-calendar').classList.contains('hidden')) {
-                renderCalendarModal();
-            }
+            renderAll();
         }
 
         function openTaskModal(taskId = null) {
-            const modal = document.getElementById('modal-task');
             const titleInput = document.getElementById('task-title');
             const categorySelect = document.getElementById('task-category');
             const recurrenceSelect = document.getElementById('task-recurrence');
@@ -1534,8 +1591,7 @@
                 modalTitle.innerHTML = '<i class="fa-solid fa-plus text-indigo-400"></i> Nuova Task Giornaliera';
             }
 
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            openSheetModal('modal-task');
         }
 
         function saveTask() {
@@ -1549,14 +1605,12 @@
             const isRec = (recurrenceSelect === 'recurring');
 
             if (editingId) {
-                // Modifica task esistente
                 let recTask = (appData.recurringTasks || []).find(t => t.id === editingId);
                 if (recTask) {
                     if (isRec) {
                         recTask.title = titleInput;
                         recTask.category = categorySelect;
                     } else {
-                        // Sposta da ricorrente a singola data
                         appData.recurringTasks = appData.recurringTasks.filter(t => t.id !== editingId);
                         const log = getCurrentDayLog();
                         log.singleTasks.push({ id: editingId, title: titleInput, category: categorySelect, isRecurring: false });
@@ -1569,7 +1623,6 @@
                             sTask.title = titleInput;
                             sTask.category = categorySelect;
                         } else {
-                            // Sposta da singola a ricorrente
                             log.singleTasks = log.singleTasks.filter(t => t.id !== editingId);
                             if (!appData.recurringTasks) appData.recurringTasks = [];
                             appData.recurringTasks.push({ id: editingId, title: titleInput, category: categorySelect, isRecurring: true });
@@ -1577,7 +1630,6 @@
                     }
                 }
             } else {
-                // Creazione nuova task
                 const newId = 'task_' + Date.now();
                 const newTaskObj = { id: newId, title: titleInput, category: categorySelect, isRecurring: isRec };
                 if (isRec) {
@@ -1590,7 +1642,7 @@
             }
 
             saveData();
-            renderTasksSection();
+            renderAll();
             closeModal('modal-task');
             showToast('Task salvata con successo!');
         }
@@ -1606,10 +1658,18 @@
             if (log.taskStates) delete log.taskStates[taskId];
 
             saveData();
-            renderTasksSection();
-            showToast('Task rimossa');
+            renderAll();
+            showToast('Task eliminata');
         }
 
+        function getTaskCategoryClass(cat) {
+            if (cat === 'Salute') return 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30';
+            if (cat === 'Studio') return 'bg-blue-500/15 text-blue-400 border border-blue-500/30';
+            if (cat === 'Lavoro') return 'bg-amber-500/15 text-amber-400 border border-amber-500/30';
+            return 'bg-purple-500/15 text-purple-400 border border-purple-500/30';
+        }
+
+        // STATS & PERCENTAGES CALCULATOR FOR RINGS
         function getCalculatedDayPcts(dateStr) {
             ensureDailyLogExists(dateStr);
             const log = appData.dailyLogs[dateStr];
@@ -1632,56 +1692,42 @@
             return { fitnessPct, waterPct, tiktokPct, completedW, totalW: workouts.length, water, waterGoal, doneTT, totalTT: ttList.length };
         }
 
-        function renderWeeklyRingsStrip() {
-            const container = document.getElementById('weekly-rings-strip');
-            if (!container) return;
+        // RENDERING FUNCTIONS
+        function renderAll() {
+            if (!appData) return;
+            renderHeaderDate();
+            renderAccountHeaders();
+            renderActivityRingsWidget();
+            renderTopCards();
+            renderDashboardPage();
+            renderPlannerPage();
+            renderFitnessPage();
+            renderContentPage();
+        }
 
-            const currDate = new Date(selectedDateStr);
-            const dayOfWeek = currDate.getDay();
-            const distToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-            const monday = new Date(currDate);
-            monday.setDate(currDate.getDate() - distToMonday);
+        function renderHeaderDate() {
+            const el = document.getElementById('today-date-text');
+            const selDisp = document.getElementById('selected-date-display');
+            const goTodayBtn = document.getElementById('btn-go-today');
 
-            const dayLabels = ['L', 'M', 'M', 'G', 'V', 'S', 'D'];
-            let html = '';
+            const now = new Date();
+            const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+            if (el) el.innerText = now.toLocaleDateString('it-IT', options);
 
-            for (let i = 0; i < 7; i++) {
-                const d = new Date(monday);
-                d.setDate(monday.getDate() + i);
-                const dStr = d.toISOString().split('T')[0];
-                const stats = getCalculatedDayPcts(dStr);
-                const isSelected = (dStr === selectedDateStr);
-                const isToday = (dStr === getTodayStr());
+            const selDateObj = new Date(selectedDateStr);
+            if (selDisp) selDisp.innerText = selDateObj.toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'short' });
 
-                const cFit = 2 * Math.PI * 16;
-                const cWat = 2 * Math.PI * 12;
-                const cTT  = 2 * Math.PI * 8;
-
-                const oFit = cFit * (1 - stats.fitnessPct / 100);
-                const oWat = cWat * (1 - stats.waterPct / 100);
-                const oTT  = cTT * (1 - stats.tiktokPct / 100);
-
-                html += `
-                    <button onclick="selectDate('${dStr}')" class="day-ring-btn p-1.5 sm:p-2 rounded-xl flex flex-col items-center justify-center border text-center relative ${isSelected ? 'active border-blue-500 bg-blue-500/10' : 'border-slate-800/80 bg-dark-950/60 hover:bg-dark-900'}">
-                        ${isToday ? '<span class="absolute -top-1 w-2 h-2 rounded-full bg-cyan-400"></span>' : ''}
-                        <span class="text-[10px] font-extrabold uppercase ${isSelected ? 'text-cyan-400' : 'text-slate-400'}">${dayLabels[i]}</span>
-                        <div class="w-8 h-8 sm:w-10 sm:h-10 my-1 relative flex items-center justify-center">
-                            <svg class="w-full h-full" viewBox="0 0 40 40">
-                                <circle cx="20" cy="20" r="16" stroke="rgba(34,197,94,0.15)" stroke-width="3" fill="none" />
-                                <circle cx="20" cy="20" r="12" stroke="rgba(6,182,212,0.15)" stroke-width="3" fill="none" />
-                                <circle cx="20" cy="20" r="8" stroke="rgba(236,72,153,0.15)" stroke-width="3" fill="none" />
-
-                                <circle class="ring-circle" cx="20" cy="20" r="16" stroke="#22c55e" stroke-width="3" stroke-linecap="round" fill="none" stroke-dasharray="${cFit}" stroke-dashoffset="${oFit}" />
-                                <circle class="ring-circle" cx="20" cy="20" r="12" stroke="#06b6d4" stroke-width="3" stroke-linecap="round" fill="none" stroke-dasharray="${cWat}" stroke-dashoffset="${oWat}" />
-                                <circle class="ring-circle" cx="20" cy="20" r="8" stroke="#ec4899" stroke-width="3" stroke-linecap="round" fill="none" stroke-dasharray="${cTT}" stroke-dashoffset="${oTT}" />
-                            </svg>
-                        </div>
-                        <span class="text-[9px] font-bold ${isSelected ? 'text-white' : 'text-slate-400'}">${d.getDate()}</span>
-                    </button>
-                `;
+            if (goTodayBtn) {
+                if (selectedDateStr === getTodayStr()) goTodayBtn.classList.add('hidden');
+                else goTodayBtn.classList.remove('hidden');
             }
+        }
 
-            container.innerHTML = html;
+        function renderAccountHeaders() {
+            const deskName = document.getElementById('desk-user-name');
+            const mobName = document.getElementById('header-user-name');
+            if (deskName) deskName.innerText = activeProfileName;
+            if (mobName) mobName.innerText = activeProfileName;
         }
 
         function renderActivityRingsWidget() {
@@ -1715,53 +1761,15 @@
             const watDesc = document.getElementById('ring-desc-water');
             const ttDesc  = document.getElementById('ring-desc-tiktok');
 
-            if (fitDesc) fitDesc.innerText = `${stats.completedW} di ${stats.totalW} Esercizi Tic Fatto`;
+            if (fitDesc) fitDesc.innerText = `${stats.completedW} di ${stats.totalW} Esercizi Completati`;
             if (watDesc) watDesc.innerText = `${stats.water} / ${stats.waterGoal} ml`;
-            if (ttDesc)  ttDesc.innerText  = `${stats.doneTT} di ${stats.totalTT} Video Registrati/Pubblicati`;
+            if (ttDesc)  ttDesc.innerText  = `${stats.doneTT} di ${stats.totalTT} Video Pronti/Pubblicati`;
 
             const dateLabel = document.getElementById('active-day-label');
             if (dateLabel) {
                 if (selectedDateStr === getTodayStr()) dateLabel.innerText = 'Oggi';
                 else dateLabel.innerText = selectedDateStr;
             }
-        }
-
-        function renderAll() {
-            if (!appData) return;
-            renderHeaderDate();
-            renderAccountHeader();
-            renderWeeklyRingsStrip();
-            renderActivityRingsWidget();
-            renderTopCards();
-            renderTasksSection();
-            renderUniSection();
-            renderFitnessSection();
-            renderTikTokSection();
-            renderWaterSection();
-            applySectionsState();
-        }
-
-        function renderHeaderDate() {
-            const el = document.getElementById('today-date-text');
-            const selDisp = document.getElementById('selected-date-display');
-            const goTodayBtn = document.getElementById('btn-go-today');
-
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            if (el) el.innerText = now.toLocaleDateString('it-IT', options);
-
-            const selDateObj = new Date(selectedDateStr);
-            if (selDisp) selDisp.innerText = selDateObj.toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'short' });
-
-            if (goTodayBtn) {
-                if (selectedDateStr === getTodayStr()) goTodayBtn.classList.add('hidden');
-                else goTodayBtn.classList.remove('hidden');
-            }
-        }
-
-        function renderAccountHeader() {
-            const el = document.getElementById('header-user-name');
-            if (el) el.innerText = activeProfileName;
         }
 
         function renderTopCards() {
@@ -1772,6 +1780,10 @@
             const weightEl = document.getElementById('top-weight-display');
             if (weightEl) weightEl.innerText = `${appData.weight.toFixed(1)} kg`;
 
+            const taskStats = getTaskCompletionStats(selectedDateStr);
+            const tasksEl = document.getElementById('top-tasks-display');
+            if (tasksEl) tasksEl.innerText = `${taskStats.completed} / ${taskStats.total}`;
+
             const lessonsEl = document.getElementById('top-lessons-display');
             const selDateObj = new Date(selectedDateStr);
             const dayName = selDateObj.toLocaleDateString('it-IT', { weekday: 'long' });
@@ -1780,12 +1792,94 @@
             if (lessonsEl) lessonsEl.innerText = `${todayLessons} Lezioni`;
         }
 
-        function renderUniSection() {
+        function renderDashboardPage() {
+            const log = getCurrentDayLog();
+            const dashWaterText = document.getElementById('dash-water-text');
+            const dashWaterBadge = document.getElementById('dash-water-pct-badge');
+            const pct = Math.min(100, Math.round((log.water / appData.waterGoal) * 100));
+
+            if (dashWaterText) dashWaterText.innerHTML = `${log.water} <span class="text-xs text-slate-400">/ 3500 ml</span>`;
+            if (dashWaterBadge) dashWaterBadge.innerText = `${pct}%`;
+
+            const priorityListContainer = document.getElementById('dash-priority-tasks-list');
+            const tasks = getTasksForDate(selectedDateStr);
+
+            if (priorityListContainer) {
+                if (tasks.length === 0) {
+                    priorityListContainer.innerHTML = `<div class="text-center py-4 text-slate-500 text-xs font-medium">Nessuna task in programma per la data.</div>`;
+                } else {
+                    priorityListContainer.innerHTML = tasks.slice(0, 4).map(t => `
+                        <div onclick="toggleTask('${t.id}')" class="glass-card p-3 rounded-2xl border border-white/5 flex items-center justify-between cursor-pointer hover:bg-white/5 transition">
+                            <div class="flex items-center space-x-3 truncate">
+                                <div class="w-6 h-6 rounded-full check-circle-anim flex items-center justify-center shrink-0 ${t.completed ? 'bg-indigo-500 text-white' : 'border border-slate-700 bg-black/40'}">
+                                    ${t.completed ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+                                </div>
+                                <span class="text-xs font-bold truncate ${t.completed ? 'line-through text-indigo-300/60' : 'text-white'}">${t.title}</span>
+                            </div>
+                            <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${getTaskCategoryClass(t.category)}">${t.category}</span>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        function renderPlannerPage() {
+            const tasksListContainer = document.getElementById('planner-tasks-list');
+            const tasksProgress = document.getElementById('tasks-progress-bar');
+            const tasksPctLabel = document.getElementById('planner-tasks-pct');
+            const tasks = getTasksForDate(selectedDateStr);
+            const stats = getTaskCompletionStats(selectedDateStr);
+
+            if (tasksProgress) tasksProgress.style.width = `${stats.pct}%`;
+            if (tasksPctLabel) tasksPctLabel.innerText = `${stats.pct}%`;
+
+            if (tasksListContainer) {
+                if (tasks.length === 0) {
+                    tasksListContainer.innerHTML = `<div class="col-span-2 text-center py-6 text-slate-500 text-xs font-semibold">Nessuna task in programma per oggi. Clicca "+ Nuova Task" per aggiungerne una! 📝</div>`;
+                } else {
+                    tasksListContainer.innerHTML = tasks.map(t => `
+                        <div class="swipe-container group">
+                            <div class="swipe-actions">
+                                <button onclick="openTaskModal('${t.id}')" title="Modifica" class="w-9 h-9 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button onclick="deleteTask('${t.id}')" title="Elimina" class="w-9 h-9 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-md transition flex items-center justify-center shrink-0">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                            <div id="task-card-${t.id}" 
+                                 class="swipe-card p-3 rounded-2xl border border-white/5 flex items-center justify-between cursor-grab active:cursor-grabbing"
+                                 ontouchstart="handleSwipeStart(event, 'task-card-${t.id}')"
+                                 ontouchmove="handleSwipeMove(event, 'task-card-${t.id}')"
+                                 ontouchend="handleSwipeEnd(event, 'task-card-${t.id}')"
+                                 onmousedown="handleSwipeStart(event, 'task-card-${t.id}')"
+                                 onmousemove="handleSwipeMove(event, 'task-card-${t.id}')"
+                                 onmouseup="handleSwipeEnd(event, 'task-card-${t.id}')"
+                                 onmouseleave="handleSwipeEnd(event, 'task-card-${t.id}')">
+                                <div class="flex items-center space-x-3 pr-2 overflow-hidden">
+                                    <button onclick="toggleTask('${t.id}')" class="w-6 h-6 rounded-full check-circle-anim flex items-center justify-center shrink-0 transition ${t.completed ? 'bg-indigo-500 text-white' : 'border border-slate-700 bg-black/40 hover:border-indigo-500'}">
+                                        ${t.completed ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+                                    </button>
+                                    <div class="space-y-0.5 truncate">
+                                        <div class="flex items-center space-x-1.5">
+                                            <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${getTaskCategoryClass(t.category)}">${t.category || 'Generale'}</span>
+                                            ${t.isRecurring ? '<span class="text-[9px] text-indigo-400 font-bold bg-indigo-500/10 px-1.5 py-0.5 rounded"><i class="fa-solid fa-rotate text-[8px]"></i> Ogni giorno</span>' : ''}
+                                        </div>
+                                        <p class="font-bold text-xs truncate ${t.completed ? 'line-through text-indigo-300/60' : 'text-white'}">${t.title}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Timetable rendering
             const days = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
             const tabsContainer = document.getElementById('uni-days-tabs');
             if (tabsContainer) {
                 tabsContainer.innerHTML = days.map(day => `
-                    <button onclick="selectUniDay('${day}')" class="px-3 py-1.5 rounded-xl font-bold text-xs shrink-0 transition ${appData.selectedUniDay === day ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' : 'bg-dark-950 text-slate-400 hover:text-white border border-slate-800'}">
+                    <button onclick="selectUniDay('${day}')" class="px-3.5 py-1.5 rounded-2xl font-bold text-xs shrink-0 transition ${appData.selectedUniDay === day ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' : 'bg-black/40 text-slate-400 hover:text-white border border-white/5'}">
                         ${day}
                     </button>
                 `).join('');
@@ -1796,7 +1890,7 @@
 
             if (lessonsContainer) {
                 if (list.length === 0) {
-                    lessonsContainer.innerHTML = `<div class="col-span-2 text-center py-6 text-slate-500 text-xs font-semibold">Nessuna lezione/materia salvata per ${appData.selectedUniDay}! Clicca "+ Nuova Lezione / Materia" per aggiungerne una. 📚</div>`;
+                    lessonsContainer.innerHTML = `<div class="col-span-2 text-center py-6 text-slate-500 text-xs font-semibold">Nessuna lezione salvata per ${appData.selectedUniDay}! Clicca "+ Nuova Lezione" per aggiungerne una. 📚</div>`;
                 } else {
                     lessonsContainer.innerHTML = list.map((item, idx) => `
                         <div class="swipe-container group">
@@ -1809,7 +1903,7 @@
                                 </button>
                             </div>
                             <div id="sched-card-${idx}" 
-                                 class="swipe-card p-3 rounded-xl border border-slate-800 space-y-1.5 cursor-grab active:cursor-grabbing"
+                                 class="swipe-card p-3 rounded-2xl border border-white/5 space-y-1.5 cursor-grab active:cursor-grabbing"
                                  ontouchstart="handleSwipeStart(event, 'sched-card-${idx}')"
                                  ontouchmove="handleSwipeMove(event, 'sched-card-${idx}')"
                                  ontouchend="handleSwipeEnd(event, 'sched-card-${idx}')"
@@ -1818,11 +1912,8 @@
                                  onmouseup="handleSwipeEnd(event, 'sched-card-${idx}')"
                                  onmouseleave="handleSwipeEnd(event, 'sched-card-${idx}')">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${item.type === 'Laboratorio' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : (item.type === 'Studio' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' : 'bg-blue-500/10 text-blue-400 border border-blue-500/20')}">${item.type}</span>
-                                    <div class="flex items-center space-x-1.5">
-                                        <span class="text-[10px] font-bold text-slate-400"><i class="fa-regular fa-clock mr-1"></i>${item.time}</span>
-                                        <span class="text-[10px] text-slate-500 font-bold ml-1">Swipe 🪶</span>
-                                    </div>
+                                    <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-md ${item.type === 'Laboratorio' ? 'bg-purple-500/15 text-purple-400 border border-purple-500/20' : (item.type === 'Studio' ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20' : 'bg-blue-500/15 text-blue-400 border border-blue-500/20')}">${item.type}</span>
+                                    <span class="text-[10px] font-bold text-slate-400"><i class="fa-regular fa-clock mr-1"></i>${item.time}</span>
                                 </div>
                                 <h4 class="font-bold text-xs text-white">${item.course}</h4>
                                 <p class="text-[10px] text-slate-400 flex items-center gap-1"><i class="fa-solid fa-location-dot text-rose-400"></i> ${item.room || 'Aula / Classe non specificata'}</p>
@@ -1836,11 +1927,10 @@
         function selectUniDay(day) {
             appData.selectedUniDay = day;
             saveData();
-            renderUniSection();
+            renderPlannerPage();
         }
 
         function openScheduleModal(day = null, idx = null) {
-            const modal = document.getElementById('modal-schedule');
             const daySelect = document.getElementById('sched-day');
             const courseInput = document.getElementById('sched-course');
             const timeInput = document.getElementById('sched-time');
@@ -1869,7 +1959,7 @@
                 titleEl.innerText = 'Nuova Lezione / Materia';
             }
 
-            modal.classList.remove('hidden'); modal.classList.add('flex');
+            openSheetModal('modal-schedule');
         }
 
         function saveScheduleItem() {
@@ -1903,30 +1993,25 @@
 
             appData.selectedUniDay = daySelect;
             saveData();
-            renderUniSection();
-            renderTopCards();
+            renderAll();
             closeModal('modal-schedule');
-            showToast('Orario aggiornato con successo!');
+            showToast('Orario lezione salvato!');
         }
 
         function deleteScheduleItem(day, idx) {
             if (appData.schedule && appData.schedule[day] && appData.schedule[day][idx] !== undefined) {
                 appData.schedule[day].splice(idx, 1);
                 saveData();
-                renderUniSection();
-                renderTopCards();
+                renderAll();
                 showToast('Materia rimossa dall\'orario.');
             }
         }
 
-        function renderFitnessSection() {
-            const log = getCurrentDayLog();
-            const weightValEl = document.getElementById('current-weight-val');
+        function renderFitnessPage() {
+            const weightValEl = document.getElementById('fitness-weight-val');
             if (weightValEl) weightValEl.innerHTML = `${appData.weight.toFixed(1)} <span class="text-xs text-slate-400">kg</span>`;
 
-            const badgeEl = document.getElementById('fit-summary-badge');
-            if (badgeEl) badgeEl.innerText = `Peso: ${appData.weight.toFixed(1)} kg`;
-
+            const log = getCurrentDayLog();
             const checklistContainer = document.getElementById('workout-checklist');
             const doneCount = log.workouts ? log.workouts.filter(w => w.completed).length : 0;
 
@@ -1935,13 +2020,13 @@
 
             if (checklistContainer) {
                 checklistContainer.innerHTML = log.workouts.map(item => `
-                    <div onclick="toggleWorkout(${item.id})" class="p-2.5 rounded-xl border transition cursor-pointer flex items-center justify-between ${item.completed ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300' : 'bg-dark-950 border-slate-800 hover:border-slate-700 text-slate-300'}">
+                    <div onclick="toggleWorkout(${item.id})" class="p-3 rounded-2xl border transition cursor-pointer flex items-center justify-between ${item.completed ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-300' : 'bg-black/40 border-white/5 hover:border-white/15 text-slate-300'}">
                         <div class="space-y-0.5 pr-2">
                             <p class="font-bold text-xs ${item.completed ? 'line-through text-emerald-400' : 'text-white'}">${item.name}</p>
                             <p class="text-[10px] text-slate-400">${item.desc}</p>
                         </div>
-                        <div class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${item.completed ? 'bg-emerald-500 text-white' : 'border border-slate-700 bg-dark-900'}">
-                            ${item.completed ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+                        <div class="w-6 h-6 rounded-full check-circle-anim flex items-center justify-center shrink-0 ${item.completed ? 'bg-emerald-500 text-white' : 'border border-slate-700 bg-black/40'}">
+                            ${item.completed ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
                         </div>
                     </div>
                 `).join('');
@@ -1954,11 +2039,14 @@
             if (item) {
                 item.completed = !item.completed;
                 saveData();
-                renderWeeklyRingsStrip();
-                renderActivityRingsWidget();
-                renderTopCards();
-                renderFitnessSection();
+                renderAll();
             }
+        }
+
+        function openWeightModal() {
+            const input = document.getElementById('input-weight-val');
+            if (input) input.value = appData.weight;
+            openSheetModal('modal-weight');
         }
 
         function saveNewWeight() {
@@ -1973,15 +2061,14 @@
                         weight: val
                     });
                     saveData();
-                    renderTopCards();
-                    renderFitnessSection();
+                    renderAll();
                     closeModal('modal-weight');
                     showToast(`Peso aggiornato a ${val.toFixed(1)} kg!`);
                 }
             }
         }
 
-        function renderTikTokSection() {
+        function renderContentPage() {
             const listContainer = document.getElementById('tiktok-ideas-list');
             if (!appData.tiktokIdeas || appData.tiktokIdeas.length === 0) {
                 listContainer.innerHTML = `<div class="col-span-3 text-center py-6 text-slate-500 text-xs font-semibold">Nessun video in scaletta. Clicca "+ Nuova Idea" per iniziare! 🎥</div>`;
@@ -1997,7 +2084,7 @@
                             </button>
                         </div>
                         <div id="tt-card-${item.id}" 
-                             class="swipe-card p-3.5 rounded-xl border border-slate-800 space-y-2 cursor-grab active:cursor-grabbing"
+                             class="swipe-card p-3.5 rounded-2xl border border-white/5 space-y-2 cursor-grab active:cursor-grabbing"
                              ontouchstart="handleSwipeStart(event, ${item.id})"
                              ontouchmove="handleSwipeMove(event, ${item.id})"
                              ontouchend="handleSwipeEnd(event, ${item.id})"
@@ -2007,7 +2094,6 @@
                              onmouseleave="handleSwipeEnd(event, ${item.id})">
                             <div class="flex items-center justify-between">
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${getStatusBadgeClass(item.status)}">${item.status}</span>
-                                <span class="text-[10px] text-slate-500 font-bold">Swipe 🪶</span>
                             </div>
                             <h4 class="font-extrabold text-xs text-white leading-snug">${item.title}</h4>
                             <p class="text-[11px] text-slate-400 italic">" Hook: ${item.hook} "</p>
@@ -2015,17 +2101,115 @@
                     </div>
                 `).join('');
             }
-            const summaryEl = document.getElementById('tiktok-summary-badge');
-            if (summaryEl) summaryEl.innerText = `${appData.tiktokIdeas ? appData.tiktokIdeas.length : 0} Video in Scaletta`;
         }
 
         function getStatusBadgeClass(status) {
-            if (status === 'Pubblicato') return 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20';
-            if (status === 'Registrato') return 'bg-blue-500/10 text-blue-400 border border-blue-500/20';
-            return 'bg-pink-500/10 text-pink-400 border border-pink-500/20';
+            if (status === 'Pubblicato') return 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30';
+            if (status === 'Registrato') return 'bg-blue-500/15 text-blue-400 border border-blue-500/30';
+            return 'bg-pink-500/15 text-pink-400 border border-pink-500/30';
         }
 
-        // GESTIONE SWIPE GENERICA (PER TIKTOK, LEZIONI E TASK)
+        function openTikTokModal(id = null) {
+            const titleInput = document.getElementById('tt-title');
+            const hookInput = document.getElementById('tt-hook');
+            const statusSelect = document.getElementById('tt-status');
+            const editingIdInput = document.getElementById('tt-editing-id');
+
+            if (id) {
+                const item = appData.tiktokIdeas.find(t => t.id === id);
+                if (item) {
+                    editingIdInput.value = item.id;
+                    titleInput.value = item.title;
+                    hookInput.value = item.hook;
+                    statusSelect.value = item.status;
+                    document.getElementById('tt-modal-title').innerText = 'Modifica Video TikTok';
+                }
+            } else {
+                editingIdInput.value = ''; titleInput.value = ''; hookInput.value = ''; statusSelect.value = 'Da Registrare';
+                document.getElementById('tt-modal-title').innerText = 'Nuova Idea Video TikTok';
+            }
+            openSheetModal('modal-tiktok');
+        }
+
+        function saveTikTokIdea() {
+            const titleInput = document.getElementById('tt-title');
+            const hookInput = document.getElementById('tt-hook');
+            const statusSelect = document.getElementById('tt-status');
+            const editingId = document.getElementById('tt-editing-id').value;
+
+            if (!titleInput.value.trim()) { showToast('Inserisci un titolo per il video!'); return; }
+
+            if (!appData.tiktokIdeas) appData.tiktokIdeas = [];
+
+            if (editingId) {
+                const item = appData.tiktokIdeas.find(t => t.id === parseInt(editingId));
+                if (item) {
+                    item.title = titleInput.value.trim();
+                    item.hook = hookInput.value.trim();
+                    item.status = statusSelect.value;
+                }
+            } else {
+                appData.tiktokIdeas.push({
+                    id: Date.now(),
+                    title: titleInput.value.trim(),
+                    hook: hookInput.value.trim() || 'Gancio non inserito',
+                    status: statusSelect.value
+                });
+            }
+            saveData();
+            renderAll();
+            closeModal('modal-tiktok');
+            showToast('Idea TikTok salvata!');
+        }
+
+        function deleteTikTokIdea(id) {
+            appData.tiktokIdeas = appData.tiktokIdeas.filter(t => t.id !== id);
+            saveData();
+            renderAll();
+            showToast('Video rimosso');
+        }
+
+        // HYDRATION FUNCTIONS
+        function renderWaterSheetData() {
+            const log = getCurrentDayLog();
+            const pct = Math.min(100, Math.round((log.water / appData.waterGoal) * 100));
+            const fillEl = document.getElementById('sheet-water-fill-level');
+            if (fillEl) fillEl.style.height = `${pct}%`;
+            const textAmount = document.getElementById('sheet-water-amount');
+            if (textAmount) textAmount.innerHTML = `${log.water} <span class="text-xs text-slate-400">/ 3500 ml</span>`;
+        }
+
+        function addWater(amount) {
+            const log = getCurrentDayLog();
+            log.lastWaterAdded = amount;
+            log.water = Math.min(6000, log.water + amount);
+            saveData();
+            renderAll();
+            renderWaterSheetData();
+            showToast(`+${amount} ml d'acqua registrati! 🥤`);
+        }
+
+        function undoWater() {
+            const log = getCurrentDayLog();
+            if (log.water > 0) {
+                log.water = Math.max(0, log.water - (log.lastWaterAdded || 200));
+                saveData();
+                renderAll();
+                renderWaterSheetData();
+                showToast(`Annullati -${log.lastWaterAdded || 200} ml`);
+            }
+        }
+
+        function resetWater() {
+            const log = getCurrentDayLog();
+            log.water = 0;
+            saveData();
+            renderAll();
+            renderWaterSheetData();
+            showToast('Contatore acqua azzerato');
+        }
+
+        // SWIPE GESTURES FOR LIST CARDS
         let swipeState = { activeId: null, startX: 0, currentTranslate: 0, isDragging: false };
 
         function getNormalizedCardId(elementId) {
@@ -2071,163 +2255,75 @@
             card.style.transform = (currentX < -40) ? 'translateX(-95px)' : 'translateX(0px)';
         }
 
-        function openTikTokModal(id = null) {
-            const modal = document.getElementById('modal-tiktok');
-            const titleInput = document.getElementById('tt-title');
-            const hookInput = document.getElementById('tt-hook');
-            const statusSelect = document.getElementById('tt-status');
-            const editingIdInput = document.getElementById('tt-editing-id');
+        // ACCOUNT SETTINGS & HISTORY MODALS
+        function openAccountModal() {
+            const nickInput = document.getElementById('setting-new-nick');
+            const passInput = document.getElementById('setting-new-pass');
+            const passConfirmInput = document.getElementById('setting-confirm-pass');
 
-            if (id) {
-                const item = appData.tiktokIdeas.find(t => t.id === id);
-                if (item) {
-                    editingIdInput.value = item.id;
-                    titleInput.value = item.title;
-                    hookInput.value = item.hook;
-                    statusSelect.value = item.status;
-                    document.getElementById('tt-modal-title').innerText = 'Modifica Video TikTok';
+            if (nickInput) nickInput.value = activeProfileName;
+            if (passInput) passInput.value = appData.password || '';
+            if (passConfirmInput) passConfirmInput.value = appData.password || '';
+
+            openSheetModal('modal-account');
+        }
+
+        function updateAccountSettings(e) {
+            e.preventDefault();
+            const newNick = document.getElementById('setting-new-nick').value.trim();
+            const newPass = document.getElementById('setting-new-pass').value.trim();
+            const confirmPass = document.getElementById('setting-confirm-pass').value.trim();
+
+            if (!newNick || !newPass || !confirmPass) return;
+
+            if (newPass !== confirmPass) {
+                showToast('Le password non coincidono! Riprova.');
+                return;
+            }
+
+            const oldName = activeProfileName;
+            if (newNick !== oldName) {
+                delete allProfiles[oldName];
+                if (db) {
+                    db.collection('users').doc(oldName.toLowerCase()).delete();
                 }
-            } else {
-                editingIdInput.value = ''; titleInput.value = ''; hookInput.value = ''; statusSelect.value = 'Da Registrare';
-                document.getElementById('tt-modal-title').innerText = 'Nuova Idea Video TikTok';
+                activeProfileName = newNick;
+                appData.accountName = newNick;
             }
-            modal.classList.remove('hidden'); modal.classList.add('flex');
+
+            appData.password = newPass;
+            localStorage.setItem(LOGGED_USER_KEY, activeProfileName);
+            saveData();
+            renderAccountHeaders();
+            closeModal('modal-account');
+            showToast('Credenziali aggiornate con successo!');
         }
 
-        function saveTikTokIdea() {
-            const titleInput = document.getElementById('tt-title');
-            const hookInput = document.getElementById('tt-hook');
-            const statusSelect = document.getElementById('tt-status');
-            const editingId = document.getElementById('tt-editing-id').value;
+        async function deleteCurrentAccount() {
+            if (!activeProfileName) return;
+            if (!confirm(`Sei sicuro di voler eliminare definitivamente l'account "${activeProfileName}"? Tutti i dati andranno persi.`)) return;
 
-            if (!titleInput.value.trim()) { showToast('Inserisci un titolo per il video!'); return; }
-
-            if (!appData.tiktokIdeas) appData.tiktokIdeas = [];
-
-            if (editingId) {
-                const item = appData.tiktokIdeas.find(t => t.id === parseInt(editingId));
-                if (item) {
-                    item.title = titleInput.value.trim();
-                    item.hook = hookInput.value.trim();
-                    item.status = statusSelect.value;
+            const targetName = activeProfileName;
+            try {
+                if (db) {
+                    await db.collection('users').doc(targetName.toLowerCase()).delete();
                 }
-            } else {
-                appData.tiktokIdeas.push({
-                    id: Date.now(),
-                    title: titleInput.value.trim(),
-                    hook: hookInput.value.trim() || 'Gancio non inserito',
-                    status: statusSelect.value
-                });
+
+                delete allProfiles[targetName];
+                localStorage.removeItem(LOGGED_USER_KEY);
+                localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(allProfiles));
+                await saveToIndexedDB(PROFILES_STORAGE_KEY, allProfiles);
+
+                closeModal('modal-account');
+                logoutAccount();
+                showToast(`Account "${targetName}" eliminato con successo.`);
+            } catch(err) {
+                console.error(err);
+                showToast('Errore durante la cancellazione dell\'account.');
             }
-            saveData();
-            renderWeeklyRingsStrip();
-            renderActivityRingsWidget();
-            renderTikTokSection();
-            closeModal('modal-tiktok');
-            showToast('Idea TikTok salvata!');
-        }
-
-        function deleteTikTokIdea(id) {
-            appData.tiktokIdeas = appData.tiktokIdeas.filter(t => t.id !== id);
-            saveData();
-            renderWeeklyRingsStrip();
-            renderActivityRingsWidget();
-            renderTikTokSection();
-            showToast('Video rimosso');
-        }
-
-        function renderWaterSection() {
-            const log = getCurrentDayLog();
-            const pct = Math.min(100, Math.round((log.water / appData.waterGoal) * 100));
-            const fillEl = document.getElementById('water-fill-level');
-            if (fillEl) fillEl.style.height = `${pct}%`;
-            const pctText = document.getElementById('water-percentage');
-            if (pctText) pctText.innerText = `${pct}% Raggiunto`;
-            const textAmount = document.getElementById('water-text-amount');
-            if (textAmount) textAmount.innerHTML = `${log.water} <span class="text-xs text-slate-400">/ 3500 ml</span>`;
-            const summaryBadge = document.getElementById('water-summary-badge');
-            if (summaryBadge) summaryBadge.innerText = `${log.water} / 3500 ml`;
-        }
-
-        function addWater(amount) {
-            const log = getCurrentDayLog();
-            log.lastWaterAdded = amount;
-            log.water = Math.min(6000, log.water + amount);
-            saveData();
-            renderWeeklyRingsStrip();
-            renderActivityRingsWidget();
-            renderTopCards();
-            renderWaterSection();
-            showToast(`+${amount} ml d'acqua registrati! 🥤`);
-        }
-
-        function undoWater() {
-            const log = getCurrentDayLog();
-            if (log.water > 0) {
-                log.water = Math.max(0, log.water - (log.lastWaterAdded || 200));
-                saveData();
-                renderWeeklyRingsStrip();
-                renderActivityRingsWidget();
-                renderTopCards();
-                renderWaterSection();
-                showToast(`Annullati -${log.lastWaterAdded || 200} ml`);
-            }
-        }
-
-        function resetWater() {
-            const log = getCurrentDayLog();
-            log.water = 0;
-            saveData();
-            renderWeeklyRingsStrip();
-            renderActivityRingsWidget();
-            renderTopCards();
-            renderWaterSection();
-            showToast('Contatore acqua azzerato');
-        }
-
-        function toggleSection(id) {
-            const sec = document.getElementById(id);
-            const icon = document.getElementById(`${id}-icon`);
-            if (!sec) return;
-            const isHidden = sec.classList.contains('hidden');
-            if (isHidden) {
-                sec.classList.remove('hidden');
-                if (icon) icon.style.transform = 'rotate(0deg)';
-                appData.sectionsState[id] = true;
-            } else {
-                sec.classList.add('hidden');
-                if (icon) icon.style.transform = 'rotate(-90deg)';
-                appData.sectionsState[id] = false;
-            }
-            saveData();
-        }
-
-        function applySectionsState() {
-            ['sec-tasks', 'sec-uni', 'sec-fit', 'sec-tiktok', 'sec-water'].forEach(id => {
-                const sec = document.getElementById(id);
-                const icon = document.getElementById(`${id}-icon`);
-                const isVisible = appData.sectionsState ? (appData.sectionsState[id] !== false) : true;
-                if (sec) {
-                    if (isVisible) {
-                        sec.classList.remove('hidden');
-                        if (icon) icon.style.transform = 'rotate(0deg)';
-                    } else {
-                        sec.classList.add('hidden');
-                        if (icon) icon.style.transform = 'rotate(-90deg)';
-                    }
-                }
-            });
-        }
-
-        function openWeightModal() {
-            const modal = document.getElementById('modal-weight');
-            const input = document.getElementById('input-weight-val');
-            if (input) input.value = appData.weight;
-            modal.classList.remove('hidden'); modal.classList.add('flex');
         }
 
         function openHistoryModal() {
-            const modal = document.getElementById('modal-history');
             const listContainer = document.getElementById('history-content-list');
             if (listContainer) {
                 if (!appData.weightHistory || appData.weightHistory.length === 0) {
@@ -2243,33 +2339,38 @@
                             else if (diff > 0) diffText = `<span class="text-rose-400 font-bold ml-2">🔺 +${diff} kg</span>`;
                         }
                         return `
-                            <div class="bg-dark-950 p-2.5 rounded-xl border border-slate-800 flex justify-between items-center">
+                            <div class="glass-card p-3 rounded-2xl border border-white/5 flex justify-between items-center">
                                 <div>
                                     <p class="font-bold text-white">${item.date}</p>
                                     <p class="text-[10px] text-slate-400">Profilo: ${activeProfileName}</p>
                                 </div>
                                 <div class="text-right">
-                                    <p class="font-extrabold text-white">${item.weight.toFixed(1)} kg ${diffText}</p>
+                                    <p class="font-black text-white text-sm">${item.weight.toFixed(1)} kg ${diffText}</p>
                                 </div>
                             </div>
                         `;
                     }).join('');
                 }
             }
-            modal.classList.remove('hidden'); modal.classList.add('flex');
+            openSheetModal('modal-history');
         }
 
-        function closeModal(id) {
-            const modal = document.getElementById(id);
-            if (modal) { modal.classList.add('hidden'); modal.classList.remove('flex'); }
+        function logoutAccount() {
+            localStorage.removeItem(LOGGED_USER_KEY);
+            activeProfileName = '';
+            appData = null;
+            if (unsubscribeCloudListener) unsubscribeCloudListener();
+            const authScreen = document.getElementById('auth-screen');
+            if (authScreen) authScreen.classList.remove('hidden');
+            showToast('Disconnesso con successo');
         }
 
         function showToast(msg) {
             const container = document.getElementById('toast-container');
             if (!container) return;
             const toast = document.createElement('div');
-            toast.className = 'bg-slate-900 border border-slate-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow-xl flex items-center gap-2 animate-bounce pointer-events-auto';
-            toast.innerHTML = `<i class="fa-solid fa-circle-check text-cyan-400"></i> ${msg}`;
+            toast.className = 'bg-slate-900 border border-slate-700 text-white px-4 py-2.5 rounded-2xl text-xs font-bold shadow-2xl flex items-center gap-2 pointer-events-auto transition-all transform animate-bounce';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-cyan-400 text-sm"></i> ${msg}`;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 2500);
         }
